@@ -28,6 +28,12 @@ a{color:inherit}
 .subnav a .pill{display:inline-block;font-size:10px;padding:2px 7px;border-radius:6px;background:#1d2a3a;color:#9bc0f0;font-weight:800;letter-spacing:.06em}
 .subnav a.active .pill{background:#22350f;color:#c9f590}
 
+/* Secondary View Tabs */
+.view-tabs{display:flex;justify-content:center;background:#0b1018;border-bottom:1px solid var(--line);gap:24px;padding:0 16px;}
+.view-tab{background:none;border:none;color:var(--muted);padding:12px 20px;font-weight:800;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;transition:0.2s;letter-spacing:0.5px;text-transform:uppercase;}
+.view-tab:hover{color:var(--text);}
+.view-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
 .wrap{max-width:1400px;margin:auto;padding:30px clamp(14px,3vw,40px) 52px}
 .hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px}
 .eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;margin-bottom:8px}
@@ -44,28 +50,68 @@ h1{font-size:clamp(32px,5vw,54px);line-height:1.02;letter-spacing:-.045em;margin
 
 /* Match Centre UI */
 .match-centre{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px}
-.mc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
 .mc-header h2{font-size:1.2rem;margin:0;color:var(--blue)}
+.mc-tools{display:flex;gap:12px;align-items:center}
 .schedule-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:#0c131c;padding:16px;border-radius:12px;border:1px solid #2c3a4b;margin-bottom:16px}
 .schedule-form label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
 .schedule-form input,.schedule-form select{background:#121a25;border:1px solid #283647;border-radius:8px;color:white;padding:10px;outline:none}
 .schedule-form input:focus,.schedule-form select:focus{border-color:var(--accent)}
 .btn-schedule{background:var(--accent);color:#111a12;border:none;padding:10px 20px;border-radius:8px;font-weight:800;cursor:pointer;transition:0.2s}
 .btn-schedule:hover{background:#a6db5a}
-.matches-list{display:flex;flex-direction:column;gap:10px}
-.match-card{background:#0c131c;border:1px solid #2c3a4b;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.match-card.live{border-color:var(--accent);box-shadow:0 0 15px rgba(185,243,107,0.15)}
-.match-teams{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.1rem}
-.match-score{background:#121a25;padding:4px 12px;border-radius:8px;color:var(--accent);font-family:monospace;font-size:1.2rem;letter-spacing:2px}
-.match-time{font-size:12px;color:var(--muted);text-align:right}
+.btn-clear{background:transparent;color:var(--muted);border:1px solid var(--line);padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;transition:0.2s}
+.btn-clear:hover{color:white;border-color:var(--red);background:#2c1a1d}
+
+.matches-list{display:flex;flex-direction:column;gap:12px}
+.match-card{background:#0c131c;border:1px solid #2c3a4b;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:0.2s}
+.match-card:hover{border-color:#4a7eb0}
+.match-card.live{border-color:var(--accent);box-shadow:0 0 20px rgba(185,243,107,0.15);background:linear-gradient(180deg, #121f2b 0%, #0c131c 100%)}
+.match-card.live:hover{border-color:#fff;box-shadow:0 0 25px rgba(255,255,255,0.2)}
+.match-card.finished{opacity:0.85}
+
+.match-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.match-teams{display:flex;align-items:center;gap:16px;font-weight:700;font-size:1.1rem;flex:1}
+.match-score{background:#121a25;padding:6px 16px;border-radius:8px;color:var(--accent);font-family:monospace;font-size:1.3rem;letter-spacing:2px;white-space:nowrap}
+.match-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;color:var(--muted)}
 .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
 .badge.upcoming{background:#1d2a3a;color:#9bc0f0}
 .badge.live{background:#22350f;color:#c9f590;animation:pulse 2s infinite}
+.badge.ht{background:#45391c;color:#ffd97a}
 .badge.finished{background:#2c3a4b;color:#8fa1b7}
-@keyframes pulse{0%{opacity:1}50%{opacity:0.5}100%{opacity:1}}
-.live-events{width:100%;margin-top:10px;font-size:12px;color:var(--muted);display:none}
-.match-card.live .live-events{display:block}
-.speed-toggle{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+@keyframes pulse{0%{opacity:1}50%{opacity:0.6}100%{opacity:1}}
+
+.live-clock{font-family:monospace;font-size:1.1rem;color:var(--accent);font-weight:700;background:#121a25;padding:2px 8px;border-radius:4px}
+
+/* Modal Styles */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(5,10,18,0.85);backdrop-filter:blur(4px);display:none;justify-content:center;align-items:center;z-index:1000;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal-content{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:100%;max-width:650px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
+.modal-header{padding:20px;border-bottom:1px solid var(--line);position:relative;display:flex;justify-content:space-between;align-items:center;}
+.modal-teams{display:flex;justify-content:space-between;align-items:center;width:100%;padding-right:40px;}
+.modal-team{font-size:1.2rem;font-weight:800;flex:1;}
+.modal-team.home{text-align:left;}
+.modal-team.away{text-align:right;}
+.modal-score-box{font-family:monospace;font-size:2rem;font-weight:900;color:var(--accent);margin:0 20px;}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:4px;line-height:1;}
+.modal-close:hover{color:white;}
+.modal-sub{display:flex;justify-content:space-between;padding:10px 20px;background:#0c131c;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);}
+.modal-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);}
+.mstat{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.mstat-val{font-size:1.2rem;font-weight:800;color:white;}
+.mstat-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.modal-events-wrapper{padding:20px;flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.modal-events-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;font-weight:800;}
+.modal-events{overflow-y:auto;flex:1;padding-right:8px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+.modal-events::-webkit-scrollbar { width:8px; }
+.modal-events::-webkit-scrollbar-track { background:transparent; }
+.modal-events::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+.modal-events::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+.event-row{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #1d2a3a;color:#c5d1df;font-size:13px;}
+.event-row:last-child{border-bottom:none;}
+.event-min{color:var(--muted);font-family:monospace;width:45px;flex-shrink:0;text-align:right}
+.event-text{flex:1}
+.event-icon{width:18px;text-align:center;flex-shrink:0}
 
 /* Standings Table */
 .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:12px;border-radius:14px 14px 0 0}
@@ -113,6 +159,7 @@ td:nth-child(2){text-align:left}
 .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
 footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-size:11px;margin-top:24px;flex-wrap:wrap}
 .empty{padding:36px;text-align:center;color:var(--muted)}
+.firebase-warning{display:none;background:#40232a;color:#ffaaaa;padding:10px;text-align:center;font-weight:bold;border-bottom:1px solid #ffaaaa;font-size:13px;}
 
 @media(max-width:700px){
  .topbar{height:60px}.toplabel{display:none}.hero{align-items:flex-start;flex-direction:column;gap:14px}.season{padding:9px 12px}
@@ -120,8 +167,11 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
  .toolbar{align-items:stretch}.tools-left,.tools-right{width:100%}.search{flex:1}.search input{width:100%}.tools-right select{flex:1;min-width:0}
  .subnav a{padding:12px 14px;font-size:11px}
  .schedule-form{flex-direction:column;align-items:stretch}
- .match-card{flex-direction:column;align-items:flex-start}
- .match-time{text-align:left}
+ .match-top{flex-direction:column;align-items:flex-start}
+ .match-meta{align-items:flex-start;width:100%;flex-direction:row;justify-content:space-between}
+ .modal-teams{flex-direction:column;gap:10px;text-align:center;}
+ .modal-team.home,.modal-team.away{text-align:center;}
+ .modal-score-box{margin:10px 0;}
 }
 </style>
 </head>
@@ -136,94 +186,156 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
   <a href="https://celfootball.github.io/cel2/">CEL2 <span class="pill">Tier 2</span></a>
 </nav>
 
+<div id="firebase-warning" class="firebase-warning">
+  ⚠️ Firebase is not configured. Changes will only save to this browser. Follow the instructions in the code to enable cross-device sync.
+</div>
+
+<!-- SECONDARY TABS -->
+<div class="view-tabs">
+  <button class="view-tab active" data-target="matchesView">📅 Matches</button>
+  <button class="view-tab" data-target="standingsView">🏆 League Table</button>
+</div>
+
 <main class="wrap">
-  <section class="hero">
-    <div><div class="eyebrow">Official league table</div><h1>League Standings</h1><p class="subtitle">Every point matters. Follow the race across Central Europe.</p></div>
-    <div class="season" id="seasonLabel">◷ &nbsp;Current table · Matchday 10</div>
-  </section>
   
-  <section class="stats" aria-label="League highlights">
-    <div class="stat"><div class="label">League leader</div><div class="value" id="leader">—</div><div class="detail" id="leaderDetail">—</div></div>
-    <div class="stat"><div class="label">Most goals scored</div><div class="value" id="mostGoals">—</div><div class="detail" id="goalsDetail">—</div></div>
-    <div class="stat"><div class="label">Best goal difference</div><div class="value" id="bestGD">—</div><div class="detail" id="gdDetail">—</div></div>
-    <div class="stat"><div class="label">Teams competing</div><div class="value" id="teamCount">—</div><div class="detail">One table. One champion.</div></div>
-  </section>
+  <!-- MATCHES VIEW -->
+  <section id="matchesView" class="view-section">
+    <div class="match-centre">
+      <div class="mc-header">
+        <h2>📅 Match Centre</h2>
+        <div class="mc-tools">
+          <button class="btn-clear" id="clearMatchesBtn">Clear Schedule</button>
+        </div>
+      </div>
+      
+      <div class="schedule-form">
+        <div>
+          <label>Home Team</label>
+          <select id="schedHome"></select>
+        </div>
+        <div>
+          <label>Away Team</label>
+          <select id="schedAway"></select>
+        </div>
+        <div>
+          <label>Date & Time</label>
+          <input type="datetime-local" id="schedDate">
+        </div>
+        <button class="btn-schedule" id="scheduleBtn">Schedule Match</button>
+      </div>
 
-  <!-- MATCH CENTRE -->
-  <section class="match-centre">
-    <div class="mc-header">
-      <h2>📅 Match Centre</h2>
-      <div class="speed-toggle">
-        <span>Sim Speed:</span>
-        <select id="simSpeed" style="padding:4px 8px;border-radius:6px;background:#121a25;border:1px solid #283647;color:white;font-size:12px;">
-          <option value="1">Real-time (90 mins)</option>
-          <option value="60">Fast (1 min = 1 sec)</option>
-          <option value="600">Instant (1 min = 0.1 sec)</option>
-        </select>
+      <div class="matches-list" id="matchesList">
+        <!-- Matches will be injected here -->
       </div>
     </div>
+  </section>
+
+  <!-- STANDINGS VIEW -->
+  <section id="standingsView" class="view-section" style="display:none;">
+    <section class="hero">
+      <div><div class="eyebrow">Official league table</div><h1>League Standings</h1><p class="subtitle">Every point matters. Follow the race across Central Europe.</p></div>
+      <div class="season" id="seasonLabel">◷ &nbsp;Current table · Matchday 10</div>
+    </section>
     
-    <div class="schedule-form">
-      <div>
-        <label>Home Team</label>
-        <select id="schedHome"></select>
-      </div>
-      <div>
-        <label>Away Team</label>
-        <select id="schedAway"></select>
-      </div>
-      <div>
-        <label>Date & Time</label>
-        <input type="datetime-local" id="schedDate">
-      </div>
-      <button class="btn-schedule" id="scheduleBtn">Schedule Match</button>
-    </div>
+    <section class="stats" aria-label="League highlights">
+      <div class="stat"><div class="label">League leader</div><div class="value" id="leader">—</div><div class="detail" id="leaderDetail">—</div></div>
+      <div class="stat"><div class="label">Most goals scored</div><div class="value" id="mostGoals">—</div><div class="detail" id="goalsDetail">—</div></div>
+      <div class="stat"><div class="label">Best goal difference</div><div class="value" id="bestGD">—</div><div class="detail" id="gdDetail">—</div></div>
+      <div class="stat"><div class="label">Teams competing</div><div class="value" id="teamCount">—</div><div class="detail">One table. One champion.</div></div>
+    </section>
 
-    <div class="matches-list" id="matchesList">
-      <!-- Matches will be injected here -->
-    </div>
-  </section>
-
-  <!-- STANDINGS -->
-  <section aria-label="Standings table">
-    <div class="toolbar">
-      <div class="tools-left">
-        <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search club or country…" aria-label="Search clubs"></label>
+    <section aria-label="Standings table">
+      <div class="toolbar">
+        <div class="tools-left">
+          <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search club or country…" aria-label="Search clubs"></label>
+        </div>
+        <div class="tools-right">
+          <select id="country" aria-label="Filter by country"><option value="">All countries</option></select>
+          <select id="view" aria-label="Filter table">
+            <option value="all">All positions</option>
+            <option value="cup">Cup places (1–10)</option>
+            <option value="top3">Top 3</option>
+            <option value="bottom3">Bottom 3</option>
+          </select>
+          <button class="ghost" id="reset">Reset Filters</button>
+        </div>
       </div>
-      <div class="tools-right">
-        <select id="country" aria-label="Filter by country"><option value="">All countries</option></select>
-        <select id="view" aria-label="Filter table">
-          <option value="all">All positions</option>
-          <option value="cup">Cup places (1–10)</option>
-          <option value="top3">Top 3</option>
-          <option value="bottom3">Bottom 3</option>
-        </select>
-        <button class="ghost" id="reset">Reset Filters</button>
+      <div class="table-meta"><span id="showing">Showing all clubs</span><span>Click a column heading to sort ↕</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-key="rank" title="Sort by position">#</th><th data-key="name">Club</th><th data-key="p">P</th><th data-key="w">W</th><th data-key="d">D</th><th data-key="l">L</th><th data-key="gf">GF</th><th data-key="ga">GA</th><th data-key="gd">GD</th><th data-key="pts">PTS</th>
+          </tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>No clubs match your search.</div>
       </div>
-    </div>
-    <div class="table-meta"><span id="showing">Showing all clubs</span><span>Click a column heading to sort ↕</span></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th data-key="rank" title="Sort by position">#</th><th data-key="name">Club</th><th data-key="p">P</th><th data-key="w">W</th><th data-key="d">D</th><th data-key="l">L</th><th data-key="gf">GF</th><th data-key="ga">GA</th><th data-key="gd">GD</th><th data-key="pts">PTS</th>
-        </tr></thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-      <div id="empty" class="empty" hidden>No clubs match your search.</div>
-    </div>
-    <div class="legend">
-      <span><i class="dot" style="background:#367e60"></i>1st — Champions League (Qualification)</span>
-      <span><i class="dot" style="background:#477fb7"></i>2nd — Europa League (Qualification)</span>
-      <span><i class="dot" style="background:#b58b2f"></i>3rd — Conference League (Qualification)</span>
-      <span><i class="dot" style="background:#c9a227"></i>1st–10th — Central European Cup qualification 🏆</span>
-      <span><i class="dot" style="background:#a84e5b"></i>30th–32nd — Relegation to CEL2</span>
-    </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#367e60"></i>1st — Champions League (Qualification)</span>
+        <span><i class="dot" style="background:#477fb7"></i>2nd — Europa League (Qualification)</span>
+        <span><i class="dot" style="background:#b58b2f"></i>3rd — Conference League (Qualification)</span>
+        <span><i class="dot" style="background:#c9a227"></i>1st–10th — Central European Cup qualification 🏆</span>
+        <span><i class="dot" style="background:#a84e5b"></i>30th–32nd — Relegation to CEL2</span>
+      </div>
+    </section>
   </section>
   
   <footer><span>© Central European League · CEL</span><span>Standings are subject to change after each matchday.</span></footer>
 </main>
 
-<script>
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="matchModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-teams">
+                <div class="modal-team home" id="mHomeTeam"></div>
+                <div class="modal-score-box" id="mScore"></div>
+                <div class="modal-team away" id="mAwayTeam"></div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-sub">
+            <span id="mStatus"></span>
+            <span id="mClock"></span>
+        </div>
+        <div class="modal-stats">
+            <div class="mstat"><div class="mstat-val" id="mPoss">50% - 50%</div><div class="mstat-label">Possession</div></div>
+            <div class="mstat"><div class="mstat-val" id="mShots">0 - 0</div><div class="mstat-label">Shots</div></div>
+            <div class="mstat"><div class="mstat-val" id="mOnTarget">0 - 0</div><div class="mstat-label">On Target</div></div>
+        </div>
+        <div class="modal-events-wrapper">
+            <div class="modal-events-title">Match Commentary</div>
+            <div class="modal-events" id="mEvents"></div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+/* ══════════════════════════════════════════════════════════════
+   ⚠️ FIREBASE CONFIGURATION
+   ══════════════════════════════════════════════════════════════
+   To enable cross-device syncing, replace the placeholder config below 
+   with your Firebase project's config object.
+   
+   1. Go to https://console.firebase.google.com/
+   2. Create a project.
+   3. Add a Web App (</> icon).
+   4. Go to Build > Realtime Database > Create Database > Start in Test Mode.
+   5. Copy your config here.
+*/
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, update, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
 /* ══════════════════════════════════════════════════════════════
    DATA INITIALIZATION & STORAGE
    ══════════════════════════════════════════════════════════════ */
@@ -265,41 +377,76 @@ const DEFAULT_CLUBS = [
 let clubs = [];
 let matches = [];
 let matchIdCounter = 0;
+let activeMatchId = null;
+let useFirebase = false;
+let db = null;
 
-function loadData() {
+function checkFirebase() {
+    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            useFirebase = true;
+            
+            // Listen to real-time updates
+            onValue(ref(db, 'cel'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    clubs = data.clubs || DEFAULT_CLUBS;
+                    matches = data.matches ? Object.values(data.matches) : [];
+                    updateStats();
+                    renderMatches();
+                } else {
+                    // Initialize DB if empty
+                    set(ref(db, 'cel'), { clubs: DEFAULT_CLUBS, matches: {} });
+                }
+            });
+        } catch (e) {
+            console.error("Firebase init error", e);
+            useFirebase = false;
+        }
+    }
+    
+    if (!useFirebase) {
+        document.getElementById('firebase-warning').style.display = 'block';
+        loadLocalData();
+        updateStats();
+        renderMatches();
+    }
+}
+
+function loadLocalData() {
   const savedClubs = localStorage.getItem('cel_clubs');
   const savedMatches = localStorage.getItem('cel_matches');
   
-  if (savedClubs) {
-    clubs = JSON.parse(savedClubs);
-  } else {
-    clubs = DEFAULT_CLUBS.map(c => ({ ...c }));
-  }
+  if (savedClubs) clubs = JSON.parse(savedClubs);
+  else clubs = DEFAULT_CLUBS.map(c => ({ ...c }));
   
   if (savedMatches) {
     matches = JSON.parse(savedMatches);
-    // Find max ID
+    matches.forEach(m => {
+      if (m.injuryTime1H === undefined) m.injuryTime1H = randInt(1, 3);
+      if (m.injuryTime2H === undefined) m.injuryTime2H = randInt(2, 5);
+    });
     matchIdCounter = matches.reduce((max, m) => Math.max(max, m.id), 0) + 1;
   } else {
     matches = [];
   }
 }
 
-function saveData() {
+function saveLocalData() {
+  if (useFirebase) return;
   localStorage.setItem('cel_clubs', JSON.stringify(clubs));
   localStorage.setItem('cel_matches', JSON.stringify(matches));
 }
 
 /* ══════════════════════════════════════════════════════════════
-   MATCH SIMULATION ENGINE (Poisson)
+   MATCH SIMULATION ENGINE
    ══════════════════════════════════════════════════════════════ */
-const SCORER_POOL = [
-    "J. Novák", "M. Kowalski", "T. Horváth", "L. Schmid", "P. Nowak",
-    "A. Kovács", "D. Fischer", "R. Weber", "K. Mägi", "S. Varga",
-    "F. Novak", "B. Nagy", "M. Popescu", "C. Müller", "T. Jensen",
-    "E. Lindqvist", "G. Bakker", "H. Šimić", "I. Petrov", "J. Virtanen"
-];
+const FIRST_NAMES = ["J.", "M.", "T.", "L.", "P.", "A.", "D.", "R.", "K.", "S.", "F.", "B.", "C.", "E.", "G.", "H.", "I.", "O.", "V."];
+const LAST_NAMES = ["Novák", "Kowalski", "Horváth", "Schmid", "Nowak", "Kovács", "Fischer", "Weber", "Mägi", "Varga", "Popescu", "Müller", "Jensen", "Lindqvist", "Bakker", "Šimić", "Petrov", "Virtanen", "Dvořák", "Horvat", "Lehner", "Kováč"];
 
+function getRandomPlayerName() { return `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`; }
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
@@ -307,22 +454,17 @@ function poissonRandom(lambda) {
     const L = Math.exp(-lambda);
     let k = 0;
     let p = 1;
-    do {
-        k++;
-        p *= Math.random();
-    } while (p > L);
+    do { k++; p *= Math.random(); } while (p > L);
     return k - 1;
 }
 
 function generateMatchEvents(homeTeam, awayTeam) {
-    // Basic strength based on current points per game
     const homeData = clubs.find(c => c.name === homeTeam);
     const awayData = clubs.find(c => c.name === awayTeam);
     
     const homePPG = (homeData.w * 3 + homeData.d) / Math.max(1, (homeData.w + homeData.d + homeData.l));
     const awayPPG = (awayData.w * 3 + awayData.d) / Math.max(1, (awayData.w + awayData.d + awayData.l));
     
-    // Strength multiplier (0.6 to 1.8 based on PPG)
     const homeStrength = 0.8 + (homePPG * 0.2);
     const awayStrength = 0.7 + (awayPPG * 0.2);
 
@@ -334,274 +476,409 @@ function generateMatchEvents(homeTeam, awayTeam) {
     let awayGoals = Math.min(poissonRandom(awayLambda), 6);
 
     const events = [];
+    const injuryTime1H = randInt(1, 4);
+    const injuryTime2H = randInt(2, 6);
+    const maxMinute = 90 + injuryTime2H;
+
     for (let i = 0; i < homeGoals; i++) {
-        events.push({ minute: randInt(1, 90), type: "goal", team: "home", desc: `⚽ GOAL! ${pick(SCORER_POOL)} scores for ${homeTeam}!` });
+        const scorer = getRandomPlayerName();
+        const hasAssist = Math.random() > 0.4;
+        const assist = hasAssist ? ` Assisted by ${getRandomPlayerName()}.` : '';
+        events.push({ minute: randInt(1, maxMinute), type: "goal", team: "home", desc: `⚽ GOAL! ${scorer} scores for ${homeTeam}!${assist}` });
     }
     for (let i = 0; i < awayGoals; i++) {
-        events.push({ minute: randInt(1, 90), type: "goal", team: "away", desc: `⚽ GOAL! ${pick(SCORER_POOL)} scores for ${awayTeam}!` });
+        const scorer = getRandomPlayerName();
+        const hasAssist = Math.random() > 0.4;
+        const assist = hasAssist ? ` Assisted by ${getRandomPlayerName()}.` : '';
+        events.push({ minute: randInt(1, maxMinute), type: "goal", team: "away", desc: `⚽ GOAL! ${scorer} scores for ${awayTeam}!${assist}` });
     }
-    // Add some random cards
-    const cards = randInt(1, 5);
-    for(let i=0; i<cards; i++) {
+
+    const actionTypes = ['foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
+    for (let i = 0; i < randInt(18, 28); i++) {
+        const team = Math.random() > 0.5 ? 'home' : 'away';
+        const teamName = team === 'home' ? homeTeam : awayTeam;
+        const oppName = team === 'home' ? awayTeam : homeTeam;
+        const action = pick(actionTypes);
+        let desc = '';
+        if (action === 'foul') desc = `Foul on ${getRandomPlayerName()} (${teamName}). Freekick awarded to ${oppName}.`;
+        else if (action === 'shot_wide') desc = `Shot hit wide of the goal by ${getRandomPlayerName()} (${teamName}).`;
+        else if (action === 'shot_save') desc = `Great save! The keeper denies ${getRandomPlayerName()} (${teamName}).`;
+        else if (action === 'corner') desc = `Corner awarded to ${teamName}.`;
+        else if (action === 'offside') desc = `Offside against ${getRandomPlayerName()} (${teamName}). Freekick awarded to ${oppName}.`;
+        events.push({ minute: randInt(1, maxMinute), type: "action", team: team, desc: desc });
+    }
+
+    for(let i = 0; i < randInt(2, 6); i++) {
         const isHome = Math.random() > 0.5;
-        events.push({ minute: randInt(10, 90), type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card — ${isHome ? homeTeam : awayTeam}` });
+        const teamName = isHome ? homeTeam : awayTeam;
+        const reason = pick(["a bad foul", "dissent", "time wasting", "a tactical foul", "a reckless challenge"]);
+        events.push({ minute: randInt(15, maxMinute), type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card for ${getRandomPlayerName()} (${teamName}) for ${reason}.` });
     }
+
+    if (Math.random() < 0.08) {
+        const isHome = Math.random() > 0.5;
+        const teamName = isHome ? homeTeam : awayTeam;
+        const reason = pick(["a dangerous tackle", "a second yellow card", "denying a clear goalscoring opportunity", "violent conduct"]);
+        events.push({ minute: randInt(30, 85), type: "red", team: isHome ? "home" : "away", desc: `🟥 RED CARD! ${getRandomPlayerName()} (${teamName}) is sent off for ${reason}.` });
+    }
+
+    if (Math.random() < 0.10) {
+        const isHome = Math.random() > 0.5;
+        const teamName = isHome ? homeTeam : awayTeam;
+        events.push({ minute: randInt(15, 75), type: "injury", team: isHome ? "home" : "away", desc: `🚑 Injury: ${getRandomPlayerName()} (${teamName}) is down and needs treatment.` });
+    }
+
+    const doSubs = (isHome) => {
+        const teamName = isHome ? homeTeam : awayTeam;
+        let subTimes = [];
+        for(let i=0; i<randInt(2,3); i++) subTimes.push(randInt(60, 85));
+        subTimes.sort((a,b) => a-b);
+        subTimes.forEach(m => {
+            events.push({ minute: m, type: "sub", team: isHome ? "home" : "away", desc: `🔄 Substitution for ${teamName}: ${getRandomPlayerName()} is replaced by ${getRandomPlayerName()}.` });
+        });
+    };
+    doSubs(true); doSubs(false);
     
     events.sort((a,b) => a.minute - b.minute);
-    return { homeGoals, awayGoals, events };
+
+    const stats = {
+        homePoss: Math.max(35, Math.min(65, Math.round(50 + (homeStrength - awayStrength) * 20 + randInt(-5, 5)))),
+        homeShots: Math.round(homeGoals * 1.5 + randInt(4, 10)),
+        homeOnTarget: Math.max(homeGoals, Math.round(homeGoals * 1.5 + randInt(1, 5)))
+    };
+    stats.awayPoss = 100 - stats.homePoss;
+    stats.awayShots = Math.round(awayGoals * 1.5 + randInt(4, 10));
+    stats.awayOnTarget = Math.max(awayGoals, Math.round(awayGoals * 1.5 + randInt(1, 5)));
+
+    return { homeGoals, awayGoals, events, injuryTime1H, injuryTime2H, stats };
 }
 
 /* ══════════════════════════════════════════════════════════════
-   REAL-TIME CLOCK & MATCH TICKING
+   REAL-TIME CLOCK LOGIC
    ══════════════════════════════════════════════════════════════ */
+function getLiveState(match, now) {
+  if (match.processed) {
+    return { phase: 'FT', displaySec: 0, currentM: 90, isFinished: true };
+  }
+  const realElapsedMs = now - match.startTime;
+  if (realElapsedMs < 0) return { phase: 'upcoming', displaySec: 0, currentM: 0, isFinished: false };
+  
+  const matchSeconds = realElapsedMs / 1000;
+  const inj1 = (match.injuryTime1H || 2) * 60;
+  const inj2 = (match.injuryTime2H || 4) * 60;
+  const ht = 15 * 60;
+  
+  const total1H = 45 * 60 + inj1;
+  const totalHT = total1H + ht;
+  const total2H = totalHT + 45 * 60 + inj2;
+  
+  let phase = '1H';
+  let displaySec = matchSeconds;
+  let currentM = matchSeconds / 60;
+  
+  if (matchSeconds < total1H) {
+    phase = '1H'; displaySec = matchSeconds; currentM = displaySec / 60;
+  } else if (matchSeconds < totalHT) {
+    phase = 'HT'; displaySec = totalHT - matchSeconds; currentM = 45 + (match.injuryTime1H || 2);
+  } else if (matchSeconds < total2H) {
+    phase = '2H'; displaySec = 45 * 60 + (matchSeconds - totalHT); currentM = displaySec / 60;
+  } else {
+    phase = 'FT'; displaySec = 0; currentM = 90 + (match.injuryTime2H || 4);
+  }
+  return { phase, displaySec, currentM, isFinished: phase === 'FT' };
+}
+
+function calculateScore(match, maxMinute) {
+    let home = 0, away = 0;
+    match.events.forEach(e => {
+        if (e.type === 'goal' && e.minute <= maxMinute) {
+            if (e.team === 'home') home++;
+            if (e.team === 'away') away++;
+        }
+    });
+    return { home, away };
+}
+
 function tick() {
   const now = Date.now();
-  let stateChanged = false;
+  let shouldRender = false;
   
-  const speedMultiplier = parseInt(document.getElementById('simSpeed').value, 10) || 1;
-  // Base: 1 real minute = 60,000 ms. If speed is 60, 1 match min = 1000 ms.
-  const msPerMatchMinute = 60000 / speedMultiplier;
-
   matches.forEach(match => {
-    if (match.status === 'upcoming' && now >= match.startTime) {
-      match.status = 'live';
-      stateChanged = true;
-    }
-    
-    if (match.status === 'live') {
-      const elapsedMs = now - match.startTime;
-      let currentMinute = Math.floor(elapsedMs / msPerMatchMinute);
+    if (!match.processed) {
+      const live = getLiveState(match, now);
+      match.phase = live.phase;
+      match.displaySec = live.displaySec;
+      match.currentM = live.currentM;
       
-      // Cap at 90
-      if (currentMinute > 90) currentMinute = 90;
-      
-      if (currentMinute !== match.currentMinute) {
-        match.currentMinute = currentMinute;
-        stateChanged = true;
-      }
+      const score = calculateScore(match, live.currentM);
+      match.homeScore = score.home;
+      match.awayScore = score.away;
 
-      // Calculate live score
-      let hScore = 0;
-      let aScore = 0;
-      match.events.forEach(e => {
-        if (e.type === 'goal' && e.minute <= match.currentMinute) {
-          if (e.team === 'home') hScore++;
-          if (e.team === 'away') aScore++;
-        }
-      });
-      match.homeScore = hScore;
-      match.awayScore = aScore;
-
-      // Check if finished
-      if (match.currentMinute >= 90) {
-        match.status = 'finished';
-        // Update actual league table
-        const home = clubs.find(c => c.name === match.homeTeam);
-        const away = clubs.find(c => c.name === match.awayTeam);
-        if(home && away) {
-           home.w += (hScore > aScore ? 1 : 0);
-           home.d += (hScore === aScore ? 1 : 0);
-           home.l += (hScore < aScore ? 1 : 0);
-           home.gf += hScore; home.ga += aScore;
-           
-           away.w += (aScore > hScore ? 1 : 0);
-           away.d += (aScore === hScore ? 1 : 0);
-           away.l += (aScore < hScore ? 1 : 0);
-           away.gf += aScore; away.ga += hScore;
-        }
-        saveData();
-        updateStats();
+      if (live.isFinished && !match.processed) {
+        processMatchEnd(match);
       }
     }
   });
+  
+  renderMatches();
+  if (activeMatchId) updateModalData();
+}
 
-  if (stateChanged) {
-    renderMatches();
-    saveData();
+function processMatchEnd(match) {
+  if (!match.processed) match.processed = true; // prevent local double-processing
+
+  const finalScore = calculateScore(match, 999);
+  
+  if (useFirebase) {
+    runTransaction(ref(db, 'cel'), (data) => {
+      if (!data) return data;
+      const dbMatch = data.matches[match.id];
+      if (!dbMatch || dbMatch.processed) return data; // Already processed by another client
+      
+      const home = data.clubs.find(c => c.name === dbMatch.homeTeam);
+      const away = data.clubs.find(c => c.name === dbMatch.awayTeam);
+      if (home && away) {
+         home.w += (finalScore.home > finalScore.away ? 1 : 0);
+         home.d += (finalScore.home === finalScore.away ? 1 : 0);
+         home.l += (finalScore.home < finalScore.away ? 1 : 0);
+         home.gf += finalScore.home; home.ga += finalScore.away;
+         
+         away.w += (finalScore.away > finalScore.home ? 1 : 0);
+         away.d += (finalScore.away === finalScore.home ? 1 : 0);
+         away.l += (finalScore.away < finalScore.home ? 1 : 0);
+         away.gf += finalScore.away; away.ga += finalScore.home;
+      }
+      data.matches[match.id].processed = true;
+      data.matches[match.id].finalHomeScore = finalScore.home;
+      data.matches[match.id].finalAwayScore = finalScore.away;
+      return data;
+    });
+  } else {
+    const home = clubs.find(c => c.name === match.homeTeam);
+    const away = clubs.find(c => c.name === match.awayTeam);
+    if(home && away) {
+       home.w += (finalScore.home > finalScore.away ? 1 : 0);
+       home.d += (finalScore.home === finalScore.away ? 1 : 0);
+       home.l += (finalScore.home < finalScore.away ? 1 : 0);
+       home.gf += finalScore.home; home.ga += finalScore.away;
+       
+       away.w += (finalScore.away > finalScore.home ? 1 : 0);
+       away.d += (finalScore.away === finalScore.home ? 1 : 0);
+       away.l += (finalScore.away < finalScore.home ? 1 : 0);
+       away.gf += finalScore.away; away.ga += finalScore.home;
+    }
+    match.finalHomeScore = finalScore.home;
+    match.finalAwayScore = finalScore.away;
+    saveLocalData();
+    updateStats();
   }
 }
 
-setInterval(tick, 1000); // Check every second
+setInterval(tick, 1000);
 
 /* ══════════════════════════════════════════════════════════════
-   MATCH CENTRE UI RENDERING
+   UI RENDERING
    ══════════════════════════════════════════════════════════════ */
+function formatClock(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
 function renderMatches() {
   const list = document.getElementById('matchesList');
   
-  // Sort: Live first, then upcoming (soonest), then finished (latest)
   matches.sort((a, b) => {
-    if (a.status === 'live' && b.status !== 'live') return -1;
-    if (b.status === 'live' && a.status !== 'live') return 1;
-    if (a.status === 'upcoming' && b.status === 'finished') return -1;
-    if (b.status === 'upcoming' && a.status === 'finished') return 1;
+    const aState = getLiveState(a, Date.now());
+    const bState = getLiveState(b, Date.now());
+    const aIsLive = aState.phase === '1H' || aState.phase === 'HT' || aState.phase === '2H';
+    const bIsLive = bState.phase === '1H' || bState.phase === 'HT' || bState.phase === '2H';
+    if (aIsLive && !bIsLive) return -1;
+    if (bIsLive && !aIsLive) return 1;
     return a.startTime - b.startTime;
   });
 
   if (matches.length === 0) {
-    list.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">No matches scheduled. Use the form above to create a fixture.</div>`;
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">No matches scheduled. Use the form above to create a fixture.</div>';
     return;
   }
 
   list.innerHTML = matches.map(m => {
+    const live = getLiveState(m, Date.now());
     const d = new Date(m.startTime);
-    const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
     let scoreDisplay = 'vs';
-    if (m.status === 'live' || m.status === 'finished') {
-      scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
+    if (live.phase !== 'upcoming') {
+        if (m.processed) {
+            scoreDisplay = `${m.finalHomeScore} - ${m.finalAwayScore}`;
+        } else {
+            scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
+        }
     }
 
-    let timeInfo = '';
-    if (m.status === 'upcoming') {
-      timeInfo = `${dateStr} at ${timeStr}`;
-    } else if (m.status === 'live') {
-      timeInfo = `${m.currentMinute}'`;
+    let displayClock = '';
+    let phaseBadgeClass = 'upcoming';
+    let phaseBadgeText = 'Upcoming';
+
+    if (live.phase === '1H') {
+      displayClock = live.currentM > 45 ? `45:00 + ${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
+      phaseBadgeClass = 'live'; phaseBadgeText = 'Live';
+    } else if (live.phase === 'HT') {
+      displayClock = `HT ${formatClock(live.displaySec)}`;
+      phaseBadgeClass = 'ht'; phaseBadgeText = 'Half Time';
+    } else if (live.phase === '2H') {
+      displayClock = live.currentM > 90 ? `90:00 + ${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
+      phaseBadgeClass = 'live'; phaseBadgeText = 'Live';
+    } else if (live.phase === 'FT') {
+      displayClock = 'FT';
+      phaseBadgeClass = 'finished'; phaseBadgeText = 'Full Time';
     } else {
-      timeInfo = 'Full Time';
+      displayClock = `${d.toLocaleDateString([], { month: 'short', day: 'numeric' })} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
-
-    // Filter events up to current minute
-    const visibleEvents = m.events.filter(e => m.status === 'finished' || e.minute <= m.currentMinute);
-    const eventHtml = visibleEvents.map(e => `<div style="padding:2px 0; border-bottom:1px solid #1d2a3a;">${e.minute}' - ${e.desc}</div>`).join('');
 
     return `
-      <div class="match-card ${m.status}">
-        <div class="match-teams">
-          <span>${m.homeTeam}</span>
-          <div class="match-score">${scoreDisplay}</div>
-          <span>${m.awayTeam}</span>
-        </div>
-        <div class="match-time">
-          <div class="badge ${m.status}">${m.status}</div>
-          <div style="margin-top:4px;">${timeInfo}</div>
-        </div>
-        <div class="live-events">
-          <strong>Match Events:</strong>
-          ${eventHtml || '<span style="color:#63758b">No events yet.</span>'}
+      <div class="match-card ${phaseBadgeClass}" onclick="openModal('${m.id}')">
+        <div class="match-top" style="pointer-events: none;">
+          <div class="match-teams">
+            <span>${m.homeTeam}</span>
+            <div class="match-score">${scoreDisplay}</div>
+            <span>${m.awayTeam}</span>
+          </div>
+          <div class="match-meta">
+            <div class="badge ${phaseBadgeClass}">${phaseBadgeText}</div>
+            <div class="live-clock">${displayClock}</div>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 }
 
+function openModal(id) {
+    activeMatchId = id;
+    const m = matches.find(x => x.id === id);
+    if (!m) return;
+
+    document.getElementById('mHomeTeam').textContent = m.homeTeam;
+    document.getElementById('mAwayTeam').textContent = m.awayTeam;
+    document.getElementById('mEvents').innerHTML = '';
+    
+    updateModalData();
+    document.getElementById('matchModal').classList.add('active');
+    
+    setTimeout(() => {
+        const evContainer = document.getElementById('mEvents');
+        evContainer.scrollTop = evContainer.scrollHeight;
+    }, 10);
+}
+
+window.closeModal = function() {
+    activeMatchId = null;
+    document.getElementById('matchModal').classList.remove('active');
+}
+
+function appendEventToModal(e) {
+    const evContainer = document.getElementById('mEvents');
+    const row = document.createElement('div');
+    
+    let icon = '•';
+    if (e.type === 'goal') icon = '⚽';
+    if (e.type === 'yellow') icon = '🟨';
+    if (e.type === 'red') icon = '🟥';
+    if (e.type === 'injury') icon = '🚑';
+    if (e.type === 'sub') icon = '🔄';
+    
+    let rowClass = '';
+    if (e.type === 'goal') rowClass = 'font-weight:bold; color:#fff;';
+    if (e.type === 'red') rowClass = 'color:#ff9c9c;';
+    
+    row.className = 'event-row';
+    row.style.cssText = rowClass;
+    row.innerHTML = `
+        <div class="event-min">${e.minute}'</div>
+        <div class="event-icon">${icon}</div>
+        <div class="event-text">${e.desc}</div>
+    `;
+    evContainer.appendChild(row);
+}
+
+function updateModalData() {
+    if (!activeMatchId) return;
+    const m = matches.find(x => x.id === activeMatchId);
+    if (!m) return;
+
+    const live = getLiveState(m, Date.now());
+    
+    let scoreDisplay = 'vs';
+    if (live.phase !== 'upcoming') {
+        if (m.processed) scoreDisplay = `${m.finalHomeScore} - ${m.finalAwayScore}`;
+        else scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
+    }
+    document.getElementById('mScore').textContent = scoreDisplay;
+
+    const clockEl = document.getElementById('mClock');
+    const statusEl = document.getElementById('mStatus');
+    let displayClock = '';
+    let statusText = '';
+
+    if (live.phase === '1H') {
+      displayClock = live.currentM > 45 ? `45:00 + ${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
+      statusText = 'Live (First Half)';
+    } else if (live.phase === 'HT') {
+      displayClock = `HT ${formatClock(live.displaySec)}`;
+      statusText = 'Half Time';
+    } else if (live.phase === '2H') {
+      displayClock = live.currentM > 90 ? `90:00 + ${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
+      statusText = 'Live (Second Half)';
+    } else if (live.phase === 'FT') {
+      displayClock = 'FT';
+      statusText = 'Full Time';
+    } else {
+      const d = new Date(m.startTime);
+      displayClock = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      statusText = 'Upcoming';
+    }
+
+    if (clockEl.textContent !== displayClock) clockEl.textContent = displayClock;
+    if (statusEl.textContent !== statusText) statusEl.textContent = statusText;
+
+    if (m.stats) {
+        const p = Math.min(1, live.currentM / 90);
+        const hPoss = Math.round(50 + (m.stats.homePoss - 50) * p);
+        const aPoss = 100 - hPoss;
+        document.getElementById('mPoss').textContent = `${hPoss}% - ${aPoss}%`;
+        document.getElementById('mShots').textContent = `${Math.round(m.stats.homeShots * p)} - ${Math.round(m.stats.awayShots * p)}`;
+        document.getElementById('mOnTarget').textContent = `${Math.round(m.stats.homeOnTarget * p)} - ${Math.round(m.stats.awayOnTarget * p)}`;
+    }
+
+    const evContainer = document.getElementById('mEvents');
+    const visibleEvents = m.events.filter(e => {
+        if (live.phase === 'FT') return true;
+        return e.minute <= live.currentM;
+    });
+
+    const currentCount = evContainer.children.length;
+    if (visibleEvents.length > currentCount) {
+        const isAtBottom = evContainer.scrollHeight - evContainer.scrollTop <= evContainer.clientHeight + 30;
+        for (let i = currentCount; i < visibleEvents.length; i++) {
+            appendEventToModal(visibleEvents[i]);
+        }
+        if (isAtBottom) evContainer.scrollTop = evContainer.scrollHeight;
+    }
+}
+
 /* ══════════════════════════════════════════════════════════════
-   STANDINGS TABLE LOGIC
+   TAB & SCHEDULING LOGIC
    ══════════════════════════════════════════════════════════════ */
-const WIN_POINTS = 3;
-const DRAW_POINTS = 1;
-const RELEGATION_COUNT = 3;
-const CUP_MAX = 10;
-
-function buildTable() {
-  const rows = clubs.map(c => {
-    return {
-      ...c,
-      p: c.w + c.d + c.l,
-      gd: c.gf - c.ga,
-      pts: c.w * WIN_POINTS + c.d * DRAW_POINTS
-    };
+document.querySelectorAll('.view-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+    document.getElementById(tab.dataset.target).style.display = 'block';
   });
+});
 
-  rows.sort((a, b) =>
-    b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name)
-  );
-  rows.forEach((r, i) => r.rank = i + 1);
-  return rows;
-}
-
-let table = [];
-const country = document.getElementById('country');
-const search = document.getElementById('search');
-const view = document.getElementById('view');
-let sortKey = 'rank', sortDir = 1;
-
-function updateStats() {
-  table = buildTable();
-  if (!table.length) return;
-  
-  const leader = table[0];
-  const goals = table.reduce((a, b) => b.gf > a.gf ? b : a, table[0]);
-  const bestGD = table.reduce((a, b) => b.gd > a.gd ? b : a, table[0]);
-  const sign = n => (n > 0 ? '+' : '') + n;
-
-  document.getElementById('leader').textContent = leader.name;
-  document.getElementById('leaderDetail').textContent = `${leader.pts} points · ${leader.p} played`;
-  document.getElementById('mostGoals').textContent = goals.name;
-  document.getElementById('goalsDetail').textContent = `${goals.gf} goals scored`;
-  document.getElementById('bestGD').textContent = bestGD.name;
-  document.getElementById('gdDetail').textContent = `${sign(bestGD.gd)} goal difference`;
-  document.getElementById('teamCount').textContent = table.length;
-  
-  const maxP = Math.max(...table.map(c => c.p));
-  document.getElementById('seasonLabel').innerHTML = `◷ &nbsp;Current table · Matchday ${maxP}`;
-  
-  renderCountryOptions();
-  renderTable();
-}
-
-function renderCountryOptions() {
-  const current = country.value;
-  country.innerHTML = '<option value="">All countries</option>';
-  [...new Set(table.map(c => c.country))].sort().forEach(c => {
-    const o = document.createElement('option');
-    o.value = c; o.textContent = c;
-    country.appendChild(o);
-  });
-  country.value = current;
-}
-
-function zoneFor(rank) {
-  if (rank === 1) return 'champions';
-  if (rank === 2) return 'europa';
-  if (rank === 3) return 'conference';
-  if (rank > table.length - RELEGATION_COUNT) return 'relegation';
-  return '';
-}
-
-function renderTable() {
-  const q = search.value.trim().toLowerCase();
-
-  let rows = table.filter(c =>
-    (!country.value || c.country === country.value) &&
-    (`${c.name} ${c.country}`.toLowerCase().includes(q))
-  );
-
-  if (view.value === 'cup') rows = rows.filter(c => c.rank <= CUP_MAX);
-  if (view.value === 'top3') rows = rows.filter(c => c.rank <= 3);
-  if (view.value === 'bottom3') rows = rows.filter(c => c.rank > table.length - RELEGATION_COUNT);
-
-  rows.sort((a, b) => {
-    const x = a[sortKey], y = b[sortKey];
-    if (typeof x === 'string') return x.localeCompare(y) * sortDir;
-    return (x - y) * sortDir;
-  });
-
-  document.getElementById('tableBody').innerHTML = rows.map(c => {
-    const zone = zoneFor(c.rank);
-    const cupQual = c.rank <= CUP_MAX;
-    const cupIcon = cupQual ? `<span class="cup-icon" title="Central European Cup qualification">🏆</span>` : '';
-    const gdClass = c.gd > 0 ? 'positive' : c.gd < 0 ? 'negative' : 'neutral';
-    const gdText = (c.gd > 0 ? '+' : '') + c.gd;
-
-    return `<tr class="${zone} ${cupQual ? 'cup-qual' : ''}">
-      <td><span class="position">${c.rank}</span></td>
-      <td><div class="club"><span class="flag">${c.flag}</span><span class="club-name">${c.name}</span>${cupIcon}</div></td>
-      <td>${c.p}</td><td>${c.w}</td><td>${c.d}</td><td>${c.l}</td>
-      <td>${c.gf}</td><td>${c.ga}</td>
-      <td class="${gdClass}">${gdText}</td>
-      <td class="points">${c.pts}</td>
-    </tr>`;
-  }).join('');
-
-  document.getElementById('empty').hidden = rows.length !== 0;
-  document.getElementById('showing').textContent = `Showing ${rows.length} of ${table.length} clubs`;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   SCHEDULING LOGIC
-   ══════════════════════════════════════════════════════════════ */
 function initScheduleForm() {
   const homeSel = document.getElementById('schedHome');
   const awaySel = document.getElementById('schedAway');
@@ -610,15 +887,10 @@ function initScheduleForm() {
   homeSel.innerHTML = sorted.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
   awaySel.innerHTML = sorted.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
   
-  // Default to tomorrow at 7:00 PM
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(19, 0, 0, 0);
-  
-  // Format as YYYY-MM-DDThh:mm
-  const tzOffset = tomorrow.getTimezoneOffset() * 60000;
-  const localISOTime = (new Date(tomorrow - tzOffset)).toISOString().slice(0, 16);
-  document.getElementById('schedDate').value = localISOTime;
+  const soon = new Date();
+  soon.setMinutes(soon.getMinutes() + 2);
+  const tzOffset = soon.getTimezoneOffset() * 60000;
+  document.getElementById('schedDate').value = (new Date(soon - tzOffset)).toISOString().slice(0, 16);
 }
 
 document.getElementById('scheduleBtn').addEventListener('click', () => {
@@ -626,63 +898,139 @@ document.getElementById('scheduleBtn').addEventListener('click', () => {
   const away = document.getElementById('schedAway').value;
   const dateVal = document.getElementById('schedDate').value;
   
-  if (home === away) {
-    alert("A team cannot play itself!");
-    return;
-  }
-  if (!dateVal) {
-    alert("Please select a date and time.");
-    return;
-  }
+  if (home === away) return alert("A team cannot play itself!");
+  if (!dateVal) return alert("Please select a date and time.");
   
   const startTime = new Date(dateVal).getTime();
-  
-  // Generate the simulated match instantly (we know the final score, we just reveal it over time)
   const sim = generateMatchEvents(home, away);
   
-  matches.push({
-    id: matchIdCounter++,
+  const newMatch = {
+    id: 'match_' + Date.now() + '_' + Math.floor(Math.random()*1000),
     homeTeam: home,
     awayTeam: away,
     startTime: startTime,
-    status: 'upcoming',
-    currentMinute: 0,
-    homeScore: 0,
-    awayScore: 0,
-    events: sim.events
-  });
-  
-  saveData();
-  renderMatches();
+    processed: false,
+    injuryTime1H: sim.injuryTime1H,
+    injuryTime2H: sim.injuryTime2H,
+    events: sim.events,
+    stats: sim.stats
+  };
+
+  if (useFirebase) {
+      update(ref(db, `cel/matches/${newMatch.id}`), newMatch);
+  } else {
+      matches.push(newMatch);
+      saveLocalData();
+      renderMatches();
+  }
+});
+
+document.getElementById('clearMatchesBtn').addEventListener('click', () => {
+  if(confirm("Clear all scheduled matches? This won't reset the league table.")) {
+    if (useFirebase) set(ref(db, 'cel/matches'), {});
+    else { matches = []; saveLocalData(); renderMatches(); }
+  }
 });
 
 /* ══════════════════════════════════════════════════════════════
-   INITIALIZATION
+   STANDINGS TABLE
    ══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('thead th').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.key;
-    if (!key) return;
-    if (sortKey === key) sortDir *= -1;
-    else { sortKey = key; sortDir = key === 'name' ? 1 : -1; }
-    renderTable();
+function buildTable() {
+  const rows = clubs.map(c => ({ ...c, p: c.w + c.d + c.l, gd: c.gf - c.ga, pts: c.w * 3 + c.d }));
+  rows.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
+  rows.forEach((r, i) => r.rank = i + 1);
+  return rows;
+}
+
+function updateStats() {
+  const table = buildTable();
+  if (!table.length) return;
+  
+  const leader = table[0];
+  const goals = table.reduce((a, b) => b.gf > a.gf ? b : a, table[0]);
+  const bestGD = table.reduce((a, b) => b.gd > a.gd ? b : a, table[0]);
+
+  document.getElementById('leader').textContent = leader.name;
+  document.getElementById('leaderDetail').textContent = `${leader.pts} points · ${leader.p} played`;
+  document.getElementById('mostGoals').textContent = goals.name;
+  document.getElementById('goalsDetail').textContent = `${goals.gf} goals scored`;
+  document.getElementById('bestGD').textContent = bestGD.name;
+  document.getElementById('gdDetail').textContent = `${(bestGD.gd > 0 ? '+' : '') + bestGD.gd} goal difference`;
+  document.getElementById('teamCount').textContent = table.length;
+  
+  const maxP = Math.max(...table.map(c => c.p));
+  document.getElementById('seasonLabel').innerHTML = `◷ &nbsp;Current table · Matchday ${maxP}`;
+  
+  renderCountryOptions(table);
+  renderTable(table);
+}
+
+function renderCountryOptions(table) {
+  const country = document.getElementById('country');
+  const current = country.value;
+  country.innerHTML = '<option value="">All countries</option>';
+  [...new Set(table.map(c => c.country))].sort().forEach(c => {
+    const o = document.createElement('option'); o.value = c; o.textContent = c; country.appendChild(o);
   });
+  country.value = current;
+}
+
+function renderTable(table) {
+  const country = document.getElementById('country').value;
+  const search = document.getElementById('search').value.trim().toLowerCase();
+  const view = document.getElementById('view').value;
+
+  let rows = table.filter(c => (!country || c.country === country) && (`${c.name} ${c.country}`.toLowerCase().includes(search)));
+
+  if (view === 'cup') rows = rows.filter(c => c.rank <= 10);
+  if (view === 'top3') rows = rows.filter(c => c.rank <= 3);
+  if (view === 'bottom3') rows = rows.filter(c => c.rank > table.length - 3);
+
+  document.getElementById('tableBody').innerHTML = rows.map(c => {
+    const zone = c.rank === 1 ? 'champions' : c.rank === 2 ? 'europa' : c.rank === 3 ? 'conference' : c.rank > table.length - 3 ? 'relegation' : '';
+    const cupQual = c.rank <= 10;
+    const cupIcon = cupQual ? `<span class="cup-icon" title="Central European Cup qualification">🏆</span>` : '';
+    const gdClass = c.gd > 0 ? 'positive' : c.gd < 0 ? 'negative' : 'neutral';
+
+    return `<tr class="${zone} ${cupQual ? 'cup-qual' : ''}">
+      <td><span class="position">${c.rank}</span></td>
+      <td><div class="club"><span class="flag">${c.flag}</span><span class="club-name">${c.name}</span>${cupIcon}</div></td>
+      <td>${c.p}</td><td>${c.w}</td><td>${c.d}</td><td>${c.l}</td>
+      <td>${c.gf}</td><td>${c.ga}</td>
+      <td class="${gdClass}">${c.gd > 0 ? '+' : ''}${c.gd}</td>
+      <td class="points">${c.pts}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('empty').hidden = rows.length !== 0;
+  document.getElementById('showing').textContent = `Showing ${rows.length} of ${table.length} clubs`;
+}
+
+['input', 'change'].forEach(evt => {
+    document.getElementById('search').addEventListener(evt, () => renderTable(buildTable()));
+    document.getElementById('country').addEventListener(evt, () => renderTable(buildTable()));
+    document.getElementById('view').addEventListener(evt, () => renderTable(buildTable()));
 });
 
-search.addEventListener('input', renderTable);
-country.addEventListener('change', renderTable);
-view.addEventListener('change', renderTable);
 document.getElementById('reset').addEventListener('click', () => {
-  search.value = ''; country.value = ''; view.value = 'all';
-  sortKey = 'rank'; sortDir = 1;
-  renderTable();
+  document.getElementById('search').value = ''; 
+  document.getElementById('country').value = ''; 
+  document.getElementById('view').value = 'all';
+  renderTable(buildTable());
 });
 
-// Boot sequence
-loadData();
+/* ══════════════════════════════════════════════════════════════
+   BOOT
+   ══════════════════════════════════════════════════════════════ */
+checkFirebase();
 initScheduleForm();
-updateStats();
-renderMatches();
+
+// For local mode, we need to initialize UI immediately
+if (!useFirebase) {
+    updateStats();
+    renderMatches();
+    setInterval(tick, 1000); // local tick loop
+}
 </script>
 </body>
 </html>

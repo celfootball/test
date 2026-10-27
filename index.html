@@ -52,15 +52,9 @@ h1{font-size:clamp(32px,5vw,54px);line-height:1.02;letter-spacing:-.045em;margin
 .match-centre{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:28px}
 .mc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
 .mc-header h2{font-size:1.2rem;margin:0;color:var(--blue)}
-.mc-tools{display:flex;gap:12px;align-items:center}
-.schedule-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:#0c131c;padding:16px;border-radius:12px;border:1px solid #2c3a4b;margin-bottom:16px}
-.schedule-form label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
-.schedule-form input,.schedule-form select{background:#121a25;border:1px solid #283647;border-radius:8px;color:white;padding:10px;outline:none}
-.schedule-form input:focus,.schedule-form select:focus{border-color:var(--accent)}
-.btn-schedule{background:var(--accent);color:#111a12;border:none;padding:10px 20px;border-radius:8px;font-weight:800;cursor:pointer;transition:0.2s}
-.btn-schedule:hover{background:#a6db5a}
-.btn-clear{background:transparent;color:var(--muted);border:1px solid var(--line);padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;transition:0.2s}
-.btn-clear:hover{color:white;border-color:var(--red);background:#2c1a1d}
+.mc-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+select{padding:8px 12px;border-radius:8px;background:#121a25;border:1px solid #283647;color:white;outline:none;cursor:pointer;}
+select:focus{border-color:var(--accent)}
 
 .matches-list{display:flex;flex-direction:column;gap:12px}
 .match-card{background:#0c131c;border:1px solid #2c3a4b;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:0.2s}
@@ -137,7 +131,8 @@ tbody tr:last-child{border-bottom:0}
 td{padding:12px 10px;text-align:center;white-space:nowrap;color:#c5d1df}
 td:first-child{text-align:center;color:#8799ae;font-weight:750;width:58px}
 td:nth-child(2){text-align:left}
-.club{display:flex;align-items:center;gap:11px;font-weight:750;color:#eef4fc}
+.club{display:flex;align-items:center;gap:11px;font-weight:750;color:#eef4fc;cursor:pointer}
+.club:hover{text-decoration:underline}
 .flag{font-size:19px;width:24px;text-align:center;flex-shrink:0}
 .club-name{overflow:hidden;text-overflow:ellipsis}
 .points{font-weight:900;color:#fff;font-size:15px}
@@ -159,14 +154,35 @@ td:nth-child(2){text-align:left}
 .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
 footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-size:11px;margin-top:24px;flex-wrap:wrap}
 .empty{padding:36px;text-align:center;color:var(--muted)}
-.firebase-warning{display:none;background:#40232a;color:#ffaaaa;padding:10px;text-align:center;font-weight:bold;border-bottom:1px solid #ffaaaa;font-size:13px;}
+
+/* Team Modal specifics */
+.team-modal-body{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:20px;}
+.team-section h3{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:0 0 10px 0;}
+.result-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#0c131c;border-radius:8px;margin-bottom:6px;font-size:13px;border:1px solid #1d2a3a;}
+.result-row .res-indicator{font-weight:900;width:20px;text-align:center;margin-right:10px;}
+.result-row .res-team{flex:1;font-weight:600;}
+.result-row .res-score{font-family:monospace;font-weight:700;color:var(--accent);}
+
+/* Modal Tabs */
+.modal-tabs{display:flex;border-bottom:1px solid var(--line);padding:0 20px;gap:20px;}
+.modal-tab{background:none;border:none;color:var(--muted);padding:12px 0;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;transition:0.2s;font-size:13px;}
+.modal-tab:hover{color:var(--text);}
+.modal-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* Squad Table */
+.squad-table{width:100%;border-collapse:collapse;font-size:12px;}
+.squad-table th{text-align:left;padding:8px;color:var(--muted);border-bottom:1px solid var(--line);font-weight:600;}
+.squad-table td{padding:8px;border-bottom:1px solid #1d2a3a;}
+.squad-table tr:last-child td{border-bottom:none;}
+.squad-table tr:hover{background:#192534;}
+.star-player{color:var(--accent);font-weight:800;}
+.star-icon{color:var(--accent);margin-right:4px;}
 
 @media(max-width:700px){
  .topbar{height:60px}.toplabel{display:none}.hero{align-items:flex-start;flex-direction:column;gap:14px}.season{padding:9px 12px}
  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat .value{font-size:22px}
  .toolbar{align-items:stretch}.tools-left,.tools-right{width:100%}.search{flex:1}.search input{width:100%}.tools-right select{flex:1;min-width:0}
  .subnav a{padding:12px 14px;font-size:11px}
- .schedule-form{flex-direction:column;align-items:stretch}
  .match-top{flex-direction:column;align-items:flex-start}
  .match-meta{align-items:flex-start;width:100%;flex-direction:row;justify-content:space-between}
  .modal-teams{flex-direction:column;gap:10px;text-align:center;}
@@ -186,10 +202,6 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
   <a href="https://celfootball.github.io/cel2/">CEL2 <span class="pill">Tier 2</span></a>
 </nav>
 
-<div id="firebase-warning" class="firebase-warning">
-  ⚠️ Firebase is not configured. Changes will only save to this browser. Follow the instructions in the code to enable cross-device sync.
-</div>
-
 <!-- SECONDARY TABS -->
 <div class="view-tabs">
   <button class="view-tab active" data-target="matchesView">📅 Matches</button>
@@ -204,26 +216,12 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
       <div class="mc-header">
         <h2>📅 Match Centre</h2>
         <div class="mc-tools">
-          <button class="btn-clear" id="clearMatchesBtn">Clear Schedule</button>
+          <select id="matchdayFilter">
+            <option value="all">All Matchdays</option>
+          </select>
         </div>
       </div>
       
-      <div class="schedule-form">
-        <div>
-          <label>Home Team</label>
-          <select id="schedHome"></select>
-        </div>
-        <div>
-          <label>Away Team</label>
-          <select id="schedAway"></select>
-        </div>
-        <div>
-          <label>Date & Time</label>
-          <input type="datetime-local" id="schedDate">
-        </div>
-        <button class="btn-schedule" id="scheduleBtn">Schedule Match</button>
-      </div>
-
       <div class="matches-list" id="matchesList">
         <!-- Matches will be injected here -->
       </div>
@@ -260,7 +258,7 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
           <button class="ghost" id="reset">Reset Filters</button>
         </div>
       </div>
-      <div class="table-meta"><span id="showing">Showing all clubs</span><span>Click a column heading to sort ↕</span></div>
+      <div class="table-meta"><span id="showing">Showing all clubs</span><span>Click a club to view their fixtures ↕</span></div>
       <div class="table-wrap">
         <table>
           <thead><tr>
@@ -283,7 +281,7 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
   <footer><span>© Central European League · CEL</span><span>Standings are subject to change after each matchday.</span></footer>
 </main>
 
-<!-- MODAL OVERLAY -->
+<!-- MATCH MODAL -->
 <div class="modal-overlay" id="matchModal" onclick="if(event.target===this)closeModal()">
     <div class="modal-content">
         <div class="modal-header">
@@ -310,256 +308,1036 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
     </div>
 </div>
 
-<script type="module">
-/* ══════════════════════════════════════════════════════════════
-   ⚠️ FIREBASE CONFIGURATION
-   ══════════════════════════════════════════════════════════════
-   To enable cross-device syncing, replace the placeholder config below 
-   with your Firebase project's config object.
-   
-   1. Go to https://console.firebase.google.com/
-   2. Create a project.
-   3. Add a Web App (</> icon).
-   4. Go to Build > Realtime Database > Create Database > Start in Test Mode.
-   5. Copy your config here.
-*/
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+<!-- TEAM PROFILE MODAL -->
+<div class="modal-overlay" id="teamModal" onclick="if(event.target===this)closeTeamModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="tmTeamName" style="margin:0;font-size:1.4rem;color:var(--blue);">Team Name</h2>
+            <button class="modal-close" onclick="closeTeamModal()">×</button>
+        </div>
+        
+        <div class="modal-tabs">
+            <button class="modal-tab active" onclick="switchTeamTab('overview')">Overview</button>
+            <button class="modal-tab" onclick="switchTeamTab('squad')">Squad</button>
+        </div>
+        
+        <div class="team-modal-body" id="tmOverviewTab">
+            <div class="team-section">
+                <h3>Recent Results</h3>
+                <div id="tmPastResults"></div>
+            </div>
+            <div class="team-section">
+                <h3>Upcoming Fixtures</h3>
+                <div id="tmUpcoming"></div>
+            </div>
+        </div>
+        
+        <div class="team-modal-body" id="tmSquadTab" style="display:none;">
+            <table class="squad-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Nat</th>
+                        <th>Pos</th>
+                        <th>Apps</th>
+                        <th>Gls</th>
+                        <th>Ast</th>
+                    </tr>
+                </thead>
+                <tbody id="tmSquadBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, update, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+<!-- RAW SCHEDULE DATA (FULL UNTRUNCATED FILE) -->
+<script type="text/plain" id="scheduleData">
+MATCHDAY 1 — SATURDAY, OCTOBER 31, 2026 / SUNDAY, NOVEMBER 1, 2026
+----------------------------------------------------------
 
+SATURDAY — October 31, 2026 (8 matches)
+6:00 AM — 🇩🇪 FC Kronenburg vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇨🇿 Slavia Hradec vs 🇩🇪 VfB Eisenstadt
+12:00 PM — 🇦🇹 SV Eisenwald vs 🇨🇿 FC Moravsky
+12:00 PM — 🇱🇮 FC Alpenstern vs 🇭🇺 Budapest Korona
+2:00 PM — 🇱🇮 FC Vaduzberg vs 🇩🇪 SV Rheinwald
+2:00 PM — 🇨🇿 Brno Viktoria vs 🇭🇺 FC Danubia
+4:00 PM — 🇩🇪 Dresden Adler vs 🇵🇱 Gornik Bialystok
+4:00 PM — 🇦🇹 Vienna Adler vs 🇱🇮 Rhein Lions
+
+SUNDAY — November 1, 2026 (8 matches)
+10:00 AM — 🇭🇺 Pecs Vihar vs 🇸🇮 Ljubljana Vihor
+10:00 AM — 🇨🇿 FK Vltava Praha vs 🇸🇰 Bratislava Falcons
+12:00 PM — 🇸🇰 MSK Dunaj vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇸🇮 FC Drava vs 🇵🇱 FC Wislania
+2:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇨🇭 Matterhorn FC
+2:00 PM — 🇸🇮 Maribor Crown vs 🇸🇮 NK Triglav
+4:00 PM — 🇸🇰 Kosice Dynamo vs 🇸🇰 FC Tatran
+4:00 PM — 🇵🇱 KS Krakovia vs 🇵🇱 Warsaw Legion
+
+==========================================================
+MATCHDAY 2 — SATURDAY, NOVEMBER 7, 2026 / SUNDAY, NOVEMBER 8, 2026
+----------------------------------------------------------
+
+SATURDAY — November 7, 2026 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇵🇱 KS Krakovia
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇩🇪 Dresden Adler vs 🇱🇮 Rhein Lions
+12:00 PM — 🇸🇰 FC Tatran vs 🇭🇺 FC Danubia
+2:00 PM — 🇩🇪 VfB Eisenstadt vs 🇦🇹 Vienna Adler
+2:00 PM — 🇸🇰 Kosice Dynamo vs 🇨🇿 Slavia Hradec
+4:00 PM — 🇱🇮 FC Alpenstern vs 🇨🇿 FK Vltava Praha
+4:00 PM — 🇨🇭 Matterhorn FC vs 🇱🇮 FC Vaduzberg
+
+SUNDAY — November 8, 2026 (8 matches)
+10:00 AM — 🇸🇮 Maribor Crown vs 🇩🇪 FC Kronenburg
+10:00 AM — 🇸🇰 Bratislava Falcons vs 🇦🇹 SV Eisenwald
+12:00 PM — 🇭🇺 Budapest Korona vs 🇵🇱 Gornik Bialystok
+12:00 PM — 🇨🇿 Brno Viktoria vs 🇸🇮 FC Drava
+2:00 PM — 🇭🇺 Pecs Vihar vs 🇵🇱 Warsaw Legion
+2:00 PM — 🇨🇿 FC Moravsky vs 🇦🇹 Grazer Sturmfeld
+4:00 PM — 🇸🇰 MSK Dunaj vs 🇵🇱 FC Wislania
+4:00 PM — 🇸🇮 NK Triglav vs 🇸🇮 Ljubljana Vihor
+
+==========================================================
+MATCHDAY 3 — SATURDAY, NOVEMBER 14, 2026 / SUNDAY, NOVEMBER 15, 2026
+----------------------------------------------------------
+
+SATURDAY — November 14, 2026 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇭🇺 Pecs Vihar
+10:00 AM — 🇱🇮 FC Vaduzberg vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇨🇿 FC Moravsky vs 🇨🇭 Matterhorn FC
+12:00 PM — 🇭🇺 Budapest Korona vs 🇵🇱 Warsaw Legion
+2:00 PM — 🇩🇪 FC Kronenburg vs 🇸🇰 MSK Dunaj
+2:00 PM — 🇨🇿 Brno Viktoria vs 🇵🇱 Gornik Bialystok
+4:00 PM — 🇸🇮 Ljubljana Vihor vs 🇭🇺 FC Danubia
+4:00 PM — 🇱🇮 Rhein Lions vs 🇸🇮 Maribor Crown
+
+SUNDAY — November 15, 2026 (8 matches)
+10:00 AM — 🇩🇪 VfB Eisenstadt vs 🇸🇰 Bratislava Falcons
+10:00 AM — 🇦🇹 Vienna Adler vs 🇩🇪 SV Rheinwald
+12:00 PM — 🇸🇮 FC Drava vs 🇨🇿 Slavia Hradec
+12:00 PM — 🇩🇪 Dresden Adler vs 🇦🇹 SV Eisenwald
+2:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇨🇿 FK Vltava Praha
+2:00 PM — 🇸🇰 Kosice Dynamo vs 🇸🇮 NK Triglav
+4:00 PM — 🇵🇱 FC Wislania vs 🇸🇰 FC Tatran
+4:00 PM — 🇱🇮 FC Alpenstern vs 🇵🇱 KS Krakovia
+
+==========================================================
+MATCHDAY 4 — SATURDAY, NOVEMBER 21, 2026 / SUNDAY, NOVEMBER 22, 2026
+----------------------------------------------------------
+
+SATURDAY — November 21, 2026 (8 matches)
+10:00 AM — 🇱🇮 FC Vaduzberg vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇦🇹 SV Eisenwald vs 🇨🇭 Matterhorn FC
+12:00 PM — 🇱🇮 Rhein Lions vs 🇵🇱 Gornik Bialystok
+12:00 PM — 🇨🇿 FC Moravsky vs 🇩🇪 SV Rheinwald
+2:00 PM — 🇦🇹 Vienna Adler vs 🇩🇪 Dresden Adler
+2:00 PM — 🇸🇮 Maribor Crown vs 🇨🇿 Slavia Hradec
+4:00 PM — 🇭🇺 Pecs Vihar vs 🇨🇿 Brno Viktoria
+4:00 PM — 🇩🇪 FC Kronenburg vs 🇸🇮 FC Drava
+
+SUNDAY — November 22, 2026 (8 matches)
+10:00 AM — 🇭🇺 Budapest Korona vs 🇸🇰 Bratislava Falcons
+10:00 AM — 🇩🇪 VfB Eisenstadt vs 🇸🇰 FC Tatran
+12:00 PM — 🇸🇮 Ljubljana Vihor vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇸🇰 Kosice Dynamo vs 🇨🇿 FK Vltava Praha
+2:00 PM — 🇸🇰 MSK Dunaj vs 🇦🇹 Grazer Sturmfeld
+2:00 PM — 🇱🇮 FC Alpenstern vs 🇸🇮 NK Triglav
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇭🇺 FC Danubia
+4:00 PM — 🇵🇱 FC Wislania vs 🇵🇱 KS Krakovia
+
+==========================================================
+MATCHDAY 5 — SATURDAY, NOVEMBER 28, 2026 / SUNDAY, NOVEMBER 29, 2026
+----------------------------------------------------------
+
+SATURDAY — November 28, 2026 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇦🇹 Vienna Adler
+10:00 AM — 🇸🇰 Bratislava Falcons vs 🇱🇮 FC Alpenstern
+12:00 PM — 🇸🇰 FC Tatran vs 🇱🇮 Rhein Lions
+12:00 PM — 🇭🇺 Debrecen Vasas vs 🇩🇪 FC Kronenburg
+2:00 PM — 🇭🇺 FC Danubia vs 🇵🇱 Gornik Bialystok
+2:00 PM — 🇵🇱 Warsaw Legion vs 🇩🇪 SV Rheinwald
+4:00 PM — 🇨🇿 FK Vltava Praha vs 🇱🇮 FC Vaduzberg
+4:00 PM — 🇸🇮 Ljubljana Vihor vs 🇩🇪 Dresden Adler
+
+SUNDAY — November 29, 2026 (8 matches)
+10:00 AM — 🇵🇱 KS Krakovia vs 🇨🇿 Brno Viktoria
+10:00 AM — 🇸🇮 NK Triglav vs 🇭🇺 Budapest Korona
+12:00 PM — 🇸🇮 FC Drava vs 🇩🇪 VfB Eisenstadt
+12:00 PM — 🇸🇰 MSK Dunaj vs 🇨🇿 Slavia Hradec
+2:00 PM — 🇨🇿 FC Moravsky vs 🇸🇰 Kosice Dynamo
+2:00 PM — 🇵🇱 FC Wislania vs 🇭🇺 Pecs Vihar
+4:00 PM — 🇦🇹 SV Eisenwald vs 🇦🇹 Grazer Sturmfeld
+4:00 PM — 🇸🇮 Maribor Crown vs 🇨🇭 Matterhorn FC
+
+==========================================================
+MATCHDAY 6 — SATURDAY, DECEMBER 5, 2026 / SUNDAY, DECEMBER 6, 2026
+----------------------------------------------------------
+
+SATURDAY — December 5, 2026 (8 matches)
+10:00 AM — 🇭🇺 Budapest Korona vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇱🇮 FC Alpenstern vs 🇵🇱 FC Wislania
+12:00 PM — 🇭🇺 Pecs Vihar vs 🇵🇱 KS Krakovia
+12:00 PM — 🇭🇺 FC Danubia vs 🇨🇿 Slavia Hradec
+2:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇩🇪 VfB Eisenstadt
+2:00 PM — 🇸🇮 FC Drava vs 🇨🇿 FC Moravsky
+4:00 PM — 🇸🇰 Kosice Dynamo vs 🇱🇮 FC Vaduzberg
+4:00 PM — 🇩🇪 SV Rheinwald vs 🇨🇭 Matterhorn FC
+
+SUNDAY — December 6, 2026 (8 matches)
+10:00 AM — 🇦🇹 SV Eisenwald vs 🇭🇺 Debrecen Vasas
+10:00 AM — 🇸🇰 FC Tatran vs 🇩🇪 Dresden Adler
+12:00 PM — 🇩🇪 FC Kronenburg vs 🇸🇮 Ljubljana Vihor
+12:00 PM — 🇸🇮 NK Triglav vs 🇨🇿 Brno Viktoria
+2:00 PM — 🇸🇰 MSK Dunaj vs 🇸🇮 Maribor Crown
+2:00 PM — 🇨🇿 FK Vltava Praha vs 🇦🇹 Vienna Adler
+4:00 PM — 🇸🇰 Bratislava Falcons vs 🇵🇱 Gornik Bialystok
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇱🇮 Rhein Lions
+
+==========================================================
+MATCHDAY 7 — SATURDAY, DECEMBER 12, 2026 / SUNDAY, DECEMBER 13, 2026
+----------------------------------------------------------
+
+SATURDAY — December 12, 2026 (8 matches)
+10:00 AM — 🇨🇿 FK Vltava Praha vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇵🇱 Warsaw Legion vs 🇱🇮 FC Alpenstern
+12:00 PM — 🇭🇺 Budapest Korona vs 🇩🇪 SV Rheinwald
+12:00 PM — 🇩🇪 Dresden Adler vs 🇭🇺 FC Danubia
+2:00 PM — 🇵🇱 Gornik Bialystok vs 🇭🇺 Pecs Vihar
+2:00 PM — 🇱🇮 Rhein Lions vs 🇩🇪 VfB Eisenstadt
+4:00 PM — 🇭🇺 Debrecen Vasas vs 🇵🇱 FC Wislania
+4:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇵🇱 KS Krakovia
+
+SUNDAY — December 13, 2026 (8 matches)
+10:00 AM — 🇸🇮 NK Triglav vs 🇱🇮 FC Vaduzberg
+10:00 AM — 🇸🇮 Ljubljana Vihor vs 🇨🇿 FC Moravsky
+12:00 PM — 🇩🇪 FC Kronenburg vs 🇦🇹 Vienna Adler
+12:00 PM — 🇨🇿 Slavia Hradec vs 🇨🇭 Matterhorn FC
+2:00 PM — 🇸🇮 Maribor Crown vs 🇸🇰 FC Tatran
+2:00 PM — 🇸🇰 Bratislava Falcons vs 🇸🇮 FC Drava
+4:00 PM — 🇨🇿 Brno Viktoria vs 🇦🇹 SV Eisenwald
+4:00 PM — 🇸🇰 MSK Dunaj vs 🇸🇰 Kosice Dynamo
+
+==========================================================
+MATCHDAY 8 — SATURDAY, DECEMBER 19, 2026 / SUNDAY, DECEMBER 20, 2026
+----------------------------------------------------------
+
+SATURDAY — December 19, 2026 (8 matches)
+10:00 AM — 🇨🇿 FC Moravsky vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇩🇪 Dresden Adler vs 🇨🇿 Slavia Hradec
+12:00 PM — 🇭🇺 Budapest Korona vs 🇱🇮 FC Vaduzberg
+12:00 PM — 🇩🇪 VfB Eisenstadt vs 🇭🇺 Pecs Vihar
+2:00 PM — 🇦🇹 Vienna Adler vs 🇭🇺 FC Danubia
+2:00 PM — 🇸🇮 FC Drava vs 🇩🇪 SV Rheinwald
+4:00 PM — 🇵🇱 FC Wislania vs 🇩🇪 FC Kronenburg
+4:00 PM — 🇱🇮 Rhein Lions vs 🇦🇹 Grazer Sturmfeld
+
+SUNDAY — December 20, 2026 (8 matches)
+10:00 AM — 🇵🇱 Warsaw Legion vs 🇦🇹 SV Eisenwald
+10:00 AM — 🇨🇿 Brno Viktoria vs 🇸🇰 MSK Dunaj
+12:00 PM — 🇸🇮 Maribor Crown vs 🇵🇱 KS Krakovia
+12:00 PM — 🇭🇺 Debrecen Vasas vs 🇸🇰 FC Tatran
+2:00 PM — 🇨🇿 FK Vltava Praha vs 🇸🇮 Ljubljana Vihor
+2:00 PM — 🇸🇰 Kosice Dynamo vs 🇨🇭 Matterhorn FC
+4:00 PM — 🇸🇮 NK Triglav vs 🇸🇰 Bratislava Falcons
+4:00 PM — 🇵🇱 Gornik Bialystok vs 🇱🇮 FC Alpenstern
+
+==========================================================
+MATCHDAY 9 — SATURDAY, JANUARY 9, 2027 / SUNDAY, JANUARY 10, 2027
+----------------------------------------------------------
+
+SATURDAY — January 9, 2027 (8 matches)
+10:00 AM — 🇭🇺 Debrecen Vasas vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇭🇺 Pecs Vihar vs 🇭🇺 FC Danubia
+12:00 PM — 🇨🇿 Brno Viktoria vs 🇦🇹 Grazer Sturmfeld
+12:00 PM — 🇨🇭 Matterhorn FC vs 🇨🇿 FK Vltava Praha
+2:00 PM — 🇩🇪 SV Rheinwald vs 🇱🇮 FC Alpenstern
+2:00 PM — 🇩🇪 FC Kronenburg vs 🇱🇮 FC Vaduzberg
+4:00 PM — 🇸🇮 Maribor Crown vs 🇩🇪 VfB Eisenstadt
+4:00 PM — 🇵🇱 Gornik Bialystok vs 🇨🇿 Slavia Hradec
+
+SUNDAY — January 10, 2027 (8 matches)
+10:00 AM — 🇨🇿 FC Moravsky vs 🇵🇱 FC Wislania
+10:00 AM — 🇩🇪 Dresden Adler vs 🇸🇮 FC Drava
+12:00 PM — 🇸🇰 FC Tatran vs 🇭🇺 Budapest Korona
+12:00 PM — 🇵🇱 KS Krakovia vs 🇸🇮 Ljubljana Vihor
+2:00 PM — 🇦🇹 SV Eisenwald vs 🇸🇰 Kosice Dynamo
+2:00 PM — 🇸🇰 Bratislava Falcons vs 🇱🇮 Rhein Lions
+4:00 PM — 🇸🇮 NK Triglav vs 🇦🇹 Vienna Adler
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇸🇰 MSK Dunaj
+
+==========================================================
+MATCHDAY 10 — SATURDAY, JANUARY 16, 2027 / SUNDAY, JANUARY 17, 2027
+----------------------------------------------------------
+
+SATURDAY — January 16, 2027 (8 matches)
+10:00 AM — 🇦🇹 SV Eisenwald vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇨🇿 FK Vltava Praha
+12:00 PM — 🇩🇪 Dresden Adler vs 🇦🇹 Grazer Sturmfeld
+12:00 PM — 🇩🇪 VfB Eisenstadt vs 🇵🇱 KS Krakovia
+2:00 PM — 🇸🇰 Bratislava Falcons vs 🇭🇺 Debrecen Vasas
+2:00 PM — 🇵🇱 FC Wislania vs 🇭🇺 Budapest Korona
+4:00 PM — 🇭🇺 FC Danubia vs 🇸🇰 MSK Dunaj
+4:00 PM — 🇩🇪 FC Kronenburg vs 🇵🇱 Warsaw Legion
+
+SUNDAY — January 17, 2027 (8 matches)
+10:00 AM — 🇸🇮 Maribor Crown vs 🇭🇺 Pecs Vihar
+10:00 AM — 🇨🇿 Slavia Hradec vs 🇸🇮 NK Triglav
+12:00 PM — 🇦🇹 Vienna Adler vs 🇵🇱 Gornik Bialystok
+12:00 PM — 🇸🇮 FC Drava vs 🇱🇮 FC Alpenstern
+2:00 PM — 🇱🇮 Rhein Lions vs 🇸🇰 Kosice Dynamo
+2:00 PM — 🇸🇰 FC Tatran vs 🇱🇮 FC Vaduzberg
+4:00 PM — 🇨🇭 Matterhorn FC vs 🇸🇮 Ljubljana Vihor
+4:00 PM — 🇨🇿 Brno Viktoria vs 🇨🇿 FC Moravsky
+
+==========================================================
+MATCHDAY 11 — SATURDAY, JANUARY 23, 2027 / SUNDAY, JANUARY 24, 2027
+----------------------------------------------------------
+
+SATURDAY — January 23, 2027 (8 matches)
+10:00 AM — 🇱🇮 FC Alpenstern vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇭🇺 Debrecen Vasas vs 🇭🇺 Budapest Korona
+12:00 PM — 🇩🇪 FC Kronenburg vs 🇨🇿 FC Moravsky
+12:00 PM — 🇨🇿 FK Vltava Praha vs 🇦🇹 SV Eisenwald
+2:00 PM — 🇦🇹 Vienna Adler vs 🇨🇿 Brno Viktoria
+2:00 PM — 🇵🇱 KS Krakovia vs 🇭🇺 FC Danubia
+4:00 PM — 🇱🇮 Rhein Lions vs 🇸🇰 MSK Dunaj
+4:00 PM — 🇱🇮 FC Vaduzberg vs 🇸🇰 Bratislava Falcons
+
+SUNDAY — January 24, 2027 (8 matches)
+10:00 AM — 🇦🇹 Grazer Sturmfeld vs 🇭🇺 Pecs Vihar
+10:00 AM — 🇩🇪 VfB Eisenstadt vs 🇸🇮 Ljubljana Vihor
+12:00 PM — 🇨🇿 Slavia Hradec vs 🇸🇰 FC Tatran
+12:00 PM — 🇸🇮 NK Triglav vs 🇩🇪 Dresden Adler
+2:00 PM — 🇩🇪 SV Rheinwald vs 🇸🇮 Maribor Crown
+2:00 PM — 🇵🇱 FC Wislania vs 🇨🇭 Matterhorn FC
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇸🇮 FC Drava
+4:00 PM — 🇵🇱 Gornik Bialystok vs 🇸🇰 Kosice Dynamo
+
+==========================================================
+MATCHDAY 12 — SATURDAY, JANUARY 30, 2027 / SUNDAY, JANUARY 31, 2027
+----------------------------------------------------------
+
+SATURDAY — January 30, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇨🇿 Slavia Hradec
+10:00 AM — 🇵🇱 Gornik Bialystok vs 🇵🇱 KS Krakovia
+12:00 PM — 🇵🇱 Warsaw Legion vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇭🇺 Pecs Vihar vs 🇩🇪 Dresden Adler
+2:00 PM — 🇩🇪 VfB Eisenstadt vs 🇨🇿 Brno Viktoria
+2:00 PM — 🇱🇮 FC Vaduzberg vs 🇨🇿 FC Moravsky
+4:00 PM — 🇨🇭 Matterhorn FC vs 🇭🇺 Budapest Korona
+4:00 PM — 🇸🇰 Kosice Dynamo vs 🇩🇪 FC Kronenburg
+
+SUNDAY — January 31, 2027 (8 matches)
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇸🇰 FC Tatran
+10:00 AM — 🇦🇹 SV Eisenwald vs 🇵🇱 FC Wislania
+12:00 PM — 🇸🇰 Bratislava Falcons vs 🇭🇺 FC Danubia
+12:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇸🇮 NK Triglav
+2:00 PM — 🇦🇹 Vienna Adler vs 🇸🇰 MSK Dunaj
+2:00 PM — 🇸🇮 Maribor Crown vs 🇨🇿 FK Vltava Praha
+4:00 PM — 🇸🇮 Ljubljana Vihor vs 🇸🇮 FC Drava
+4:00 PM — 🇱🇮 Rhein Lions vs 🇱🇮 FC Alpenstern
+
+==========================================================
+MATCHDAY 13 — SATURDAY, FEBRUARY 6, 2027 / SUNDAY, FEBRUARY 7, 2027
+----------------------------------------------------------
+
+SATURDAY — February 6, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇦🇹 Grazer Sturmfeld
+10:00 AM — 🇩🇪 VfB Eisenstadt vs 🇩🇪 Dresden Adler
+12:00 PM — 🇨🇿 FK Vltava Praha vs 🇭🇺 Budapest Korona
+12:00 PM — 🇦🇹 SV Eisenwald vs 🇩🇪 SV Rheinwald
+2:00 PM — 🇸🇮 Ljubljana Vihor vs 🇨🇿 Brno Viktoria
+2:00 PM — 🇨🇿 Slavia Hradec vs 🇵🇱 KS Krakovia
+4:00 PM — 🇭🇺 Debrecen Vasas vs 🇨🇭 Matterhorn FC
+4:00 PM — 🇭🇺 FC Danubia vs 🇸🇮 FC Drava
+
+SUNDAY — February 7, 2027 (8 matches)
+10:00 AM — 🇩🇪 FC Kronenburg vs 🇸🇰 Bratislava Falcons
+10:00 AM — 🇸🇰 Kosice Dynamo vs 🇭🇺 Pecs Vihar
+12:00 PM — 🇸🇰 FC Tatran vs 🇦🇹 Vienna Adler
+12:00 PM — 🇨🇿 FC Moravsky vs 🇸🇮 Maribor Crown
+2:00 PM — 🇸🇮 NK Triglav vs 🇵🇱 Warsaw Legion
+2:00 PM — 🇸🇰 MSK Dunaj vs 🇱🇮 FC Alpenstern
+4:00 PM — 🇵🇱 Gornik Bialystok vs 🇵🇱 FC Wislania
+4:00 PM — 🇱🇮 FC Vaduzberg vs 🇱🇮 Rhein Lions
+
+==========================================================
+MATCHDAY 14 — SATURDAY, FEBRUARY 13, 2027 / SUNDAY, FEBRUARY 14, 2027
+----------------------------------------------------------
+
+SATURDAY — February 13, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇭🇺 FC Danubia
+10:00 AM — 🇱🇮 Rhein Lions vs 🇭🇺 Pecs Vihar
+12:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇦🇹 Vienna Adler
+12:00 PM — 🇱🇮 FC Vaduzberg vs 🇵🇱 Warsaw Legion
+2:00 PM — 🇨🇿 Brno Viktoria vs 🇩🇪 Dresden Adler
+2:00 PM — 🇨🇭 Matterhorn FC vs 🇩🇪 FC Kronenburg
+4:00 PM — 🇵🇱 Gornik Bialystok vs 🇩🇪 VfB Eisenstadt
+4:00 PM — 🇩🇪 SV Rheinwald vs 🇵🇱 FC Wislania
+
+SUNDAY — February 14, 2027 (8 matches)
+10:00 AM — 🇸🇰 Bratislava Falcons vs 🇨🇿 FC Moravsky
+10:00 AM — 🇭🇺 Debrecen Vasas vs 🇸🇮 NK Triglav
+12:00 PM — 🇭🇺 Budapest Korona vs 🇸🇰 MSK Dunaj
+12:00 PM — 🇸🇰 Kosice Dynamo vs 🇵🇱 KS Krakovia
+2:00 PM — 🇸🇮 Ljubljana Vihor vs 🇦🇹 SV Eisenwald
+2:00 PM — 🇱🇮 FC Alpenstern vs 🇸🇰 FC Tatran
+4:00 PM — 🇨🇿 Slavia Hradec vs 🇨🇿 FK Vltava Praha
+4:00 PM — 🇸🇮 FC Drava vs 🇸🇮 Maribor Crown
+
+==========================================================
+MATCHDAY 15 — SATURDAY, FEBRUARY 20, 2027 / SUNDAY, FEBRUARY 21, 2027
+----------------------------------------------------------
+
+SATURDAY — February 20, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇵🇱 Gornik Bialystok
+10:00 AM — 🇭🇺 FC Danubia vs 🇱🇮 Rhein Lions
+12:00 PM — 🇨🇿 FK Vltava Praha vs 🇩🇪 FC Kronenburg
+12:00 PM — 🇸🇮 Maribor Crown vs 🇦🇹 Grazer Sturmfeld
+2:00 PM — 🇭🇺 Pecs Vihar vs 🇸🇮 NK Triglav
+2:00 PM — 🇨🇿 FC Moravsky vs 🇱🇮 FC Alpenstern
+4:00 PM — 🇸🇰 Bratislava Falcons vs 🇩🇪 SV Rheinwald
+4:00 PM — 🇩🇪 Dresden Adler vs 🇸🇰 Kosice Dynamo
+
+SUNDAY — February 21, 2027 (8 matches)
+10:00 AM — 🇭🇺 Budapest Korona vs 🇸🇮 Ljubljana Vihor
+10:00 AM — 🇸🇮 FC Drava vs 🇭🇺 Debrecen Vasas
+12:00 PM — 🇸🇰 FC Tatran vs 🇨🇿 Brno Viktoria
+12:00 PM — 🇵🇱 KS Krakovia vs 🇦🇹 Vienna Adler
+2:00 PM — 🇨🇭 Matterhorn FC vs 🇵🇱 Warsaw Legion
+2:00 PM — 🇵🇱 FC Wislania vs 🇩🇪 VfB Eisenstadt
+4:00 PM — 🇱🇮 FC Vaduzberg vs 🇸🇰 MSK Dunaj
+4:00 PM — 🇦🇹 SV Eisenwald vs 🇨🇿 Slavia Hradec
+
+==========================================================
+MATCHDAY 16 — SATURDAY, FEBRUARY 27, 2027 / SUNDAY, FEBRUARY 28, 2027
+----------------------------------------------------------
+
+SATURDAY — February 27, 2027 (8 matches)
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇦🇹 Grazer Sturmfeld vs 🇨🇿 Slavia Hradec
+12:00 PM — 🇭🇺 Budapest Korona vs 🇨🇿 FC Moravsky
+12:00 PM — 🇨🇿 Brno Viktoria vs 🇱🇮 Rhein Lions
+2:00 PM — 🇸🇮 NK Triglav vs 🇩🇪 FC Kronenburg
+2:00 PM — 🇭🇺 Pecs Vihar vs 🇦🇹 Vienna Adler
+4:00 PM — 🇭🇺 FC Danubia vs 🇸🇮 Maribor Crown
+4:00 PM — 🇦🇹 SV Eisenwald vs 🇱🇮 FC Alpenstern
+
+SUNDAY — February 28, 2027 (8 matches)
+10:00 AM — 🇸🇰 Kosice Dynamo vs 🇩🇪 VfB Eisenstadt
+10:00 AM — 🇵🇱 FC Wislania vs 🇨🇿 FK Vltava Praha
+12:00 PM — 🇱🇮 FC Vaduzberg vs 🇸🇮 FC Drava
+12:00 PM — 🇨🇭 Matterhorn FC vs 🇩🇪 Dresden Adler
+2:00 PM — 🇭🇺 Debrecen Vasas vs 🇵🇱 KS Krakovia
+2:00 PM — 🇸🇮 Ljubljana Vihor vs 🇸🇰 MSK Dunaj
+4:00 PM — 🇸🇰 FC Tatran vs 🇸🇰 Bratislava Falcons
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇵🇱 Gornik Bialystok
+
+==========================================================
+MATCHDAY 17 — SATURDAY, MARCH 6, 2027 / SUNDAY, MARCH 7, 2027
+----------------------------------------------------------
+
+SATURDAY — March 6, 2027 (8 matches)
+10:00 AM — 🇵🇱 Warsaw Legion vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇩🇪 FC Kronenburg
+12:00 PM — 🇵🇱 KS Krakovia vs 🇩🇪 Dresden Adler
+12:00 PM — 🇱🇮 Rhein Lions vs 🇨🇿 Slavia Hradec
+2:00 PM — 🇭🇺 FC Danubia vs 🇦🇹 Grazer Sturmfeld
+2:00 PM — 🇭🇺 Debrecen Vasas vs 🇸🇰 Kosice Dynamo
+4:00 PM — 🇸🇰 MSK Dunaj vs 🇩🇪 VfB Eisenstadt
+4:00 PM — 🇱🇮 FC Vaduzberg vs 🇦🇹 SV Eisenwald
+
+SUNDAY — March 7, 2027 (8 matches)
+10:00 AM — 🇭🇺 Budapest Korona vs 🇸🇮 FC Drava
+10:00 AM — 🇱🇮 FC Alpenstern vs 🇨🇭 Matterhorn FC
+12:00 PM — 🇵🇱 Gornik Bialystok vs 🇸🇮 Maribor Crown
+12:00 PM — 🇭🇺 Pecs Vihar vs 🇸🇰 Bratislava Falcons
+2:00 PM — 🇦🇹 Vienna Adler vs 🇨🇿 FC Moravsky
+2:00 PM — 🇸🇰 FC Tatran vs 🇸🇮 Ljubljana Vihor
+4:00 PM — 🇵🇱 FC Wislania vs 🇸🇮 NK Triglav
+4:00 PM — 🇨🇿 FK Vltava Praha vs 🇨🇿 Brno Viktoria
+
+==========================================================
+MATCHDAY 18 — SATURDAY, MARCH 13, 2027 / SUNDAY, MARCH 14, 2027
+----------------------------------------------------------
+
+SATURDAY — March 13, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇩🇪 VfB Eisenstadt
+10:00 AM — 🇵🇱 KS Krakovia vs 🇱🇮 Rhein Lions
+12:00 PM — 🇭🇺 Debrecen Vasas vs 🇱🇮 FC Alpenstern
+12:00 PM — 🇩🇪 FC Kronenburg vs 🇦🇹 SV Eisenwald
+2:00 PM — 🇨🇿 Brno Viktoria vs 🇸🇮 Maribor Crown
+2:00 PM — 🇭🇺 Pecs Vihar vs 🇸🇰 FC Tatran
+4:00 PM — 🇨🇿 Slavia Hradec vs 🇸🇮 Ljubljana Vihor
+4:00 PM — 🇨🇿 FC Moravsky vs 🇸🇮 NK Triglav
+
+SUNDAY — March 14, 2027 (8 matches)
+10:00 AM — 🇸🇰 Kosice Dynamo vs 🇭🇺 Budapest Korona
+10:00 AM — 🇨🇿 FK Vltava Praha vs 🇵🇱 Warsaw Legion
+12:00 PM — 🇸🇰 MSK Dunaj vs 🇩🇪 SV Rheinwald
+12:00 PM — 🇸🇰 Bratislava Falcons vs 🇩🇪 Dresden Adler
+2:00 PM — 🇭🇺 FC Danubia vs 🇵🇱 FC Wislania
+2:00 PM — 🇸🇮 FC Drava vs 🇦🇹 Grazer Sturmfeld
+4:00 PM — 🇱🇮 FC Vaduzberg vs 🇵🇱 Gornik Bialystok
+4:00 PM — 🇨🇭 Matterhorn FC vs 🇦🇹 Vienna Adler
+
+==========================================================
+MATCHDAY 19 — SATURDAY, MARCH 20, 2027 / SUNDAY, MARCH 21, 2027
+----------------------------------------------------------
+
+SATURDAY — March 20, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇨🇿 Brno Viktoria
+10:00 AM — 🇭🇺 FC Danubia vs 🇩🇪 VfB Eisenstadt
+12:00 PM — 🇵🇱 KS Krakovia vs 🇸🇰 FC Tatran
+12:00 PM — 🇩🇪 FC Kronenburg vs 🇭🇺 Budapest Korona
+2:00 PM — 🇵🇱 FC Wislania vs 🇱🇮 FC Vaduzberg
+2:00 PM — 🇨🇿 Slavia Hradec vs 🇦🇹 Vienna Adler
+4:00 PM — 🇭🇺 Debrecen Vasas vs 🇨🇿 FK Vltava Praha
+4:00 PM — 🇵🇱 Warsaw Legion vs 🇨🇿 FC Moravsky
+
+SUNDAY — March 21, 2027 (8 matches)
+10:00 AM — 🇩🇪 SV Rheinwald vs 🇸🇮 NK Triglav
+10:00 AM — 🇩🇪 Dresden Adler vs 🇸🇰 MSK Dunaj
+12:00 PM — 🇵🇱 Gornik Bialystok vs 🇦🇹 Grazer Sturmfeld
+12:00 PM — 🇸🇮 Ljubljana Vihor vs 🇱🇮 Rhein Lions
+2:00 PM — 🇨🇭 Matterhorn FC vs 🇸🇰 Bratislava Falcons
+2:00 PM — 🇦🇹 SV Eisenwald vs 🇸🇮 Maribor Crown
+4:00 PM — 🇸🇮 FC Drava vs 🇸🇰 Kosice Dynamo
+4:00 PM — 🇱🇮 FC Alpenstern vs 🇭🇺 Pecs Vihar
+
+==========================================================
+MATCHDAY 20 — SATURDAY, MARCH 27, 2027 / SUNDAY, MARCH 28, 2027
+----------------------------------------------------------
+
+SATURDAY — March 27, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇩🇪 Dresden Adler
+10:00 AM — 🇱🇮 FC Alpenstern vs 🇱🇮 FC Vaduzberg
+12:00 PM — 🇨🇿 Slavia Hradec vs 🇨🇿 Brno Viktoria
+12:00 PM — 🇨🇿 FK Vltava Praha vs 🇸🇮 FC Drava
+2:00 PM — 🇨🇿 FC Moravsky vs 🇭🇺 Debrecen Vasas
+2:00 PM — 🇸🇰 MSK Dunaj vs 🇭🇺 Pecs Vihar
+4:00 PM — 🇸🇮 NK Triglav vs 🇭🇺 FC Danubia
+4:00 PM — 🇩🇪 SV Rheinwald vs 🇸🇰 Kosice Dynamo
+
+SUNDAY — March 28, 2027 (8 matches)
+10:00 AM — 🇸🇮 Maribor Crown vs 🇭🇺 Budapest Korona
+10:00 AM — 🇩🇪 VfB Eisenstadt vs 🇨🇭 Matterhorn FC
+12:00 PM — 🇸🇮 Ljubljana Vihor vs 🇵🇱 Gornik Bialystok
+12:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇩🇪 FC Kronenburg
+2:00 PM — 🇵🇱 KS Krakovia vs 🇸🇰 Bratislava Falcons
+2:00 PM — 🇱🇮 Rhein Lions vs 🇵🇱 FC Wislania
+4:00 PM — 🇸🇰 FC Tatran vs 🇵🇱 Warsaw Legion
+4:00 PM — 🇦🇹 Vienna Adler vs 🇦🇹 SV Eisenwald
+
+==========================================================
+MATCHDAY 21 — SATURDAY, APRIL 3, 2027 / SUNDAY, APRIL 4, 2027
+----------------------------------------------------------
+
+SATURDAY — April 3, 2027 (8 matches)
+10:00 AM — 🇦🇹 FC Alpenbruck vs 🇱🇮 Rhein Lions
+10:00 AM — 🇵🇱 FC Wislania vs 🇵🇱 Warsaw Legion
+12:00 PM — 🇨🇿 FC Moravsky vs 🇨🇿 FK Vltava Praha
+12:00 PM — 🇨🇿 Slavia Hradec vs 🇭🇺 Pecs Vihar
+2:00 PM — 🇱🇮 FC Alpenstern vs 🇩🇪 FC Kronenburg
+2:00 PM — 🇭🇺 Budapest Korona vs 🇦🇹 SV Eisenwald
+4:00 PM — 🇩🇪 Dresden Adler vs 🇸🇮 Maribor Crown
+4:00 PM — 🇩🇪 VfB Eisenstadt vs 🇸🇮 NK Triglav
+
+SUNDAY — April 4, 2027 (8 matches)
+10:00 AM — 🇸🇮 Ljubljana Vihor vs 🇩🇪 SV Rheinwald
+10:00 AM — 🇭🇺 FC Danubia vs 🇸🇰 Kosice Dynamo
+12:00 PM — 🇦🇹 Grazer Sturmfeld vs 🇸🇰 FC Tatran
+12:00 PM — 🇵🇱 Gornik Bialystok vs 🇭🇺 Debrecen Vasas
+2:00 PM — 🇨🇭 Matterhorn FC vs 🇨🇿 Brno Viktoria
+2:00 PM — 🇦🇹 Vienna Adler vs 🇸🇮 FC Drava
+4:00 PM — 🇵🇱 KS Krakovia vs 🇱🇮 FC Vaduzberg
+4:00 PM — 🇸🇰 Bratislava Falcons vs 🇸🇰 MSK Dunaj
+</script>
+
+<!-- RAW PAST RESULTS DATA -->
+<script type="text/plain" id="pastResultsData">
+🇦🇹 FC Alpenbruck 2–1 🇨🇭 Matterhorn FC
+🇸🇮 Maribor Crown 5–2 🇦🇹 FC Alpenbruck
+🇦🇹 FC Alpenbruck 2–2 🇸🇮 FC Drava
+🇸🇮 Ljubljana Vihor 1–2 🇦🇹 FC Alpenbruck
+🇦🇹 FC Alpenbruck 2–1 🇸🇮 NK Triglav
+🇸🇰 Kosice Dynamo 2–1 🇦🇹 FC Alpenbruck
+🇦🇹 FC Alpenbruck 2–5 🇸🇰 MSK Dunaj
+🇸🇰 Bratislava Falcons 3–2 🇦🇹 FC Alpenbruck
+🇦🇹 FC Alpenbruck 5–1 🇸🇰 FC Tatran
+🇵🇱 FC Wislania 0–3 🇦🇹 FC Alpenbruck
+🇦🇹 Vienna Adler 2–3 🇸🇮 Maribor Crown
+🇨🇭 Matterhorn FC 2–1 🇸🇮 FC Drava
+🇸🇮 Maribor Crown 0–1 🇸🇮 Ljubljana Vihor
+🇸🇮 FC Drava 2–2 🇸🇮 NK Triglav
+🇸🇮 Ljubljana Vihor 5–0 🇸🇰 Kosice Dynamo
+🇸🇮 NK Triglav 2–2 🇸🇰 MSK Dunaj
+🇸🇰 Kosice Dynamo 1–1 🇸🇰 Bratislava Falcons
+🇸🇰 MSK Dunaj 3–0 🇸🇰 FC Tatran
+🇸🇰 Bratislava Falcons 1–0 🇵🇱 FC Wislania
+🇸🇰 FC Tatran 3–1 🇵🇱 Gornik Bialystok
+🇸🇮 FC Drava 2–1 🇦🇹 SV Eisenwald
+🇸🇮 Ljubljana Vihor 1–0 🇦🇹 Vienna Adler
+🇸🇮 NK Triglav 5–2 🇨🇭 Matterhorn FC
+🇸🇰 Kosice Dynamo 0–1 🇸🇮 Maribor Crown
+🇸🇰 MSK Dunaj 2–0 🇸🇮 FC Drava
+🇸🇰 Bratislava Falcons 3–3 🇸🇮 Ljubljana Vihor
+🇸🇰 FC Tatran 2–0 🇸🇮 NK Triglav
+🇵🇱 FC Wislania 1–2 🇸🇰 Kosice Dynamo
+🇵🇱 Gornik Bialystok 1–1 🇸🇰 MSK Dunaj
+🇵🇱 Warsaw Legion 0–2 🇸🇰 Bratislava Falcons
+🇦🇹 Grazer Sturmfeld 2–2 🇸🇮 Ljubljana Vihor
+🇦🇹 SV Eisenwald 0–4 🇸🇮 NK Triglav
+🇦🇹 Vienna Adler 1–0 🇸🇰 Kosice Dynamo
+🇨🇭 Matterhorn FC 4–3 🇸🇰 MSK Dunaj
+🇸🇮 Maribor Crown 2–1 🇸🇰 Bratislava Falcons
+🇸🇮 FC Drava 4–2 🇸🇰 FC Tatran
+🇸🇮 Ljubljana Vihor 1–0 🇵🇱 FC Wislania
+🇸🇮 NK Triglav 2–0 🇵🇱 Gornik Bialystok
+🇸🇰 Kosice Dynamo 1–0 🇵🇱 Warsaw Legion
+🇸🇰 MSK Dunaj 2–3 🇵🇱 KS Krakovia
+🇸🇮 NK Triglav 0–2 🇨🇿 FK Vltava Praha
+🇸🇰 Kosice Dynamo 0–2 🇦🇹 Grazer Sturmfeld
+🇸🇰 MSK Dunaj 1–0 🇦🇹 SV Eisenwald
+🇸🇰 Bratislava Falcons 2–1 🇦🇹 Vienna Adler
+🇸🇰 FC Tatran 3–4 🇨🇭 Matterhorn FC
+🇵🇱 FC Wislania 2–3 🇸🇮 Maribor Crown
+🇵🇱 Gornik Bialystok 3–4 🇸🇮 FC Drava
+🇵🇱 Warsaw Legion 0–3 🇸🇮 Ljubljana Vihor
+🇵🇱 KS Krakovia 4–1 🇸🇮 NK Triglav
+🇱🇮 FC Alpenstern 0–2 🇸🇰 Kosice Dynamo
+🇨🇿 Brno Viktoria 3–1 🇸🇰 Kosice Dynamo
+🇨🇿 FK Vltava Praha 1–0 🇸🇰 MSK Dunaj
+🇦🇹 Grazer Sturmfeld 3–1 🇸🇰 Bratislava Falcons
+🇦🇹 SV Eisenwald 2–1 🇸🇰 FC Tatran
+🇦🇹 Vienna Adler 0–2 🇵🇱 FC Wislania
+🇨🇭 Matterhorn FC 0–0 🇵🇱 Gornik Bialystok
+🇸🇮 Maribor Crown 2–1 🇵🇱 Warsaw Legion
+🇸🇮 FC Drava 2–3 🇵🇱 KS Krakovia
+🇸🇮 Ljubljana Vihor 2–0 🇱🇮 FC Alpenstern
+🇸🇮 NK Triglav 5–2 🇱🇮 Rhein Lions
+🇸🇰 MSK Dunaj 3–2 🇨🇿 FC Moravsky
+🇸🇰 Bratislava Falcons 1–1 🇨🇿 Brno Viktoria
+🇸🇰 FC Tatran 2–2 🇨🇿 FK Vltava Praha
+🇵🇱 FC Wislania 0–3 🇦🇹 Grazer Sturmfeld
+🇵🇱 Gornik Bialystok 3–1 🇦🇹 SV Eisenwald
+🇵🇱 Warsaw Legion 1–1 🇦🇹 Vienna Adler
+🇵🇱 KS Krakovia 2–0 🇨🇭 Matterhorn FC
+🇱🇮 FC Alpenstern 1–1 🇸🇮 Maribor Crown
+🇱🇮 Rhein Lions 3–6 🇸🇮 FC Drava
+🇱🇮 FC Vaduzberg 2–4 🇸🇮 Ljubljana Vihor
+🇨🇿 Slavia Hradec 1–2 🇸🇰 Bratislava Falcons
+🇨🇿 FC Moravsky 2–1 🇸🇰 FC Tatran
+🇨🇿 Brno Viktoria 7–2 🇵🇱 FC Wislania
+🇨🇿 FK Vltava Praha 5–0 🇵🇱 Gornik Bialystok
+🇦🇹 Grazer Sturmfeld 2–1 🇵🇱 Warsaw Legion
+🇦🇹 SV Eisenwald 0–5 🇵🇱 KS Krakovia
+🇦🇹 Vienna Adler 0–3 🇱🇮 FC Alpenstern
+🇨🇭 Matterhorn FC 1–0 🇱🇮 Rhein Lions
+🇸🇮 Maribor Crown 2–1 🇱🇮 FC Vaduzberg
+🇸🇮 FC Drava 1–2 🇭🇺 Pecs Vihar
+🇸🇰 FC Tatran 1–0 🇩🇪 FC Kronenburg
+🇵🇱 FC Wislania 0–3 🇨🇿 Slavia Hradec
+🇵🇱 Gornik Bialystok 0–3 🇨🇿 FC Moravsky
+🇵🇱 Warsaw Legion 1–3 🇨🇿 Brno Viktoria
+🇵🇱 KS Krakovia 4–5 🇨🇿 FK Vltava Praha
+🇱🇮 FC Alpenstern 1–1 🇦🇹 Grazer Sturmfeld
+🇱🇮 Rhein Lions 2–1 🇦🇹 SV Eisenwald
+🇱🇮 FC Vaduzberg 2–0 🇦🇹 Vienna Adler
+🇭🇺 Pecs Vihar 1–5 🇨🇭 Matterhorn FC
+🇭🇺 Debrecen Vasas 0–3 🇸🇮 Maribor Crown
+🇩🇪 Dresden Adler 5–0 🇵🇱 FC Wislania
+🇩🇪 FC Kronenburg 2–1 🇵🇱 Gornik Bialystok
+🇨🇿 Slavia Hradec 2–2 🇵🇱 Warsaw Legion
+🇨🇿 FC Moravsky 3–1 🇵🇱 KS Krakovia
+🇨🇿 Brno Viktoria 2–3 🇱🇮 FC Alpenstern
+🇨🇿 FK Vltava Praha 2–0 🇱🇮 Rhein Lions
+🇦🇹 Grazer Sturmfeld 1–2 🇱🇮 FC Vaduzberg
+🇦🇹 SV Eisenwald 1–2 🇭🇺 Pecs Vihar
+🇦🇹 Vienna Adler 1–0 🇭🇺 Debrecen Vasas
+🇨🇭 Matterhorn FC 3–1 🇭🇺 FC Danubia
+🇵🇱 Gornik Bialystok 1–1 🇩🇪 SV Rheinwald
+🇵🇱 Warsaw Legion 0–4 🇩🇪 Dresden Adler
+🇵🇱 KS Krakovia 1–0 🇩🇪 FC Kronenburg
+🇱🇮 FC Alpenstern 0–1 🇨🇿 Slavia Hradec
+🇱🇮 Rhein Lions 2–1 🇨🇿 FC Moravsky
+🇱🇮 FC Vaduzberg 2–4 🇨🇿 Brno Viktoria
+🇭🇺 Pecs Vihar 2–2 🇨🇿 FK Vltava Praha
+🇭🇺 Debrecen Vasas 3–3 🇦🇹 Grazer Sturmfeld
+🇭🇺 FC Danubia 0–1 🇦🇹 SV Eisenwald
+🇭🇺 Budapest Korona 0–0 🇦🇹 Vienna Adler
+🇩🇪 VfB Eisenstadt 3–0 🇵🇱 Warsaw Legion
+🇩🇪 SV Rheinwald 1–1 🇵🇱 KS Krakovia
+🇩🇪 Dresden Adler 2–1 🇱🇮 FC Alpenstern
+🇩🇪 FC Kronenburg 3–2 🇱🇮 Rhein Lions
+🇨🇿 Slavia Hradec 0–2 🇱🇮 FC Vaduzberg
+🇨🇿 FC Moravsky 2–0 🇭🇺 Pecs Vihar
+🇨🇿 Brno Viktoria 2–1 🇭🇺 Debrecen Vasas
+🇨🇿 FK Vltava Praha 3–0 🇭🇺 FC Danubia
+🇦🇹 Grazer Sturmfeld 1–1 🇭🇺 Budapest Korona
+🇦🇹 SV Eisenwald 1–1 🇩🇪 VfB Eisenstadt
+</script>
+
+<script>
 /* ══════════════════════════════════════════════════════════════
-   DATA INITIALIZATION & STORAGE
+   SEEDED RANDOM NUMBER GENERATOR
    ══════════════════════════════════════════════════════════════ */
-const DEFAULT_CLUBS = [
-  { flag:"🇸🇮", country:"Slovenia",      name:"Maribor Crown",       w:7, d:1, l:1, gf:19, ga:11 },
-  { flag:"🇨🇿", country:"Czechia",       name:"FK Vltava Praha",     w:7, d:2, l:0, gf:24, ga: 9 },
-  { flag:"🇸🇮", country:"Slovenia",      name:"Ljubljana Vihor",     w:6, d:2, l:1, gf:19, ga: 7 },
-  { flag:"🇩🇪", country:"Germany",       name:"Dresden Adler",       w:7, d:1, l:1, gf:31, ga:10 },
-  { flag:"🇵🇱", country:"Poland",        name:"KS Krakovia",         w:6, d:1, l:2, gf:28, ga:12 },
-  { flag:"🇨🇿", country:"Czechia",       name:"Brno Viktoria",       w:6, d:2, l:1, gf:25, ga:13 },
-  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Vaduzberg",        w:6, d:0, l:3, gf:20, ga:16 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"MSK Dunaj",           w:5, d:2, l:2, gf:20, ga:12 },
-  { flag:"🇦🇹", country:"Austria",       name:"Grazer Sturmfeld",    w:4, d:4, l:1, gf:18, ga:11 },
-  { flag:"🇩🇪", country:"Germany",       name:"VfB Eisenstadt",      w:5, d:1, l:3, gf:16, ga:12 },
-  { flag:"🇨🇭", country:"Switzerland",   name:"Matterhorn FC",       w:5, d:1, l:3, gf:19, ga:17 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"Bratislava Falcons",  w:4, d:3, l:2, gf:15, ga:14 },
-  { flag:"🇩🇪", country:"Germany",       name:"FC Kronenburg",       w:5, d:0, l:4, gf:13, ga:15 },
-  { flag:"🇸🇮", country:"Slovenia",      name:"FC Drava",            w:4, d:2, l:3, gf:23, ga:20 },
-  { flag:"🇦🇹", country:"Austria",       name:"FC Alpenbruck",       w:4, d:1, l:4, gf:20, ga:21 },
-  { flag:"🇨🇿", country:"Czechia",       name:"FC Moravsky",         w:4, d:0, l:5, gf:14, ga:12 },
-  { flag:"🇨🇿", country:"Czechia",       name:"Slavia Hradec",       w:4, d:2, l:3, gf:13, ga: 8 },
-  { flag:"🇸🇮", country:"Slovenia",      name:"NK Triglav",          w:3, d:2, l:4, gf:17, ga:16 },
-  { flag:"🇱🇮", country:"Liechtenstein", name:"Rhein Lions",         w:3, d:2, l:4, gf:12, ga:16 },
-  { flag:"🇩🇪", country:"Germany",       name:"SV Rheinwald",        w:2, d:5, l:2, gf:12, ga:11 },
-  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Alpenstern",       w:2, d:4, l:3, gf:11, ga:11 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"Kosice Dynamo",       w:3, d:1, l:5, gf: 7, ga:15 },
-  { flag:"🇭🇺", country:"Hungary",       name:"Budapest Korona",     w:2, d:3, l:4, gf:11, ga:18 },
-  { flag:"🇭🇺", country:"Hungary",       name:"Pecs Vihar",          w:2, d:3, l:4, gf: 8, ga:15 },
-  { flag:"🇸🇰", country:"Slovakia",      name:"FC Tatran",           w:2, d:1, l:6, gf:13, ga:22 },
-  { flag:"🇭🇺", country:"Hungary",       name:"Debrecen Vasas",      w:1, d:3, l:5, gf: 8, ga:13 },
-  { flag:"🇦🇹", country:"Austria",       name:"Vienna Adler",        w:2, d:0, l:7, gf: 6, ga:14 },
-  { flag:"🇵🇱", country:"Poland",        name:"Gornik Bialystok",    w:1, d:3, l:5, gf: 9, ga:19 },
-  { flag:"🇦🇹", country:"Austria",       name:"SV Eisenwald",        w:2, d:0, l:7, gf: 7, ga:20 },
-  { flag:"🇵🇱", country:"Poland",        name:"Warsaw Legion",       w:1, d:1, l:7, gf: 6, ga:21 },
-  { flag:"🇭🇺", country:"Hungary",       name:"FC Danubia",          w:1, d:1, l:7, gf: 5, ga:20 },
-  { flag:"🇵🇱", country:"Poland",        name:"FC Wislania",         w:1, d:0, l:8, gf: 7, ga:25 }
-];
+function mulberry32(a) {
+    return function() {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
 
-let clubs = [];
-let matches = [];
-let matchIdCounter = 0;
-let activeMatchId = null;
-let useFirebase = false;
-let db = null;
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; 
+    }
+    return Math.abs(hash);
+}
 
-function checkFirebase() {
-    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
-            useFirebase = true;
+/* ══════════════════════════════════════════════════════════════
+   PARSERS & DATA LOADING
+   ══════════════════════════════════════════════════════════════ */
+const FIRST_NAMES = ["J.", "M.", "T.", "L.", "P.", "A.", "D.", "R.", "K.", "S.", "F.", "B.", "C.", "E.", "G.", "H.", "I.", "O.", "V.", "N.", "U.", "Z.", "Y.", "X."];
+const LAST_NAMES = ["Novák", "Kowalski", "Horváth", "Schmid", "Nowak", "Kovács", "Fischer", "Weber", "Mägi", "Varga", "Popescu", "Müller", "Jensen", "Lindqvist", "Bakker", "Šimić", "Petrov", "Virtanen", "Dvořák", "Horvat", "Lehner", "Kováč", "Kranjc", "Mlakar", "Novak", "Zupan", "Kralj", "Pavlin", "Kozel", "Babič", "Jurić", "Matić", "Babić", "Tomić", "Kovačić", "Božić", "Blažević", "Grgić", "Pavlović", "Radić"];
+
+function parseSchedule(text) {
+    const matches = [];
+    let currentMatchday = 0;
+    let currentDate = null;
+    const lines = text.split('\n');
+    const months = { 'JANUARY':0, 'FEBRUARY':1, 'MARCH':2, 'APRIL':3, 'MAY':4, 'JUNE':5, 'JULY':6, 'AUGUST':7, 'SEPTEMBER':8, 'OCTOBER':9, 'NOVEMBER':10, 'DECEMBER':11 };
+
+    for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        if (line.startsWith('MATCHDAY')) {
+            const match = line.match(/MATCHDAY (\d+)/);
+            if (match) currentMatchday = parseInt(match[1], 10) + 10; // Offset by 10
+        }
+
+        if (line.startsWith('SATURDAY') || line.startsWith('SUNDAY')) {
+            const match = line.match(/—\s+(\w+)\s+(\d+),\s+(\d+)/);
+            if (match) {
+                const month = months[match[1].toUpperCase()];
+                const day = parseInt(match[2], 10);
+                const year = parseInt(match[3], 10);
+                if (month !== undefined) currentDate = new Date(year, month, day);
+            }
+        }
+
+        if (line.match(/^\d{1,2}:\d{2} (AM|PM)/) && currentDate) {
+            const timeMatch = line.match(/^(\d{1,2}):(\d{2}) (AM|PM)/);
+            let hours = parseInt(timeMatch[1], 10);
+            const minutes = parseInt(timeMatch[2], 10);
+            const ampm = timeMatch[3];
             
-            // Listen to real-time updates
-            onValue(ref(db, 'cel'), (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    clubs = data.clubs || DEFAULT_CLUBS;
-                    matches = data.matches ? Object.values(data.matches) : [];
-                    updateStats();
-                    renderMatches();
-                } else {
-                    // Initialize DB if empty
-                    set(ref(db, 'cel'), { clubs: DEFAULT_CLUBS, matches: {} });
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+
+            const teamsMatch = line.match(/—\s*(.+?)\s*vs\s*(.+)/);
+            if (teamsMatch) {
+                const cleanName = str => str.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/—/g, '').trim();
+                const home = cleanName(teamsMatch[1]);
+                const away = cleanName(teamsMatch[2]);
+
+                const startTime = new Date(currentDate);
+                startTime.setHours(hours, minutes, 0, 0);
+
+                const matchId = `m_${currentMatchday}_${home}_${away}`.replace(/\s/g, '');
+                const rng = mulberry32(hashString(matchId));
+
+                // Generate Events
+                const pick = arr => arr[Math.floor(rng() * arr.length)];
+                const randInt = (min, max) => Math.floor(rng() * (max - min + 1)) + min;
+                
+                const poissonRandom = (lambda) => {
+                    const L = Math.exp(-lambda);
+                    let k = 0, p = 1;
+                    do { k++; p *= rng(); } while (p > L);
+                    return k - 1;
+                };
+
+                const getRandomPlayer = () => `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`;
+
+                const homeStr = 0.8 + (hashString(home) % 50) / 100;
+                const awayStr = 0.7 + (hashString(away) % 50) / 100;
+                
+                const homeGoals = Math.min(poissonRandom(1.35 * homeStr * 1.15), 6);
+                const awayGoals = Math.min(poissonRandom(1.35 * awayStr * 0.95), 6);
+
+                const events = [];
+                const injuryTime1H = randInt(1, 4);
+                const injuryTime2H = randInt(2, 6);
+                const maxMinute = 90 + injuryTime2H;
+
+                for (let i = 0; i < homeGoals; i++) {
+                    events.push({ minute: randInt(1, maxMinute), type: "goal", team: "home", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${home}!` });
                 }
-            });
-        } catch (e) {
-            console.error("Firebase init error", e);
-            useFirebase = false;
+                for (let i = 0; i < awayGoals; i++) {
+                    events.push({ minute: randInt(1, maxMinute), type: "goal", team: "away", desc: `⚽ GOAL! ${getRandomPlayer()} scores for ${away}!` });
+                }
+
+                const actionTypes = ['foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
+                for (let i = 0; i < randInt(15, 25); i++) {
+                    const team = rng() > 0.5 ? 'home' : 'away';
+                    const teamName = team === 'home' ? home : away;
+                    const oppName = team === 'home' ? away : home;
+                    const action = pick(actionTypes);
+                    let desc = '';
+                    if (action === 'foul') desc = `Foul on ${getRandomPlayer()} (${teamName}). Freekick awarded to ${oppName}.`;
+                    else if (action === 'shot_wide') desc = `Shot hit wide of the goal by ${getRandomPlayer()} (${teamName}).`;
+                    else if (action === 'shot_save') desc = `Great save! The keeper denies ${getRandomPlayer()} (${teamName}).`;
+                    else if (action === 'corner') desc = `Corner awarded to ${teamName}.`;
+                    else if (action === 'offside') desc = `Offside against ${getRandomPlayer()} (${teamName}). Freekick awarded to ${oppName}.`;
+                    events.push({ minute: randInt(1, maxMinute), type: "action", team: team, desc: desc });
+                }
+
+                for(let i = 0; i < randInt(2, 5); i++) {
+                    const isHome = rng() > 0.5;
+                    events.push({ minute: randInt(15, maxMinute), type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card for ${getRandomPlayer()} (${isHome ? home : away}).` });
+                }
+
+                events.sort((a,b) => a.minute - b.minute);
+
+                matches.push({
+                    id: matchId,
+                    matchday: currentMatchday,
+                    homeTeam: home,
+                    awayTeam: away,
+                    startTime: startTime.getTime(),
+                    injuryTime1H,
+                    injuryTime2H,
+                    events
+                });
+            }
         }
     }
-    
-    if (!useFirebase) {
-        document.getElementById('firebase-warning').style.display = 'block';
-        loadLocalData();
-        updateStats();
-        renderMatches();
+    return matches;
+}
+
+function parsePastResults(text) {
+    const results = [];
+    const lines = text.split('\n');
+    for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+        
+        const match = line.match(/^[\u{1F1E6}-\u{1F1FF}\s]*(.+?)\s*(\d+)\s*[–-]\s*(\d+)\s*[\u{1F1E6}-\u{1F1FF}\s]*(.+)$/u);
+        if (match) {
+            results.push({
+                home: match[1].trim(),
+                homeScore: parseInt(match[2]),
+                awayScore: parseInt(match[3]),
+                away: match[4].trim()
+            });
+        }
     }
+    return results;
 }
 
-function loadLocalData() {
-  const savedClubs = localStorage.getItem('cel_clubs');
-  const savedMatches = localStorage.getItem('cel_matches');
-  
-  if (savedClubs) clubs = JSON.parse(savedClubs);
-  else clubs = DEFAULT_CLUBS.map(c => ({ ...c }));
-  
-  if (savedMatches) {
-    matches = JSON.parse(savedMatches);
-    matches.forEach(m => {
-      if (m.injuryTime1H === undefined) m.injuryTime1H = randInt(1, 3);
-      if (m.injuryTime2H === undefined) m.injuryTime2H = randInt(2, 5);
-    });
-    matchIdCounter = matches.reduce((max, m) => Math.max(max, m.id), 0) + 1;
-  } else {
-    matches = [];
-  }
-}
+// UPDATED BASE_CLUBS FROM MATCHDAY 10 STANDINGS
+const BASE_CLUBS = [
+  { flag:"🇨🇿", country:"Czechia",       name:"FK Vltava Praha",     w:8, d:2, l:0, gf:28, ga:12 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"Maribor Crown",       w:8, d:1, l:1, gf:22, ga:11 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"Ljubljana Vihor",     w:7, d:2, l:1, gf:23, ga:9 },
+  { flag:"🇨🇿", country:"Czechia",       name:"Brno Viktoria",       w:7, d:2, l:1, gf:27, ga:14 },
+  { flag:"🇩🇪", country:"Germany",       name:"Dresden Adler",       w:7, d:1, l:2, gf:34, ga:14 },
+  { flag:"🇵🇱", country:"Poland",        name:"KS Krakovia",         w:7, d:1, l:2, gf:31, ga:14 },
+  { flag:"🇨🇭", country:"Switzerland",   name:"Matterhorn FC",       w:6, d:1, l:3, gf:22, ga:18 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"Bratislava Falcons",  w:5, d:3, l:2, gf:17, ga:14 },
+  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Vaduzberg",        w:6, d:0, l:4, gf:22, ga:20 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"MSK Dunaj",           w:5, d:2, l:3, gf:22, ga:15 },
+  { flag:"🇦🇹", country:"Austria",       name:"Grazer Sturmfeld",    w:4, d:5, l:1, gf:19, ga:12 },
+  { flag:"🇩🇪", country:"Germany",       name:"VfB Eisenstadt",      w:5, d:2, l:3, gf:17, ga:13 },
+  { flag:"🇦🇹", country:"Austria",       name:"FC Alpenbruck",       w:5, d:1, l:4, gf:23, ga:21 },
+  { flag:"🇨🇿", country:"Czechia",       name:"FC Moravsky",         w:5, d:0, l:5, gf:17, ga:13 },
+  { flag:"🇩🇪", country:"Germany",       name:"FC Kronenburg",       w:5, d:0, l:5, gf:14, ga:17 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"NK Triglav",          w:4, d:2, l:4, gf:22, ga:18 },
+  { flag:"🇨🇿", country:"Czechia",       name:"Slavia Hradec",       w:4, d:2, l:4, gf:14, ga:11 },
+  { flag:"🇸🇮", country:"Slovenia",      name:"FC Drava",            w:4, d:2, l:4, gf:24, ga:22 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"Kosice Dynamo",       w:4, d:1, l:5, gf:9, ga:15 },
+  { flag:"🇩🇪", country:"Germany",       name:"SV Rheinwald",        w:2, d:6, l:2, gf:13, ga:12 },
+  { flag:"🇭🇺", country:"Hungary",       name:"Pecs Vihar",          w:3, d:3, l:4, gf:10, ga:16 },
+  { flag:"🇱🇮", country:"Liechtenstein", name:"Rhein Lions",         w:3, d:2, l:5, gf:14, ga:21 },
+  { flag:"🇱🇮", country:"Liechtenstein", name:"FC Alpenstern",       w:2, d:4, l:4, gf:11, ga:13 },
+  { flag:"🇸🇰", country:"Slovakia",      name:"FC Tatran",           w:3, d:1, l:6, gf:16, ga:23 },
+  { flag:"🇭🇺", country:"Hungary",       name:"Budapest Korona",     w:2, d:4, l:4, gf:11, ga:18 },
+  { flag:"🇦🇹", country:"Austria",       name:"Vienna Adler",        w:2, d:1, l:7, gf:6, ga:14 },
+  { flag:"🇦🇹", country:"Austria",       name:"SV Eisenwald",        w:2, d:1, l:7, gf:8, ga:21 },
+  { flag:"🇭🇺", country:"Hungary",       name:"Debrecen Vasas",      w:1, d:3, l:6, gf:8, ga:16 },
+  { flag:"🇵🇱", country:"Poland",        name:"Gornik Bialystok",    w:1, d:3, l:6, gf:10, ga:22 },
+  { flag:"🇭🇺", country:"Hungary",       name:"FC Danubia",          w:1, d:1, l:8, gf:6, ga:23 },
+  { flag:"🇵🇱", country:"Poland",        name:"Warsaw Legion",       w:1, d:1, l:8, gf:6, ga:23 },
+  { flag:"🇵🇱", country:"Poland",        name:"FC Wislania",         w:1, d:0, l:9, gf:7, ga:28 }
+];
 
-function saveLocalData() {
-  if (useFirebase) return;
-  localStorage.setItem('cel_clubs', JSON.stringify(clubs));
-  localStorage.setItem('cel_matches', JSON.stringify(matches));
-}
+const scheduleText = document.getElementById('scheduleData').textContent;
+const MATCH_SCHEDULE = parseSchedule(scheduleText);
+const pastResultsText = document.getElementById('pastResultsData').textContent;
+const PAST_RESULTS = parsePastResults(pastResultsText);
+
+let activeMatchId = null;
+let activeTeamName = null;
+
+// Populate Matchday Filter
+const matchdaySelect = document.getElementById('matchdayFilter');
+const matchdays = [...new Set(MATCH_SCHEDULE.map(m => m.matchday))].sort((a,b) => a-b);
+matchdays.forEach(md => {
+    const opt = document.createElement('option');
+    opt.value = md;
+    opt.textContent = `Matchday ${md}`;
+    matchdaySelect.appendChild(opt);
+});
 
 /* ══════════════════════════════════════════════════════════════
-   MATCH SIMULATION ENGINE
+   SQUAD GENERATION LOGIC
    ══════════════════════════════════════════════════════════════ */
-const FIRST_NAMES = ["J.", "M.", "T.", "L.", "P.", "A.", "D.", "R.", "K.", "S.", "F.", "B.", "C.", "E.", "G.", "H.", "I.", "O.", "V."];
-const LAST_NAMES = ["Novák", "Kowalski", "Horváth", "Schmid", "Nowak", "Kovács", "Fischer", "Weber", "Mägi", "Varga", "Popescu", "Müller", "Jensen", "Lindqvist", "Bakker", "Šimić", "Petrov", "Virtanen", "Dvořák", "Horvat", "Lehner", "Kováč"];
+const FLAGS = ["🇦🇹", "🇨🇿", "🇩🇪", "🇭🇺", "🇱🇮", "🇵🇱", "🇸🇰", "🇸🇮", "🇨🇭", "🇭🇷", "🇷🇸", "🇪🇸", "🇵🇹", "🇮🇹", "🇫🇷", "🇳🇱", "🇧🇪", "🇩🇰", "🇸🇪"];
 
-function getRandomPlayerName() { return `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`; }
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function generateSquad(teamName, teamCountry) {
+    const squad = [];
+    
+    // Matterhorn FC Hardcoded 11
+    if (teamName === "Matterhorn FC") {
+        const mfcPlayers = [
+            { name: "Miguel Banuz", nat: "🇪🇸", pos: "GK" },
+            { name: "Lukas Steiner", nat: "🇨🇭", pos: "DEF" },
+            { name: "Niko Varga", nat: "🇭🇷", pos: "DEF" },
+            { name: "Matthias Frei", nat: "🇨🇭", pos: "DEF" },
+            { name: "Adrien Moreau", nat: "🇫🇷", pos: "DEF" },
+            { name: "Jonas Baumann", nat: "🇨🇭", pos: "MID" },
+            { name: "Milan Kovačevič", nat: "🇷🇸", pos: "MID" },
+            { name: "Daniel Costa", nat: "🇵🇹", pos: "MID" },
+            { name: "Marco Bellini", nat: "🇮🇹", pos: "FWD" },
+            { name: "Alleksander Ilić", nat: "🇷🇸", pos: "FWD" },
+            { name: "Luka Rdekovič", nat: "🇭🇷", pos: "FWD", star: true }
+        ];
+        squad.push(...mfcPlayers);
+    } else {
+        // Generate 11 starters
+        const posDist = ["GK", "DEF", "DEF", "DEF", "DEF", "MID", "MID", "MID", "FWD", "FWD", "FWD"];
+        posDist.forEach((pos, i) => {
+            const rng = mulberry32(hashString(teamName + "_start_" + i));
+            let nat = teamCountry;
+            if (rng() > 0.6) nat = FLAGS[Math.floor(rng() * FLAGS.length)];
+            const name = `${FIRST_NAMES[Math.floor(rng() * FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(rng() * LAST_NAMES.length)]}`;
+            squad.push({ name, nat, pos });
+        });
+    }
 
-function poissonRandom(lambda) {
-    const L = Math.exp(-lambda);
-    let k = 0;
-    let p = 1;
-    do { k++; p *= Math.random(); } while (p > L);
-    return k - 1;
+    // Generate 7 bench + 5 reserves for ALL teams
+    const benchDist = ["GK", "DEF", "DEF", "MID", "MID", "FWD", "FWD", "GK", "DEF", "MID", "FWD", "DEF"];
+    benchDist.forEach((pos, i) => {
+        const rng = mulberry32(hashString(teamName + "_bench_" + i));
+        let nat = teamCountry;
+        if (rng() > 0.5) nat = FLAGS[Math.floor(rng() * FLAGS.length)];
+        const name = `${FIRST_NAMES[Math.floor(rng() * FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(rng() * LAST_NAMES.length)]}`;
+        squad.push({ name, nat, pos });
+    });
+
+    // Add stats placeholders
+    squad.forEach(p => {
+        p.apps = 0;
+        p.goals = 0;
+        p.assists = 0;
+    });
+
+    return squad;
 }
 
-function generateMatchEvents(homeTeam, awayTeam) {
-    const homeData = clubs.find(c => c.name === homeTeam);
-    const awayData = clubs.find(c => c.name === awayTeam);
+function calculateSquadStats(teamName, squad) {
+    // 1. Process Past Matches (Matchdays 1-10)
+    const pastTeamMatches = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
     
-    const homePPG = (homeData.w * 3 + homeData.d) / Math.max(1, (homeData.w + homeData.d + homeData.l));
-    const awayPPG = (awayData.w * 3 + awayData.d) / Math.max(1, (awayData.w + awayData.d + awayData.l));
-    
-    const homeStrength = 0.8 + (homePPG * 0.2);
-    const awayStrength = 0.7 + (awayPPG * 0.2);
-
-    const baseGoals = 1.35;
-    const homeLambda = baseGoals * homeStrength * 1.15;
-    const awayLambda = baseGoals * awayStrength * 0.95;
-
-    let homeGoals = Math.min(poissonRandom(homeLambda), 6);
-    let awayGoals = Math.min(poissonRandom(awayLambda), 6);
-
-    const events = [];
-    const injuryTime1H = randInt(1, 4);
-    const injuryTime2H = randInt(2, 6);
-    const maxMinute = 90 + injuryTime2H;
-
-    for (let i = 0; i < homeGoals; i++) {
-        const scorer = getRandomPlayerName();
-        const hasAssist = Math.random() > 0.4;
-        const assist = hasAssist ? ` Assisted by ${getRandomPlayerName()}.` : '';
-        events.push({ minute: randInt(1, maxMinute), type: "goal", team: "home", desc: `⚽ GOAL! ${scorer} scores for ${homeTeam}!${assist}` });
-    }
-    for (let i = 0; i < awayGoals; i++) {
-        const scorer = getRandomPlayerName();
-        const hasAssist = Math.random() > 0.4;
-        const assist = hasAssist ? ` Assisted by ${getRandomPlayerName()}.` : '';
-        events.push({ minute: randInt(1, maxMinute), type: "goal", team: "away", desc: `⚽ GOAL! ${scorer} scores for ${awayTeam}!${assist}` });
-    }
-
-    const actionTypes = ['foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
-    for (let i = 0; i < randInt(18, 28); i++) {
-        const team = Math.random() > 0.5 ? 'home' : 'away';
-        const teamName = team === 'home' ? homeTeam : awayTeam;
-        const oppName = team === 'home' ? awayTeam : homeTeam;
-        const action = pick(actionTypes);
-        let desc = '';
-        if (action === 'foul') desc = `Foul on ${getRandomPlayerName()} (${teamName}). Freekick awarded to ${oppName}.`;
-        else if (action === 'shot_wide') desc = `Shot hit wide of the goal by ${getRandomPlayerName()} (${teamName}).`;
-        else if (action === 'shot_save') desc = `Great save! The keeper denies ${getRandomPlayerName()} (${teamName}).`;
-        else if (action === 'corner') desc = `Corner awarded to ${teamName}.`;
-        else if (action === 'offside') desc = `Offside against ${getRandomPlayerName()} (${teamName}). Freekick awarded to ${oppName}.`;
-        events.push({ minute: randInt(1, maxMinute), type: "action", team: team, desc: desc });
-    }
-
-    for(let i = 0; i < randInt(2, 6); i++) {
-        const isHome = Math.random() > 0.5;
-        const teamName = isHome ? homeTeam : awayTeam;
-        const reason = pick(["a bad foul", "dissent", "time wasting", "a tactical foul", "a reckless challenge"]);
-        events.push({ minute: randInt(15, maxMinute), type: "yellow", team: isHome ? "home" : "away", desc: `🟨 Yellow card for ${getRandomPlayerName()} (${teamName}) for ${reason}.` });
-    }
-
-    if (Math.random() < 0.08) {
-        const isHome = Math.random() > 0.5;
-        const teamName = isHome ? homeTeam : awayTeam;
-        const reason = pick(["a dangerous tackle", "a second yellow card", "denying a clear goalscoring opportunity", "violent conduct"]);
-        events.push({ minute: randInt(30, 85), type: "red", team: isHome ? "home" : "away", desc: `🟥 RED CARD! ${getRandomPlayerName()} (${teamName}) is sent off for ${reason}.` });
-    }
-
-    if (Math.random() < 0.10) {
-        const isHome = Math.random() > 0.5;
-        const teamName = isHome ? homeTeam : awayTeam;
-        events.push({ minute: randInt(15, 75), type: "injury", team: isHome ? "home" : "away", desc: `🚑 Injury: ${getRandomPlayerName()} (${teamName}) is down and needs treatment.` });
-    }
-
-    const doSubs = (isHome) => {
-        const teamName = isHome ? homeTeam : awayTeam;
-        let subTimes = [];
-        for(let i=0; i<randInt(2,3); i++) subTimes.push(randInt(60, 85));
-        subTimes.sort((a,b) => a-b);
-        subTimes.forEach(m => {
-            events.push({ minute: m, type: "sub", team: isHome ? "home" : "away", desc: `🔄 Substitution for ${teamName}: ${getRandomPlayerName()} is replaced by ${getRandomPlayerName()}.` });
+    pastTeamMatches.forEach((m, idx) => {
+        const isHome = m.home === teamName;
+        const goalsScored = isHome ? m.homeScore : m.awayScore;
+        
+        // Appearances
+        squad.forEach((p, i) => {
+            if (i < 11) p.apps++; // Starters
+            else {
+                const rng = mulberry32(hashString(teamName + "_app_" + idx + "_" + i));
+                if (rng() > 0.7) p.apps++; // Bench/Reserves 30% chance to play
+            }
         });
-    };
-    doSubs(true); doSubs(false);
+
+        // Goals & Assists
+        for (let g = 0; g < goalsScored; g++) {
+            const rng = mulberry32(hashString(teamName + "_goal_" + idx + "_" + g));
+            // Pick scorer (weighted to FWD/MID)
+            let scorerIdx = 0;
+            let r = rng();
+            if (r < 0.5) scorerIdx = 8 + Math.floor(rng() * 3); // FWD
+            else if (r < 0.8) scorerIdx = 5 + Math.floor(rng() * 3); // MID
+            else scorerIdx = Math.floor(rng() * 5); // DEF/GK
+            
+            squad[scorerIdx].goals++;
+            
+            // Pick assister
+            if (rng() > 0.3) {
+                let assistIdx = 0;
+                let ar = rng();
+                if (ar < 0.4) assistIdx = 5 + Math.floor(rng() * 3); // MID
+                else if (ar < 0.7) assistIdx = 8 + Math.floor(rng() * 3); // FWD
+                else assistIdx = 1 + Math.floor(rng() * 4); // DEF
+                if (assistIdx !== scorerIdx) squad[assistIdx].assists++;
+            }
+        }
+    });
+
+    // 2. Process Finished Simulated Matches (Matchdays 11+)
+    const finishedMatches = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
     
-    events.sort((a,b) => a.minute - b.minute);
+    finishedMatches.forEach((m, idx) => {
+        const isHome = m.homeTeam === teamName;
+        const goalsScored = isHome ? m.homeScore : m.awayScore;
+        
+        squad.forEach((p, i) => {
+            if (i < 11) p.apps++;
+            else {
+                const rng = mulberry32(hashString(teamName + "_sapp_" + m.id + "_" + i));
+                if (rng() > 0.7) p.apps++;
+            }
+        });
 
-    const stats = {
-        homePoss: Math.max(35, Math.min(65, Math.round(50 + (homeStrength - awayStrength) * 20 + randInt(-5, 5)))),
-        homeShots: Math.round(homeGoals * 1.5 + randInt(4, 10)),
-        homeOnTarget: Math.max(homeGoals, Math.round(homeGoals * 1.5 + randInt(1, 5)))
-    };
-    stats.awayPoss = 100 - stats.homePoss;
-    stats.awayShots = Math.round(awayGoals * 1.5 + randInt(4, 10));
-    stats.awayOnTarget = Math.max(awayGoals, Math.round(awayGoals * 1.5 + randInt(1, 5)));
+        for (let g = 0; g < goalsScored; g++) {
+            const rng = mulberry32(hashString(teamName + "_sgoal_" + m.id + "_" + g));
+            let scorerIdx = 0;
+            let r = rng();
+            if (r < 0.5) scorerIdx = 8 + Math.floor(rng() * 3);
+            else if (r < 0.8) scorerIdx = 5 + Math.floor(rng() * 3);
+            else scorerIdx = Math.floor(rng() * 5);
+            squad[scorerIdx].goals++;
+            
+            if (rng() > 0.3) {
+                let assistIdx = 0;
+                let ar = rng();
+                if (ar < 0.4) assistIdx = 5 + Math.floor(rng() * 3);
+                else if (ar < 0.7) assistIdx = 8 + Math.floor(rng() * 3);
+                else assistIdx = 1 + Math.floor(rng() * 4);
+                if (assistIdx !== scorerIdx) squad[assistIdx].assists++;
+            }
+        }
+    });
 
-    return { homeGoals, awayGoals, events, injuryTime1H, injuryTime2H, stats };
+    return squad;
 }
 
 /* ══════════════════════════════════════════════════════════════
-   REAL-TIME CLOCK LOGIC
+   LIVE STATE ENGINE
    ══════════════════════════════════════════════════════════════ */
 function getLiveState(match, now) {
-  if (match.processed) {
-    return { phase: 'FT', displaySec: 0, currentM: 90, isFinished: true };
-  }
   const realElapsedMs = now - match.startTime;
   if (realElapsedMs < 0) return { phase: 'upcoming', displaySec: 0, currentM: 0, isFinished: false };
   
@@ -601,77 +1379,20 @@ function calculateScore(match, maxMinute) {
 
 function tick() {
   const now = Date.now();
-  let shouldRender = false;
   
-  matches.forEach(match => {
-    if (!match.processed) {
-      const live = getLiveState(match, now);
-      match.phase = live.phase;
-      match.displaySec = live.displaySec;
-      match.currentM = live.currentM;
-      
-      const score = calculateScore(match, live.currentM);
-      match.homeScore = score.home;
-      match.awayScore = score.away;
-
-      if (live.isFinished && !match.processed) {
-        processMatchEnd(match);
-      }
-    }
+  MATCH_SCHEDULE.forEach(match => {
+    const live = getLiveState(match, now);
+    match.phase = live.phase;
+    match.displaySec = live.displaySec;
+    match.currentM = live.currentM;
+    
+    const score = calculateScore(match, live.currentM);
+    match.homeScore = score.home;
+    match.awayScore = score.away;
   });
   
   renderMatches();
   if (activeMatchId) updateModalData();
-}
-
-function processMatchEnd(match) {
-  if (!match.processed) match.processed = true; // prevent local double-processing
-
-  const finalScore = calculateScore(match, 999);
-  
-  if (useFirebase) {
-    runTransaction(ref(db, 'cel'), (data) => {
-      if (!data) return data;
-      const dbMatch = data.matches[match.id];
-      if (!dbMatch || dbMatch.processed) return data; // Already processed by another client
-      
-      const home = data.clubs.find(c => c.name === dbMatch.homeTeam);
-      const away = data.clubs.find(c => c.name === dbMatch.awayTeam);
-      if (home && away) {
-         home.w += (finalScore.home > finalScore.away ? 1 : 0);
-         home.d += (finalScore.home === finalScore.away ? 1 : 0);
-         home.l += (finalScore.home < finalScore.away ? 1 : 0);
-         home.gf += finalScore.home; home.ga += finalScore.away;
-         
-         away.w += (finalScore.away > finalScore.home ? 1 : 0);
-         away.d += (finalScore.away === finalScore.home ? 1 : 0);
-         away.l += (finalScore.away < finalScore.home ? 1 : 0);
-         away.gf += finalScore.away; away.ga += finalScore.home;
-      }
-      data.matches[match.id].processed = true;
-      data.matches[match.id].finalHomeScore = finalScore.home;
-      data.matches[match.id].finalAwayScore = finalScore.away;
-      return data;
-    });
-  } else {
-    const home = clubs.find(c => c.name === match.homeTeam);
-    const away = clubs.find(c => c.name === match.awayTeam);
-    if(home && away) {
-       home.w += (finalScore.home > finalScore.away ? 1 : 0);
-       home.d += (finalScore.home === finalScore.away ? 1 : 0);
-       home.l += (finalScore.home < finalScore.away ? 1 : 0);
-       home.gf += finalScore.home; home.ga += finalScore.away;
-       
-       away.w += (finalScore.away > finalScore.home ? 1 : 0);
-       away.d += (finalScore.away === finalScore.home ? 1 : 0);
-       away.l += (finalScore.away < finalScore.home ? 1 : 0);
-       away.gf += finalScore.away; away.ga += finalScore.home;
-    }
-    match.finalHomeScore = finalScore.home;
-    match.finalAwayScore = finalScore.away;
-    saveLocalData();
-    updateStats();
-  }
 }
 
 setInterval(tick, 1000);
@@ -687,49 +1408,42 @@ function formatClock(seconds) {
 
 function renderMatches() {
   const list = document.getElementById('matchesList');
+  const selectedMd = matchdaySelect.value;
   
-  matches.sort((a, b) => {
-    const aState = getLiveState(a, Date.now());
-    const bState = getLiveState(b, Date.now());
-    const aIsLive = aState.phase === '1H' || aState.phase === 'HT' || aState.phase === '2H';
-    const bIsLive = bState.phase === '1H' || bState.phase === 'HT' || bState.phase === '2H';
-    if (aIsLive && !bIsLive) return -1;
-    if (bIsLive && !aIsLive) return 1;
-    return a.startTime - b.startTime;
-  });
-
-  if (matches.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">No matches scheduled. Use the form above to create a fixture.</div>';
-    return;
+  let filtered = MATCH_SCHEDULE;
+  if (selectedMd !== 'all') {
+      filtered = MATCH_SCHEDULE.filter(m => m.matchday.toString() === selectedMd);
+  } else {
+      const now = Date.now();
+      const liveMd = filtered.find(m => getLiveState(m, now).phase !== 'FT' && getLiveState(m, now).phase !== 'upcoming')?.matchday;
+      const nextMd = filtered.find(m => getLiveState(m, now).phase === 'upcoming')?.matchday;
+      const showMd = liveMd || nextMd || 11;
+      filtered = MATCH_SCHEDULE.filter(m => m.matchday === showMd);
   }
 
-  list.innerHTML = matches.map(m => {
-    const live = getLiveState(m, Date.now());
+  filtered.sort((a, b) => a.startTime - b.startTime);
+
+  list.innerHTML = filtered.map(m => {
     const d = new Date(m.startTime);
-    
     let scoreDisplay = 'vs';
-    if (live.phase !== 'upcoming') {
-        if (m.processed) {
-            scoreDisplay = `${m.finalHomeScore} - ${m.finalAwayScore}`;
-        } else {
-            scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
-        }
+    if (m.phase !== 'upcoming') {
+        scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
     }
 
     let displayClock = '';
     let phaseBadgeClass = 'upcoming';
     let phaseBadgeText = 'Upcoming';
 
-    if (live.phase === '1H') {
-      displayClock = live.currentM > 45 ? `45:00 + ${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
+    if (m.phase === '1H') {
+      displayClock = m.currentM > 45 ? `45:00 + ${formatClock(m.displaySec - 45*60)}` : formatClock(m.displaySec);
       phaseBadgeClass = 'live'; phaseBadgeText = 'Live';
-    } else if (live.phase === 'HT') {
-      displayClock = `HT ${formatClock(live.displaySec)}`;
+    } else if (m.phase === 'HT') {
+      displayClock = `HT ${formatClock(m.displaySec)}`;
       phaseBadgeClass = 'ht'; phaseBadgeText = 'Half Time';
-    } else if (live.phase === '2H') {
-      displayClock = live.currentM > 90 ? `90:00 + ${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
+    } else if (m.phase === '2H') {
+      displayClock = m.currentM > 90 ? `90:00 + ${formatClock(m.displaySec - 90*60)}` : formatClock(m.displaySec);
       phaseBadgeClass = 'live'; phaseBadgeText = 'Live';
-    } else if (live.phase === 'FT') {
+    } else if (m.phase === 'FT') {
       displayClock = 'FT';
       phaseBadgeClass = 'finished'; phaseBadgeText = 'Full Time';
     } else {
@@ -754,9 +1468,11 @@ function renderMatches() {
   }).join('');
 }
 
+document.getElementById('matchdayFilter').addEventListener('change', renderMatches);
+
 function openModal(id) {
     activeMatchId = id;
-    const m = matches.find(x => x.id === id);
+    const m = MATCH_SCHEDULE.find(x => x.id === id);
     if (!m) return;
 
     document.getElementById('mHomeTeam').textContent = m.homeTeam;
@@ -804,15 +1520,12 @@ function appendEventToModal(e) {
 
 function updateModalData() {
     if (!activeMatchId) return;
-    const m = matches.find(x => x.id === activeMatchId);
+    const m = MATCH_SCHEDULE.find(x => x.id === activeMatchId);
     if (!m) return;
-
-    const live = getLiveState(m, Date.now());
     
     let scoreDisplay = 'vs';
-    if (live.phase !== 'upcoming') {
-        if (m.processed) scoreDisplay = `${m.finalHomeScore} - ${m.finalAwayScore}`;
-        else scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
+    if (m.phase !== 'upcoming') {
+        scoreDisplay = `${m.homeScore || 0} - ${m.awayScore || 0}`;
     }
     document.getElementById('mScore').textContent = scoreDisplay;
 
@@ -821,16 +1534,16 @@ function updateModalData() {
     let displayClock = '';
     let statusText = '';
 
-    if (live.phase === '1H') {
-      displayClock = live.currentM > 45 ? `45:00 + ${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
+    if (m.phase === '1H') {
+      displayClock = m.currentM > 45 ? `45:00 + ${formatClock(m.displaySec - 45*60)}` : formatClock(m.displaySec);
       statusText = 'Live (First Half)';
-    } else if (live.phase === 'HT') {
-      displayClock = `HT ${formatClock(live.displaySec)}`;
+    } else if (m.phase === 'HT') {
+      displayClock = `HT ${formatClock(m.displaySec)}`;
       statusText = 'Half Time';
-    } else if (live.phase === '2H') {
-      displayClock = live.currentM > 90 ? `90:00 + ${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
+    } else if (m.phase === '2H') {
+      displayClock = m.currentM > 90 ? `90:00 + ${formatClock(m.displaySec - 90*60)}` : formatClock(m.displaySec);
       statusText = 'Live (Second Half)';
-    } else if (live.phase === 'FT') {
+    } else if (m.phase === 'FT') {
       displayClock = 'FT';
       statusText = 'Full Time';
     } else {
@@ -842,19 +1555,21 @@ function updateModalData() {
     if (clockEl.textContent !== displayClock) clockEl.textContent = displayClock;
     if (statusEl.textContent !== statusText) statusEl.textContent = statusText;
 
-    if (m.stats) {
-        const p = Math.min(1, live.currentM / 90);
-        const hPoss = Math.round(50 + (m.stats.homePoss - 50) * p);
-        const aPoss = 100 - hPoss;
-        document.getElementById('mPoss').textContent = `${hPoss}% - ${aPoss}%`;
-        document.getElementById('mShots').textContent = `${Math.round(m.stats.homeShots * p)} - ${Math.round(m.stats.awayShots * p)}`;
-        document.getElementById('mOnTarget').textContent = `${Math.round(m.stats.homeOnTarget * p)} - ${Math.round(m.stats.awayOnTarget * p)}`;
+    if (m.phase !== 'upcoming') {
+        const p = Math.min(1, m.currentM / 90);
+        document.getElementById('mPoss').textContent = `50% - 50%`;
+        document.getElementById('mShots').textContent = `${Math.round(10 * p)} - ${Math.round(10 * p)}`;
+        document.getElementById('mOnTarget').textContent = `${Math.round(3 * p)} - ${Math.round(3 * p)}`;
+    } else {
+        document.getElementById('mPoss').textContent = `0% - 0%`;
+        document.getElementById('mShots').textContent = `0 - 0`;
+        document.getElementById('mOnTarget').textContent = `0 - 0`;
     }
 
     const evContainer = document.getElementById('mEvents');
     const visibleEvents = m.events.filter(e => {
-        if (live.phase === 'FT') return true;
-        return e.minute <= live.currentM;
+        if (m.phase === 'FT') return true;
+        return e.minute <= m.currentM;
     });
 
     const currentCount = evContainer.children.length;
@@ -868,7 +1583,92 @@ function updateModalData() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   TAB & SCHEDULING LOGIC
+   TEAM MODAL LOGIC
+   ══════════════════════════════════════════════════════════════ */
+function switchTeamTab(tab) {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('tmOverviewTab').style.display = tab === 'overview' ? 'flex' : 'none';
+    document.getElementById('tmSquadTab').style.display = tab === 'squad' ? 'flex' : 'none';
+}
+
+function openTeamModal(teamName) {
+    activeTeamName = teamName;
+    document.getElementById('tmTeamName').textContent = teamName;
+    
+    // Reset tabs
+    document.querySelectorAll('.modal-tab').forEach((t, i) => {
+        if(i === 0) t.classList.add('active'); else t.classList.remove('active');
+    });
+    document.getElementById('tmOverviewTab').style.display = 'flex';
+    document.getElementById('tmSquadTab').style.display = 'none';
+
+    // Past Results
+    const past = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
+    const pastHtml = past.map(m => {
+        const isHome = m.home === teamName;
+        const opp = isHome ? m.away : m.home;
+        const teamScore = isHome ? m.homeScore : m.awayScore;
+        const oppScore = isHome ? m.awayScore : m.homeScore;
+        const result = teamScore > oppScore ? 'W' : teamScore < oppScore ? 'L' : 'D';
+        const resultColor = result === 'W' ? 'var(--green)' : result === 'L' ? 'var(--red)' : 'var(--gold)';
+        
+        return `<div class="result-row">
+            <span class="res-indicator" style="color:${resultColor}">${result}</span>
+            <span class="res-team">${isHome ? 'vs' : '@'} ${opp}</span>
+            <span class="res-score">${teamScore} - ${oppScore}</span>
+        </div>`;
+    }).join('');
+    document.getElementById('tmPastResults').innerHTML = pastHtml || '<div class="empty">No past matches found.</div>';
+    
+    // Upcoming Fixtures
+    const upcoming = MATCH_SCHEDULE.filter(m => m.homeTeam === teamName || m.awayTeam === teamName);
+    const upcomingHtml = upcoming.map(m => {
+        const isHome = m.homeTeam === teamName;
+        const opp = isHome ? m.awayTeam : m.homeTeam;
+        const d = new Date(m.startTime);
+        const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `<div class="result-row">
+            <span class="res-indicator">📅</span>
+            <span class="res-team">${isHome ? 'vs' : '@'} ${opp}</span>
+            <span class="res-score">${dateStr} ${timeStr}</span>
+        </div>`;
+    }).join('');
+    document.getElementById('tmUpcoming').innerHTML = upcomingHtml || '<div class="empty">No upcoming matches found.</div>';
+    
+    // Squad
+    const teamObj = BASE_CLUBS.find(c => c.name === teamName);
+    const country = teamObj ? teamObj.flag : "🏳️";
+    const squad = generateSquad(teamName, country);
+    const squadWithStats = calculateSquadStats(teamName, squad);
+    
+    const squadHtml = squadWithStats.map(p => {
+        const isStar = p.star;
+        const rowClass = isStar ? 'star-player' : '';
+        const starIcon = isStar ? '<span class="star-icon">⭐</span>' : '';
+        return `<tr class="${rowClass}">
+            <td>${starIcon}${p.name}</td>
+            <td>${p.nat}</td>
+            <td>${p.pos}</td>
+            <td>${p.apps}</td>
+            <td>${p.goals}</td>
+            <td>${p.assists}</td>
+        </tr>`;
+    }).join('');
+    document.getElementById('tmSquadBody').innerHTML = squadHtml;
+    
+    document.getElementById('teamModal').classList.add('active');
+}
+
+window.closeTeamModal = function() {
+    activeTeamName = null;
+    document.getElementById('teamModal').classList.remove('active');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TAB SWITCHING & TABLE CALCULATION
    ══════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.view-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -879,63 +1679,29 @@ document.querySelectorAll('.view-tab').forEach(tab => {
   });
 });
 
-function initScheduleForm() {
-  const homeSel = document.getElementById('schedHome');
-  const awaySel = document.getElementById('schedAway');
-  const sorted = [...clubs].sort((a,b) => a.name.localeCompare(b.name));
-  
-  homeSel.innerHTML = sorted.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-  awaySel.innerHTML = sorted.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-  
-  const soon = new Date();
-  soon.setMinutes(soon.getMinutes() + 2);
-  const tzOffset = soon.getTimezoneOffset() * 60000;
-  document.getElementById('schedDate').value = (new Date(soon - tzOffset)).toISOString().slice(0, 16);
-}
-
-document.getElementById('scheduleBtn').addEventListener('click', () => {
-  const home = document.getElementById('schedHome').value;
-  const away = document.getElementById('schedAway').value;
-  const dateVal = document.getElementById('schedDate').value;
-  
-  if (home === away) return alert("A team cannot play itself!");
-  if (!dateVal) return alert("Please select a date and time.");
-  
-  const startTime = new Date(dateVal).getTime();
-  const sim = generateMatchEvents(home, away);
-  
-  const newMatch = {
-    id: 'match_' + Date.now() + '_' + Math.floor(Math.random()*1000),
-    homeTeam: home,
-    awayTeam: away,
-    startTime: startTime,
-    processed: false,
-    injuryTime1H: sim.injuryTime1H,
-    injuryTime2H: sim.injuryTime2H,
-    events: sim.events,
-    stats: sim.stats
-  };
-
-  if (useFirebase) {
-      update(ref(db, `cel/matches/${newMatch.id}`), newMatch);
-  } else {
-      matches.push(newMatch);
-      saveLocalData();
-      renderMatches();
-  }
-});
-
-document.getElementById('clearMatchesBtn').addEventListener('click', () => {
-  if(confirm("Clear all scheduled matches? This won't reset the league table.")) {
-    if (useFirebase) set(ref(db, 'cel/matches'), {});
-    else { matches = []; saveLocalData(); renderMatches(); }
-  }
-});
-
-/* ══════════════════════════════════════════════════════════════
-   STANDINGS TABLE
-   ══════════════════════════════════════════════════════════════ */
 function buildTable() {
+  const clubs = BASE_CLUBS.map(c => ({ ...c }));
+  
+  MATCH_SCHEDULE.forEach(match => {
+      if (match.phase === 'FT') {
+          const home = clubs.find(c => c.name === match.homeTeam);
+          const away = clubs.find(c => c.name === match.awayTeam);
+          if (home && away) {
+             const hScore = match.homeScore;
+             const aScore = match.awayScore;
+             home.w += (hScore > aScore ? 1 : 0);
+             home.d += (hScore === aScore ? 1 : 0);
+             home.l += (hScore < aScore ? 1 : 0);
+             home.gf += hScore; home.ga += aScore;
+             
+             away.w += (aScore > hScore ? 1 : 0);
+             away.d += (aScore === hScore ? 1 : 0);
+             away.l += (aScore < hScore ? 1 : 0);
+             away.gf += aScore; away.ga += hScore;
+          }
+      }
+  });
+
   const rows = clubs.map(c => ({ ...c, p: c.w + c.d + c.l, gd: c.gf - c.ga, pts: c.w * 3 + c.d }));
   rows.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   rows.forEach((r, i) => r.rank = i + 1);
@@ -994,7 +1760,7 @@ function renderTable(table) {
 
     return `<tr class="${zone} ${cupQual ? 'cup-qual' : ''}">
       <td><span class="position">${c.rank}</span></td>
-      <td><div class="club"><span class="flag">${c.flag}</span><span class="club-name">${c.name}</span>${cupIcon}</div></td>
+      <td><div class="club" onclick="openTeamModal('${c.name}')"><span class="flag">${c.flag}</span><span class="club-name">${c.name}</span>${cupIcon}</div></td>
       <td>${c.p}</td><td>${c.w}</td><td>${c.d}</td><td>${c.l}</td>
       <td>${c.gf}</td><td>${c.ga}</td>
       <td class="${gdClass}">${c.gd > 0 ? '+' : ''}${c.gd}</td>
@@ -1020,17 +1786,11 @@ document.getElementById('reset').addEventListener('click', () => {
 });
 
 /* ══════════════════════════════════════════════════════════════
-   BOOT
+   BOOT SEQUENCE
    ══════════════════════════════════════════════════════════════ */
-checkFirebase();
-initScheduleForm();
-
-// For local mode, we need to initialize UI immediately
-if (!useFirebase) {
-    updateStats();
-    renderMatches();
-    setInterval(tick, 1000); // local tick loop
-}
+tick(); // Initial render
+updateStats(); // Initial table calculation
+setInterval(updateStats, 10000); // Recalculate table every 10s
 </script>
 </body>
 </html>

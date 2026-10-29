@@ -297,7 +297,7 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
             <span id="mClock"></span>
         </div>
         <div class="modal-stats">
-            <div class="mstat"><div class="mstat-val" id="mPoss">50% - 50%</div><div class="mstat-label">Possession</div></div>
+            <div class="mstat"><div class="mstat-val" id="mPoss">0% - 0%</div><div class="mstat-label">Possession</div></div>
             <div class="mstat"><div class="mstat-val" id="mShots">0 - 0</div><div class="mstat-label">Shots</div></div>
             <div class="mstat"><div class="mstat-val" id="mOnTarget">0 - 0</div><div class="mstat-label">On Target</div></div>
         </div>
@@ -350,13 +350,13 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
     </div>
 </div>
 
-<!-- RAW SCHEDULE DATA (FULL UNTRUNCATED FILE) -->
+<!-- RAW SCHEDULE DATA -->
 <script type="text/plain" id="scheduleData">
 MATCHDAY 1 — SATURDAY, OCTOBER 29, 2026 / SUNDAY, NOVEMBER 1, 2026
 ----------------------------------------------------------
 
 SATURDAY — October 29, 2026 (8 matches)
-2:00 PM — 🇩🇪 FC Kronenburg vs 🇦🇹 FC Alpenbruck
+2:35 PM — 🇩🇪 FC Kronenburg vs 🇦🇹 FC Alpenbruck
 10:00 AM — 🇨🇿 Slavia Hradec vs 🇩🇪 VfB Eisenstadt
 12:00 PM — 🇦🇹 SV Eisenwald vs 🇨🇿 FC Moravsky
 12:00 PM — 🇱🇮 FC Alpenstern vs 🇭🇺 Budapest Korona
@@ -1075,6 +1075,22 @@ function parseSchedule(text) {
                 const homeGoals = Math.min(poissonRandom(1.35 * homeStr * 1.15), 6);
                 const awayGoals = Math.min(poissonRandom(1.35 * awayStr * 0.95), 6);
 
+                // Generate Match Stats
+                const homePoss = 40 + Math.floor(rng() * 21); // 40% to 60%
+                const awayPoss = 100 - homePoss;
+                
+                const homeShots = homeGoals + Math.floor(rng() * 10) + 3; 
+                const awayShots = awayGoals + Math.floor(rng() * 10) + 3;
+                
+                const homeOnTarget = homeGoals + Math.floor(rng() * (homeShots - homeGoals));
+                const awayOnTarget = awayGoals + Math.floor(rng() * (awayShots - awayGoals));
+
+                const stats = {
+                    homePoss, awayPoss,
+                    homeShots, awayShots,
+                    homeOnTarget, awayOnTarget
+                };
+
                 const events = [];
                 const injuryTime1H = randInt(1, 4);
                 const injuryTime2H = randInt(2, 6);
@@ -1117,6 +1133,7 @@ function parseSchedule(text) {
                     startTime: startTime.getTime(),
                     injuryTime1H,
                     injuryTime2H,
+                    stats,
                     events
                 });
             }
@@ -1145,7 +1162,6 @@ function parsePastResults(text) {
     return results;
 }
 
-// UPDATED BASE_CLUBS FROM MATCHDAY 10 STANDINGS
 const BASE_CLUBS = [
   { flag:"🇨🇿", country:"Czechia",       name:"FK Vltava Praha",     w:8, d:2, l:0, gf:28, ga:12 },
   { flag:"🇸🇮", country:"Slovenia",      name:"Maribor Crown",       w:8, d:1, l:1, gf:22, ga:11 },
@@ -1577,11 +1593,15 @@ function updateModalData() {
     if (clockEl.textContent !== displayClock) clockEl.textContent = displayClock;
     if (statusEl.textContent !== statusText) statusEl.textContent = statusText;
 
-    if (m.phase !== 'upcoming') {
+    // Use generated match stats
+    if (m.phase !== 'upcoming' && m.stats) {
         const p = Math.min(1, m.currentM / 90);
-        document.getElementById('mPoss').textContent = `50% - 50%`;
-        document.getElementById('mShots').textContent = `${Math.round(10 * p)} - ${Math.round(10 * p)}`;
-        document.getElementById('mOnTarget').textContent = `${Math.round(3 * p)} - ${Math.round(3 * p)}`;
+        const hPoss = Math.round(m.stats.homePoss);
+        const aPoss = Math.round(m.stats.awayPoss);
+        
+        document.getElementById('mPoss').textContent = `${hPoss}% - ${aPoss}%`;
+        document.getElementById('mShots').textContent = `${Math.round(m.stats.homeShots * p)} - ${Math.round(m.stats.awayShots * p)}`;
+        document.getElementById('mOnTarget').textContent = `${Math.round(m.stats.homeOnTarget * p)} - ${Math.round(m.stats.awayOnTarget * p)}`;
     } else {
         document.getElementById('mPoss').textContent = `0% - 0%`;
         document.getElementById('mShots').textContent = `0 - 0`;

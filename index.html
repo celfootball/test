@@ -317,8 +317,8 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
         </div>
         
         <div class="modal-tabs">
-            <button class="modal-tab active" onclick="switchTeamTab('overview')">Overview</button>
-            <button class="modal-tab" onclick="switchTeamTab('squad')">Squad</button>
+            <button class="modal-tab active" onclick="switchTeamTab(this, 'overview')">Overview</button>
+            <button class="modal-tab" onclick="switchTeamTab(this, 'squad')">Squad</button>
         </div>
         
         <div class="team-modal-body" id="tmOverviewTab">
@@ -352,18 +352,18 @@ footer{display:flex;justify-content:space-between;gap:12px;color:#63758b;font-si
 
 <!-- RAW SCHEDULE DATA (FULL UNTRUNCATED FILE) -->
 <script type="text/plain" id="scheduleData">
-MATCHDAY 1 — SATURDAY, OCTOBER 27, 2026 / SUNDAY, NOVEMBER 1, 2026
+MATCHDAY 1 — SATURDAY, OCTOBER 31, 2026 / SUNDAY, NOVEMBER 1, 2026
 ----------------------------------------------------------
 
-SATURDAY — October 27, 2026 (8 matches)
-6:00 PM — 🇩🇪 FC Kronenburg vs 🇦🇹 FC Alpenbruck
-7:00 PM — 🇨🇿 Slavia Hradec vs 🇩🇪 VfB Eisenstadt
-7:00 PM — 🇦🇹 SV Eisenwald vs 🇨🇿 FC Moravsky
-7:00 PM — 🇱🇮 FC Alpenstern vs 🇭🇺 Budapest Korona
-7:00 PM — 🇱🇮 FC Vaduzberg vs 🇩🇪 SV Rheinwald
-7:00 PM — 🇨🇿 Brno Viktoria vs 🇭🇺 FC Danubia
-7:00 PM — 🇩🇪 Dresden Adler vs 🇵🇱 Gornik Bialystok
-7:00 PM — 🇦🇹 Vienna Adler vs 🇱🇮 Rhein Lions
+SATURDAY — October 31, 2026 (8 matches)
+10:00 AM — 🇩🇪 FC Kronenburg vs 🇦🇹 FC Alpenbruck
+10:00 AM — 🇨🇿 Slavia Hradec vs 🇩🇪 VfB Eisenstadt
+12:00 PM — 🇦🇹 SV Eisenwald vs 🇨🇿 FC Moravsky
+12:00 PM — 🇱🇮 FC Alpenstern vs 🇭🇺 Budapest Korona
+2:00 PM — 🇱🇮 FC Vaduzberg vs 🇩🇪 SV Rheinwald
+2:00 PM — 🇨🇿 Brno Viktoria vs 🇭🇺 FC Danubia
+4:00 PM — 🇩🇪 Dresden Adler vs 🇵🇱 Gornik Bialystok
+4:00 PM — 🇦🇹 Vienna Adler vs 🇱🇮 Rhein Lions
 
 SUNDAY — November 1, 2026 (8 matches)
 10:00 AM — 🇭🇺 Pecs Vihar vs 🇸🇮 Ljubljana Vihor
@@ -1379,8 +1379,10 @@ function calculateScore(match, maxMinute) {
 
 function tick() {
   const now = Date.now();
-  
+  let justFinishedAny = false;
+
   MATCH_SCHEDULE.forEach(match => {
+    const wasFinished = match.phase === 'FT';
     const live = getLiveState(match, now);
     match.phase = live.phase;
     match.displaySec = live.displaySec;
@@ -1389,10 +1391,30 @@ function tick() {
     const score = calculateScore(match, live.currentM);
     match.homeScore = score.home;
     match.awayScore = score.away;
+
+    if (!wasFinished && match.phase === 'FT') {
+        justFinishedAny = true;
+    }
   });
   
   renderMatches();
   if (activeMatchId) updateModalData();
+
+  if (justFinishedAny) {
+      updateStats(); // Instantly update league table
+      
+      // If a team profile is currently open, update its stats immediately
+      if (activeTeamName) {
+          const squadTab = document.getElementById('tmSquadTab');
+          if (squadTab && squadTab.style.display !== 'none') {
+              renderSquadTable(activeTeamName);
+          }
+          const overviewTab = document.getElementById('tmOverviewTab');
+          if (overviewTab && overviewTab.style.display !== 'none') {
+              renderTeamOverview(activeTeamName);
+          }
+      }
+  }
 }
 
 setInterval(tick, 1000);
@@ -1585,28 +1607,22 @@ function updateModalData() {
 /* ══════════════════════════════════════════════════════════════
    TEAM MODAL LOGIC
    ══════════════════════════════════════════════════════════════ */
-function switchTeamTab(tab) {
+function switchTeamTab(btn, tab) {
     document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
     
     document.getElementById('tmOverviewTab').style.display = tab === 'overview' ? 'flex' : 'none';
     document.getElementById('tmSquadTab').style.display = tab === 'squad' ? 'flex' : 'none';
 }
 
-function openTeamModal(teamName) {
-    activeTeamName = teamName;
-    document.getElementById('tmTeamName').textContent = teamName;
-    
-    // Reset tabs
-    document.querySelectorAll('.modal-tab').forEach((t, i) => {
-        if(i === 0) t.classList.add('active'); else t.classList.remove('active');
-    });
-    document.getElementById('tmOverviewTab').style.display = 'flex';
-    document.getElementById('tmSquadTab').style.display = 'none';
-
-    // Past Results
+function renderTeamOverview(teamName) {
     const past = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
-    const pastHtml = past.map(m => {
+    const pastSim = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName))
+        .map(m => ({ home: m.homeTeam, homeScore: m.homeScore, away: m.awayTeam, awayScore: m.awayScore }));
+
+    const allPast = [...past, ...pastSim];
+
+    const pastHtml = allPast.map(m => {
         const isHome = m.home === teamName;
         const opp = isHome ? m.away : m.home;
         const teamScore = isHome ? m.homeScore : m.awayScore;
@@ -1622,8 +1638,7 @@ function openTeamModal(teamName) {
     }).join('');
     document.getElementById('tmPastResults').innerHTML = pastHtml || '<div class="empty">No past matches found.</div>';
     
-    // Upcoming Fixtures
-    const upcoming = MATCH_SCHEDULE.filter(m => m.homeTeam === teamName || m.awayTeam === teamName);
+    const upcoming = MATCH_SCHEDULE.filter(m => m.phase !== 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
     const upcomingHtml = upcoming.map(m => {
         const isHome = m.homeTeam === teamName;
         const opp = isHome ? m.awayTeam : m.homeTeam;
@@ -1637,8 +1652,9 @@ function openTeamModal(teamName) {
         </div>`;
     }).join('');
     document.getElementById('tmUpcoming').innerHTML = upcomingHtml || '<div class="empty">No upcoming matches found.</div>';
-    
-    // Squad
+}
+
+function renderSquadTable(teamName) {
     const teamObj = BASE_CLUBS.find(c => c.name === teamName);
     const country = teamObj ? teamObj.flag : "🏳️";
     const squad = generateSquad(teamName, country);
@@ -1658,6 +1674,21 @@ function openTeamModal(teamName) {
         </tr>`;
     }).join('');
     document.getElementById('tmSquadBody').innerHTML = squadHtml;
+}
+
+function openTeamModal(teamName) {
+    activeTeamName = teamName;
+    document.getElementById('tmTeamName').textContent = teamName;
+    
+    // Reset to Overview tab
+    document.querySelectorAll('.modal-tab').forEach((t, i) => {
+        if(i === 0) t.classList.add('active'); else t.classList.remove('active');
+    });
+    document.getElementById('tmOverviewTab').style.display = 'flex';
+    document.getElementById('tmSquadTab').style.display = 'none';
+
+    renderTeamOverview(teamName);
+    renderSquadTable(teamName);
     
     document.getElementById('teamModal').classList.add('active');
 }
@@ -1790,7 +1821,7 @@ document.getElementById('reset').addEventListener('click', () => {
    ══════════════════════════════════════════════════════════════ */
 tick(); // Initial render
 updateStats(); // Initial table calculation
-setInterval(updateStats, 10000); // Recalculate table every 10s
+setInterval(updateStats, 10000); // Fallback recalculation every 10s just in case
 </script>
 </body>
 </html>

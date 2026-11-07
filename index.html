@@ -1277,6 +1277,16 @@ BASE_CLUBS.forEach(club => {
     ALL_SQUADS[club.name] = generateSquad(club.name, club.flag);
 });
 
+// Helper for delays
+function getMatchDelays(matchId) {
+    const rng = mulberry32(hashString(matchId + "_delays"));
+    return {
+        kickoffDelaySec: Math.floor(rng() * 120), // 0-2 mins
+        htExtensionSec: Math.floor(rng() * 180),  // 0-3 mins
+        ftDelaySec: Math.floor(rng() * 90)        // 0-1.5 mins
+    };
+}
+
 // --- PARSERS ---
 function parseSchedule(text) {
     const matches = [];
@@ -1320,6 +1330,11 @@ function parseSchedule(text) {
                     do { k++; p *= rng(); } while (p > L); return k - 1;
                 };
 
+                const delays = getMatchDelays(matchId);
+                const injuryTime1H = randInt(1, 4);
+                const injuryTime2H = randInt(2, 6);
+                const maxMinute = 90 + injuryTime2H;
+
                 const homeStr = 0.8 + (hashString(home) % 50) / 100;
                 const awayStr = 0.7 + (hashString(away) % 50) / 100;
                 const homeGoals = Math.min(poissonRandom(1.35 * homeStr * 1.15), 6);
@@ -1333,29 +1348,80 @@ function parseSchedule(text) {
                 stats.awayPoss = 100 - stats.homePoss;
 
                 const events = [];
-                const maxMinute = 90 + randInt(2, 6);
                 const homeSquad = ALL_SQUADS[home] || [];
                 const awaySquad = ALL_SQUADS[away] || [];
-                const getScorer = (squad) => squad.length ? squad[Math.floor(rng() * 11)] : { name: "Unknown Player" };
                 
+                const getEventPlayer = (squad, rng) => {
+                    const idx = Math.floor(rng() * 11);
+                    return squad[idx] || { name: "Unknown" };
+                };
+
                 // Goals
                 for (let i = 0; i < homeGoals; i++) {
-                    const scorer = getScorer(homeSquad);
-                    events.push({ minute: randInt(1, maxMinute), type: "goal", team: "home", desc: `GOAL! ${scorer.name} scores for ${home}!` });
+                    const goalRng = mulberry32(hashString(matchId + "_gh_" + i));
+                    const scorer = getEventPlayer(homeSquad, goalRng);
+                    const minute = randInt(1, maxMinute);
+                    
+                    if (goalRng() < 0.02) { // 2% chance offside
+                        events.push({
+                            minute,
+                            type: "goal_disallowed",
+                            team: "home",
+                            desc: `Goal disallowed! ${scorer.name} (${home}) is caught offside.`
+                        });
+                    } else {
+                        let assister = null;
+                        if (goalRng() > 0.3) {
+                            const a = getEventPlayer(homeSquad, goalRng);
+                            if (a.name !== scorer.name) assister = a;
+                        }
+                        events.push({
+                            minute,
+                            type: "goal",
+                            team: "home",
+                            scorerName: scorer.name,
+                            assisterName: assister ? assister.name : null,
+                            desc: `GOAL! ${scorer.name} scores for ${home}!`
+                        });
+                    }
                 }
                 for (let i = 0; i < awayGoals; i++) {
-                    const scorer = getScorer(awaySquad);
-                    events.push({ minute: randInt(1, maxMinute), type: "goal", team: "away", desc: `GOAL! ${scorer.name} scores for ${away}!` });
+                    const goalRng = mulberry32(hashString(matchId + "_ga_" + i));
+                    const scorer = getEventPlayer(awaySquad, goalRng);
+                    const minute = randInt(1, maxMinute);
+                    
+                    if (goalRng() < 0.02) { // 2% chance offside
+                        events.push({
+                            minute,
+                            type: "goal_disallowed",
+                            team: "away",
+                            desc: `Goal disallowed! ${scorer.name} (${away}) is caught offside.`
+                        });
+                    } else {
+                        let assister = null;
+                        if (goalRng() > 0.3) {
+                            const a = getEventPlayer(awaySquad, goalRng);
+                            if (a.name !== scorer.name) assister = a;
+                        }
+                        events.push({
+                            minute,
+                            type: "goal",
+                            team: "away",
+                            scorerName: scorer.name,
+                            assisterName: assister ? assister.name : null,
+                            desc: `GOAL! ${scorer.name} scores for ${away}!`
+                        });
+                    }
                 }
 
-                // Rich Events
-                const actionTypes = ['foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
-                for (let i = 0; i < randInt(15, 25); i++) {
+                // Rich Events (More Fouls)
+                const actionTypes = ['foul', 'foul', 'foul', 'foul', 'shot_wide', 'shot_save', 'corner', 'offside'];
+                for (let i = 0; i < randInt(25, 40); i++) {
                     const team = rng() > 0.5 ? 'home' : 'away';
                     const teamName = team === 'home' ? home : away;
                     const oppName = team === 'home' ? away : home;
                     const squad = team === 'home' ? homeSquad : awaySquad;
-                    const player = getScorer(squad);
+                    const player = getEventPlayer(squad, rng);
                     const action = pick(actionTypes);
                     let desc = '';
                     if (action === 'foul') desc = `Foul on ${player.name} (${teamName}). Freekick awarded to ${oppName}.`;
@@ -1370,7 +1436,7 @@ function parseSchedule(text) {
                 for(let i = 0; i < randInt(2, 5); i++) {
                     const isHome = rng() > 0.5;
                     const teamName = isHome ? home : away;
-                    const player = getScorer(isHome ? homeSquad : awaySquad);
+                    const player = getEventPlayer(isHome ? homeSquad : awaySquad, rng);
                     events.push({ minute: randInt(15, maxMinute), type: "yellow", team: isHome ? "home" : "away", desc: `Yellow card for ${player.name} (${teamName}).` });
                 }
 
@@ -1378,7 +1444,7 @@ function parseSchedule(text) {
                 if (rng() < 0.08) {
                     const isHome = rng() > 0.5;
                     const teamName = isHome ? home : away;
-                    const player = getScorer(isHome ? homeSquad : awaySquad);
+                    const player = getEventPlayer(isHome ? homeSquad : awaySquad, rng);
                     events.push({ minute: randInt(30, 85), type: "red", team: isHome ? "home" : "away", desc: `RED CARD! ${player.name} (${teamName}) is sent off.` });
                 }
 
@@ -1386,7 +1452,7 @@ function parseSchedule(text) {
                 if (rng() < 0.15) {
                     const isHome = rng() > 0.5;
                     const teamName = isHome ? home : away;
-                    const player = getScorer(isHome ? homeSquad : awaySquad);
+                    const player = getEventPlayer(isHome ? homeSquad : awaySquad, rng);
                     const injType = randInt(1, 3);
                     let durationText = '';
                     if (injType === 1) durationText = `${randInt(3, 14)} days`;
@@ -1401,11 +1467,26 @@ function parseSchedule(text) {
                     });
                 }
 
+                // Phase Events
+                const finalHomeScore = events.filter(e => e.type === 'goal' && e.team === 'home').length;
+                const finalAwayScore = events.filter(e => e.type === 'goal' && e.team === 'away').length;
+
+                events.push({ minute: 0, type: "phase", phase: "1H", desc: "Referee blows for the start of the first half." });
+                events.push({ minute: 45, type: "phase", phase: "1H", desc: `The match official has announced ${injuryTime1H} minutes of added time.` });
+                events.push({ minute: 45 + injuryTime1H, type: "phase", phase: "1H", desc: "Referee blows for the end of the first half." });
+                events.push({ minute: 45, type: "phase", phase: "2H", desc: "Referee blows for the start of the second half." });
+                events.push({ minute: 90, type: "phase", phase: "2H", desc: `The match official has announced ${injuryTime2H} minutes of added time.` });
+                events.push({ minute: maxMinute, type: "phase", phase: "2H", desc: `Referee blows for the end of the game. Final score: ${finalHomeScore}-${finalAwayScore}.` });
+
                 events.sort((a,b) => a.minute - b.minute);
 
                 matches.push({
                     id: matchId, matchday: currentMatchday, homeTeam: home, awayTeam: away,
-                    startTime: startTime.getTime(), injuryTime1H: randInt(1,4), injuryTime2H: randInt(2,6),
+                    startTime: startTime.getTime(), 
+                    injuryTime1H, injuryTime2H,
+                    kickoffDelaySec: delays.kickoffDelaySec, 
+                    htExtensionSec: delays.htExtensionSec, 
+                    ftDelaySec: delays.ftDelaySec,
                     stats, events
                 });
             }
@@ -1437,17 +1518,18 @@ const PAST_RESULTS = parsePastResults(pastResultsText);
    CORE LOGIC
    ══════════════════════════════════════════════════════════════ */
 function getLiveState(match, now) {
-  const realElapsedMs = now - match.startTime;
+  const startTime = match.startTime + (match.kickoffDelaySec || 0) * 1000;
+  const realElapsedMs = now - startTime;
   if (realElapsedMs < 0) return { phase: 'upcoming', displaySec: 0, currentM: 0, isFinished: false };
   
   const matchSeconds = realElapsedMs / 1000;
   const inj1 = (match.injuryTime1H || 2) * 60;
   const inj2 = (match.injuryTime2H || 4) * 60;
-  const ht = 15 * 60;
+  const ht = (15 * 60) + (match.htExtensionSec || 0); 
   
   const total1H = 45 * 60 + inj1;
   const totalHT = total1H + ht;
-  const total2H = totalHT + 45 * 60 + inj2;
+  const total2H = totalHT + 45 * 60 + inj2 + (match.ftDelaySec || 0);
   
   let phase = '1H';
   let displaySec = matchSeconds;
@@ -1521,7 +1603,7 @@ function buildTable() {
 function calculateSquadStats(teamName) {
     const squad = ALL_SQUADS[teamName].map(p => ({ ...p, apps: 0, goals: 0, assists: 0, saves: 0 }));
     
-    // 1. Process Past Matches
+    // 1. Process Past Matches (uses seeded RNG)
     const pastTeamMatches = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
     let teamConceded = 0;
 
@@ -1559,14 +1641,34 @@ function calculateSquadStats(teamName) {
         }
     });
 
-    // 2. Process Finished Simulated Matches
-    const finishedMatches = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
+    // 2. Process Simulated Matches (uses exact events!)
+    const simMatches = MATCH_SCHEDULE.filter(m => m.homeTeam === teamName || m.awayTeam === teamName);
     
-    finishedMatches.forEach((m, idx) => {
-        const isHome = m.homeTeam === teamName;
-        const goalsScored = isHome ? m.homeScore : m.awayScore;
-        teamConceded += (isHome ? m.awayScore : m.homeScore);
-        
+    simMatches.forEach((m) => {
+        const state = getLiveState(m, Date.now());
+        if (state.phase === 'upcoming') return;
+
+        const maxM = state.currentM;
+        teamConceded += (m.homeTeam === teamName ? m.awayScore : m.homeScore);
+
+        // Goals & Assists from events
+        m.events.forEach(e => {
+            if (e.type === 'goal' && e.minute <= maxM) {
+                const isHome = e.team === 'home';
+                const teamInMatch = isHome ? m.homeTeam : m.awayTeam;
+                if (teamInMatch !== teamName) return;
+
+                const scorer = squad.find(p => p.name === e.scorerName);
+                if (scorer) scorer.goals++;
+
+                if (e.assisterName) {
+                    const assister = squad.find(p => p.name === e.assisterName);
+                    if (assister) assister.assists++;
+                }
+            }
+        });
+
+        // Appearances
         squad.forEach((p, i) => {
             if (i < 11) p.apps++;
             else {
@@ -1574,25 +1676,6 @@ function calculateSquadStats(teamName) {
                 if (rng() > 0.7) p.apps++;
             }
         });
-
-        for (let g = 0; g < goalsScored; g++) {
-            const rng = mulberry32(hashString(teamName + "_sgoal_" + m.id + "_" + g));
-            let scorerIdx = 0;
-            let r = rng();
-            if (r < 0.5) scorerIdx = 8 + Math.floor(rng() * 3);
-            else if (r < 0.8) scorerIdx = 5 + Math.floor(rng() * 3);
-            else scorerIdx = Math.floor(rng() * 5);
-            squad[scorerIdx].goals++;
-            
-            if (rng() > 0.3) {
-                let assistIdx = 0;
-                let ar = rng();
-                if (ar < 0.4) assistIdx = 5 + Math.floor(rng() * 3);
-                else if (ar < 0.7) assistIdx = 8 + Math.floor(rng() * 3);
-                else assistIdx = 1 + Math.floor(rng() * 4);
-                if (assistIdx !== scorerIdx) squad[assistIdx].assists++;
-            }
-        }
     });
 
     // 3. Process Saves
@@ -1618,8 +1701,16 @@ function getSquadInjuries(teamName, squad) {
 }
 
 function getLeagueLeaders() {
-    const sig = MATCH_SCHEDULE.filter(m => m.phase === 'FT').length;
-    if (cachedLeaders && cacheSig === sig) return cachedLeaders;
+    let visibleEventCount = 0;
+    const now = Date.now();
+    MATCH_SCHEDULE.forEach(m => {
+        const state = getLiveState(m, now);
+        if (state.phase !== 'upcoming') {
+            visibleEventCount += m.events.filter(e => state.phase === 'FT' || e.minute <= state.currentM).length;
+        }
+    });
+
+    if (cachedLeaders && cacheSig === visibleEventCount) return cachedLeaders;
 
     let allPlayers = [];
     BASE_CLUBS.forEach(club => {
@@ -1640,8 +1731,57 @@ function getLeagueLeaders() {
         assists: [...allPlayers].sort((a, b) => b.assists - a.assists).slice(0, 5),
         saves: [...allPlayers].filter(p => p.saves > 0).sort((a, b) => b.saves - a.saves).slice(0, 5)
     };
-    cacheSig = sig;
+    cacheSig = visibleEventCount;
     return cachedLeaders;
+}
+
+function getMatchdayPOTM() {
+    const now = Date.now();
+    // Find active matchday
+    const activeMatches = MATCH_SCHEDULE.filter(m => getLiveState(m, now).phase !== 'upcoming');
+    if (activeMatches.length === 0) return null; 
+    const activeMd = Math.max(...activeMatches.map(m => m.matchday));
+
+    // Tally stats for this matchday
+    const mdMatches = MATCH_SCHEDULE.filter(m => m.matchday === activeMd);
+    const playerStats = {};
+
+    mdMatches.forEach(m => {
+        const state = getLiveState(m, now);
+        if (state.phase === 'upcoming') return;
+        const maxM = state.currentM;
+        const homeSquad = ALL_SQUADS[m.homeTeam];
+        const awaySquad = ALL_SQUADS[m.awayTeam];
+
+        m.events.forEach(e => {
+            if (e.type === 'goal' && e.minute <= maxM) {
+                const squad = e.team === 'home' ? homeSquad : awaySquad;
+                const teamName = e.team === 'home' ? m.homeTeam : m.awayTeam;
+
+                if (!playerStats[e.scorerName]) playerStats[e.scorerName] = { name: e.scorerName, team: teamName, goals: 0, assists: 0, pos: squad.find(p => p.name === e.scorerName)?.pos || 'ST' };
+                playerStats[e.scorerName].goals++;
+
+                if (e.assisterName) {
+                    if (!playerStats[e.assisterName]) playerStats[e.assisterName] = { name: e.assisterName, team: teamName, goals: 0, assists: 0, pos: squad.find(p => p.name === e.assisterName)?.pos || 'MID' };
+                    playerStats[e.assisterName].assists++;
+                }
+            }
+        });
+    });
+
+    // Score players (3 pts per goal, 2 pts per assist)
+    const candidates = Object.values(playerStats);
+    if (candidates.length === 0) return { player: null, matchday: activeMd };
+
+    candidates.sort((a, b) => {
+        const scoreA = a.goals * 3 + a.assists * 2;
+        const scoreB = b.goals * 3 + b.assists * 2;
+        if (scoreA !== scoreB) return scoreB - scoreA;
+        if (a.goals !== b.goals) return b.goals - a.goals;
+        return b.assists - a.assists;
+    });
+
+    return { player: candidates[0], matchday: activeMd };
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1793,22 +1933,27 @@ function renderHome() {
 
     // 5. Player Stats & POTM
     const leaders = getLeagueLeaders();
+    const potmData = getMatchdayPOTM();
     
-    // Player of the Matchday widget (shows top scorer)
-    const topScorer = leaders.goals[0];
-    if (topScorer) {
-        const club = BASE_CLUBS.find(c => c.name === topScorer.team);
-        document.getElementById('potmFlag').innerHTML = flagHtml(club.flag);
-        document.getElementById('potmName').textContent = topScorer.name;
-        document.getElementById('potmTeam').textContent = `${topScorer.team} · Forward`;
+    if (potmData && potmData.player) {
+        const { player, matchday } = potmData;
+        const club = BASE_CLUBS.find(c => c.name === player.team);
+        document.getElementById('potmFlag').innerHTML = club ? flagHtml(club.flag) : '🏳️';
+        document.getElementById('potmName').textContent = player.name;
+        document.getElementById('potmTeam').textContent = `${player.team} · ${player.pos} · MD ${matchday}`;
         document.getElementById('potmStats').innerHTML = `
-            <span class="potm-stat">⚽ ${topScorer.goals} Goals</span>
-            <span class="potm-stat">🅰️ ${topScorer.assists} Assists</span>
+            <span class="potm-stat">⚽ ${player.goals} Goals</span>
+            <span class="potm-stat">🅰️ ${player.assists} Assists</span>
         `;
+    } else {
+        document.getElementById('potmFlag').innerHTML = '🏳️';
+        document.getElementById('potmName').textContent = "Awaiting Kickoff";
+        document.getElementById('potmTeam').textContent = "Matchday in progress";
+        document.getElementById('potmStats').innerHTML = `<span class="potm-stat">⚽ 0 Goals</span>`;
     }
 
     updatePlayerStats(activeStatCategory);
-    generateNews(); // Render the dynamic news
+    generateNews();
 }
 
 function updatePlayerStats(category) {
@@ -1858,7 +2003,13 @@ function matchRowHtml(m) {
   let state = 'upcoming', status;
   if (m.phase === '1H' || m.phase === '2H') {
     state = 'live';
-    status = `<span class="st-main live" style="color:var(--accent);display:flex;gap:6px;align-items:center;"><i class="live-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);"></i>${m.currentM > 45 ? `45+${formatClock(m.displaySec - 45 * 60)}` : formatClock(m.displaySec)}</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">Live</span>`;
+    let timeDisplay = '';
+    if (m.phase === '1H') {
+        timeDisplay = m.currentM > 45 ? `45+${formatClock(m.displaySec - 45*60)}` : formatClock(m.displaySec);
+    } else {
+        timeDisplay = m.currentM > 90 ? `90+${formatClock(m.displaySec - 90*60)}` : formatClock(m.displaySec);
+    }
+    status = `<span class="st-main live" style="color:var(--accent);display:flex;gap:6px;align-items:center;"><i class="live-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);"></i>${timeDisplay}</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">Live</span>`;
   } else if (m.phase === 'HT') {
     state = 'live';
     status = `<span class="st-main ht" style="color:#ffd97a;">HT</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">${formatClock(m.displaySec)}</span>`;
@@ -2054,9 +2205,13 @@ function appendEventToModal(e) {
     if (e.type === 'injury') icon = '🚑';
     if (e.type === 'sub') icon = '🔄';
     if (e.type === 'action') icon = '▶️';
+    if (e.type === 'phase') icon = '📢';
+    if (e.type === 'goal_disallowed') icon = '🚫';
 
     let rowClass = '';
     if (e.type === 'goal') rowClass = 'font-weight:bold; color:#fff;';
+    if (e.type === 'goal_disallowed') rowClass = 'color:#ffd97a;';
+    if (e.type === 'phase') rowClass = 'color:#74b7ff; font-style:italic;';
     if (e.type === 'red') rowClass = 'color:#ff9c9c;';
     if (e.type === 'injury') rowClass = 'color:#ffb3b3;';
 
@@ -2131,6 +2286,8 @@ function updateModalData() {
     const evContainer = document.getElementById('mEvents');
     const visibleEvents = m.events.filter(e => {
         if (m.phase === 'FT') return true;
+        if (m.phase === '1H' && e.phase === '2H') return false;
+        if (m.phase === 'HT' && e.phase === '2H') return false;
         return e.minute <= m.currentM;
     });
 

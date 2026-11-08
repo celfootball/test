@@ -1355,11 +1355,16 @@ function parseSchedule(text) {
                     const idx = Math.floor(rng() * 11);
                     return squad[idx] || { name: "Unknown" };
                 };
+                
+                const getOutfieldPlayer = (squad, rng) => {
+                    const idx = 1 + Math.floor(rng() * 10); // 1 to 10 (excludes GK at index 0)
+                    return squad[idx] || { name: "Unknown" };
+                };
 
-                // Goals
+                // Normal Goals
                 for (let i = 0; i < homeGoals; i++) {
                     const goalRng = mulberry32(hashString(matchId + "_gh_" + i));
-                    const scorer = getEventPlayer(homeSquad, goalRng);
+                    const scorer = getOutfieldPlayer(homeSquad, goalRng);
                     const minute = randInt(1, maxMinute);
                     
                     if (goalRng() < 0.02) { // 2% chance offside
@@ -1372,7 +1377,7 @@ function parseSchedule(text) {
                     } else {
                         let assister = null;
                         if (goalRng() > 0.3) {
-                            const a = getEventPlayer(homeSquad, goalRng);
+                            const a = getOutfieldPlayer(homeSquad, goalRng);
                             if (a.name !== scorer.name) assister = a;
                         }
                         events.push({
@@ -1387,7 +1392,7 @@ function parseSchedule(text) {
                 }
                 for (let i = 0; i < awayGoals; i++) {
                     const goalRng = mulberry32(hashString(matchId + "_ga_" + i));
-                    const scorer = getEventPlayer(awaySquad, goalRng);
+                    const scorer = getOutfieldPlayer(awaySquad, goalRng);
                     const minute = randInt(1, maxMinute);
                     
                     if (goalRng() < 0.02) { // 2% chance offside
@@ -1400,7 +1405,7 @@ function parseSchedule(text) {
                     } else {
                         let assister = null;
                         if (goalRng() > 0.3) {
-                            const a = getEventPlayer(awaySquad, goalRng);
+                            const a = getOutfieldPlayer(awaySquad, goalRng);
                             if (a.name !== scorer.name) assister = a;
                         }
                         events.push({
@@ -1410,6 +1415,36 @@ function parseSchedule(text) {
                             scorerName: scorer.name,
                             assisterName: assister ? assister.name : null,
                             desc: `GOAL! ${scorer.name} scores for ${away}!`
+                        });
+                    }
+                }
+                
+                // Penalties (Poisson lambda = 0.45 -> ~1 every 2-3 games, can be multiple)
+                const totalPens = poissonRandom(0.45);
+                for (let i = 0; i < totalPens; i++) {
+                    const isHome = rng() > 0.5;
+                    const team = isHome ? 'home' : 'away';
+                    const teamName = isHome ? home : away;
+                    const squad = isHome ? homeSquad : awaySquad;
+                    const taker = getOutfieldPlayer(squad, rng);
+                    const minute = randInt(1, maxMinute);
+                    
+                    if (rng() < 0.76) { // 76% conversion rate
+                        events.push({
+                            minute,
+                            type: "goal",
+                            isPen: true,
+                            team: team,
+                            scorerName: taker.name,
+                            assisterName: null,
+                            desc: `GOAL! ${taker.name} scores from the penalty spot for ${teamName}!`
+                        });
+                    } else {
+                        events.push({
+                            minute,
+                            type: "penalty_miss",
+                            team: team,
+                            desc: `Missed penalty! ${taker.name} (${teamName}) fails to convert from the spot.`
                         });
                     }
                 }
@@ -1448,8 +1483,8 @@ function parseSchedule(text) {
                     events.push({ minute: randInt(30, 85), type: "red", team: isHome ? "home" : "away", desc: `RED CARD! ${player.name} (${teamName}) is sent off.` });
                 }
 
-                // Injuries (Rare)
-                if (rng() < 0.15) {
+                // Injuries (RARE - 4% chance)
+                if (rng() < 0.04) {
                     const isHome = rng() > 0.5;
                     const teamName = isHome ? home : away;
                     const player = getEventPlayer(isHome ? homeSquad : awaySquad, rng);
@@ -1487,7 +1522,8 @@ function parseSchedule(text) {
                     kickoffDelaySec: delays.kickoffDelaySec, 
                     htExtensionSec: delays.htExtensionSec, 
                     ftDelaySec: delays.ftDelaySec,
-                    stats, events
+                    stats, events,
+                    phase: 'upcoming', displaySec: 0, currentM: 0, homeScore: 0, awayScore: 0
                 });
             }
         }
@@ -1562,6 +1598,7 @@ function buildTable() {
   const clubs = BASE_CLUBS.map(c => ({ ...c, form: [] }));
   const byName = new Map(clubs.map(c => [c.name, c]));
   const letter = (a, b) => a > b ? 'W' : a < b ? 'L' : 'D';
+  const now = Date.now();
 
   PAST_RESULTS.forEach(r => {
     const h = byName.get(r.home), a = byName.get(r.away);
@@ -1570,12 +1607,14 @@ function buildTable() {
   });
 
   MATCH_SCHEDULE.forEach(match => {
-      if (match.phase === 'FT') {
+      const state = getLiveState(match, now);
+      if (state.phase === 'FT') {
           const home = byName.get(match.homeTeam);
           const away = byName.get(match.awayTeam);
           if (home && away) {
-             const hScore = match.homeScore;
-             const aScore = match.awayScore;
+             const score = calculateScore(match, state.currentM);
+             const hScore = score.home;
+             const aScore = score.away;
              home.w += (hScore > aScore ? 1 : 0);
              home.d += (hScore === aScore ? 1 : 0);
              home.l += (hScore < aScore ? 1 : 0);
@@ -1602,6 +1641,7 @@ function buildTable() {
    ══════════════════════════════════════════════════════════════ */
 function calculateSquadStats(teamName) {
     const squad = ALL_SQUADS[teamName].map(p => ({ ...p, apps: 0, goals: 0, assists: 0, saves: 0 }));
+    const now = Date.now();
     
     // 1. Process Past Matches (uses seeded RNG)
     const pastTeamMatches = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
@@ -1645,7 +1685,7 @@ function calculateSquadStats(teamName) {
     const simMatches = MATCH_SCHEDULE.filter(m => m.homeTeam === teamName || m.awayTeam === teamName);
     
     simMatches.forEach((m) => {
-        const state = getLiveState(m, Date.now());
+        const state = getLiveState(m, now);
         if (state.phase === 'upcoming') return;
 
         const maxM = state.currentM;
@@ -1691,7 +1731,7 @@ function calculateSquadStats(teamName) {
 
 function getSquadInjuries(teamName, squad) {
     const rng = mulberry32(hashString(teamName + '_inj'));
-    const n = rng() < 0.5 ? 0 : 1 + Math.floor(rng() * 2);
+    const n = rng() < 0.85 ? 0 : 1 + Math.floor(rng() * 2); // 85% chance of NO injuries in squad
     const map = new Map();
     while (map.size < n) {
         const i = Math.floor(rng() * squad.length);
@@ -1880,19 +1920,31 @@ function renderHome() {
         document.getElementById('fSub').textContent = `${d.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })} · ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
         document.getElementById('fTeams').innerHTML = `${crest(upcomingMatch.homeTeam, 'lg')} <span>${upcomingMatch.homeTeam}</span> <span class="f-vs">VS</span> <span>${upcomingMatch.awayTeam}</span> ${crest(upcomingMatch.awayTeam, 'lg')}`;
     } else {
-        const finished = MATCH_SCHEDULE.filter(m => getLiveState(m, now).phase === 'FT');
+        const finished = MATCH_SCHEDULE
+            .filter(m => getLiveState(m, now).phase === 'FT')
+            .map(m => {
+                const state = getLiveState(m, now);
+                const score = calculateScore(m, state.currentM);
+                return { home: m.homeTeam, homeScore: score.home, away: m.awayTeam, awayScore: score.away, date: m.startTime };
+            });
+        
         const last = finished[finished.length - 1];
         if (last) {
-            badge.textContent = `Full time · Matchday ${last.matchday}`;
-            document.getElementById('fTitle').textContent = `${last.homeTeam} vs ${last.awayTeam}`;
+            badge.textContent = `Full time · Matchday ${last.matchday || MATCH_SCHEDULE.find(m => m.homeTeam === last.home && m.awayTeam === last.away).matchday}`;
+            document.getElementById('fTitle').textContent = `${last.home} vs ${last.away}`;
             document.getElementById('fSub').textContent = 'Full time';
-            document.getElementById('fTeams').innerHTML = `${crest(last.homeTeam,'lg')} <span>${last.homeTeam}</span><span class="f-vs">${last.homeScore} – ${last.awayScore}</span><span>${last.awayTeam}</span> ${crest(last.awayTeam,'lg')}`;
+            document.getElementById('fTeams').innerHTML = `${crest(last.home,'lg')} <span>${last.home}</span><span class="f-vs">${last.homeScore} – ${last.awayScore}</span><span>${last.away}</span> ${crest(last.away,'lg')}`;
         }
     }
 
     // 2. Latest Results
-    const finished = MATCH_SCHEDULE.filter(m => getLiveState(m, now).phase === 'FT')
-        .map(m => ({ home: m.homeTeam, homeScore: m.homeScore, away: m.awayTeam, awayScore: m.awayScore, date: m.startTime }));
+    const finished = MATCH_SCHEDULE
+        .filter(m => getLiveState(m, now).phase === 'FT')
+        .map(m => {
+            const state = getLiveState(m, now);
+            const score = calculateScore(m, state.currentM);
+            return { home: m.homeTeam, homeScore: score.home, away: m.awayTeam, awayScore: score.away, date: m.startTime };
+        });
     
     const allResults = finished.sort((a,b) => b.date - a.date).slice(0, 4);
     
@@ -2001,28 +2053,31 @@ const isLivePhase = p => p === '1H' || p === '2H' || p === 'HT';
 function matchRowHtml(m) {
   const d = new Date(m.startTime);
   let state = 'upcoming', status;
-  if (m.phase === '1H' || m.phase === '2H') {
+  const live = getLiveState(m, Date.now());
+  
+  if (live.phase === '1H' || live.phase === '2H') {
     state = 'live';
     let timeDisplay = '';
-    if (m.phase === '1H') {
-        timeDisplay = m.currentM > 45 ? `45+${formatClock(m.displaySec - 45*60)}` : formatClock(m.displaySec);
+    if (live.phase === '1H') {
+        timeDisplay = live.currentM > 45 ? `45+${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
     } else {
-        timeDisplay = m.currentM > 90 ? `90+${formatClock(m.displaySec - 90*60)}` : formatClock(m.displaySec);
+        timeDisplay = live.currentM > 90 ? `90+${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
     }
     status = `<span class="st-main live" style="color:var(--accent);display:flex;gap:6px;align-items:center;"><i class="live-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);"></i>${timeDisplay}</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">Live</span>`;
-  } else if (m.phase === 'HT') {
+  } else if (live.phase === 'HT') {
     state = 'live';
-    status = `<span class="st-main ht" style="color:#ffd97a;">HT</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">${formatClock(m.displaySec)}</span>`;
-  } else if (m.phase === 'FT') {
+    status = `<span class="st-main ht" style="color:#ffd97a;">HT</span><span class="st-sub" style="font-size:11px;font-weight:600;color:var(--muted)">${formatClock(live.displaySec)}</span>`;
+  } else if (live.phase === 'FT') {
     state = 'finished';
     status = `<span class="st-main" style="color:var(--muted);">FT</span>`;
   } else {
     status = `<span class="st-main">${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
   }
 
-  const score = m.phase === 'upcoming'
+  const scoreObj = calculateScore(m, live.currentM);
+  const score = live.phase === 'upcoming'
     ? `<span class="score pending" style="color:var(--muted);font-size:13px;font-weight:600;">vs</span>`
-    : `<span class="score" style="display:flex;justify-content:center;gap:8px;font-family:monospace;font-size:20px;font-weight:800;"><span>${m.homeScore || 0}</span><span style="color:var(--muted);font-weight:500;">–</span><span>${m.awayScore || 0}</span></span>`;
+    : `<span class="score" style="display:flex;justify-content:center;gap:8px;font-family:monospace;font-size:20px;font-weight:800;"><span>${scoreObj.home}</span><span style="color:var(--muted);font-weight:500;">–</span><span>${scoreObj.away}</span></span>`;
 
   return `<button type="button" class="match-row ${state}" data-id="${m.id}">
       <span class="status" style="display:flex;flex-direction:column;gap:1px;color:var(--muted);font-size:13px;font-weight:600;line-height:1.25">${status}</span>
@@ -2050,8 +2105,8 @@ function renderMatches() {
   filtered = [...filtered].sort((a, b) => a.startTime - b.startTime);
   document.getElementById('mdLabel').textContent = filtered.length ? `Matchday ${filtered[0].matchday}` : '';
 
-  const live = filtered.filter(m => isLivePhase(m.phase));
-  const rest = filtered.filter(m => !isLivePhase(m.phase));
+  const live = filtered.filter(m => isLivePhase(getLiveState(m, now).phase));
+  const rest = filtered.filter(m => !isLivePhase(getLiveState(m, now).phase));
   const groups = [];
   if (live.length) groups.push({ title: 'Live now', live: true, items: live });
   const byDay = new Map();
@@ -2207,10 +2262,12 @@ function appendEventToModal(e) {
     if (e.type === 'action') icon = '▶️';
     if (e.type === 'phase') icon = '📢';
     if (e.type === 'goal_disallowed') icon = '🚫';
+    if (e.type === 'penalty_miss') icon = '🧤';
 
     let rowClass = '';
     if (e.type === 'goal') rowClass = 'font-weight:bold; color:#fff;';
     if (e.type === 'goal_disallowed') rowClass = 'color:#ffd97a;';
+    if (e.type === 'penalty_miss') rowClass = 'color:#ff9c9c; font-weight:bold;';
     if (e.type === 'phase') rowClass = 'color:#74b7ff; font-style:italic;';
     if (e.type === 'red') rowClass = 'color:#ff9c9c;';
     if (e.type === 'injury') rowClass = 'color:#ffb3b3;';
@@ -2239,10 +2296,12 @@ function updateModalData() {
     if (!activeMatchId) return;
     const m = MATCH_SCHEDULE.find(x => x.id === activeMatchId);
     if (!m) return;
+    const live = getLiveState(m, Date.now());
 
     let scoreDisplay = 'vs';
-    if (m.phase !== 'upcoming') {
-        scoreDisplay = `${m.homeScore || 0} – ${m.awayScore || 0}`;
+    if (live.phase !== 'upcoming') {
+        const score = calculateScore(m, live.currentM);
+        scoreDisplay = `${score.home} – ${score.away}`;
     }
     document.getElementById('mScore').textContent = scoreDisplay;
 
@@ -2251,16 +2310,16 @@ function updateModalData() {
     let displayClock = '';
     let statusText = '';
 
-    if (m.phase === '1H') {
-      displayClock = m.currentM > 45 ? `45:00 + ${formatClock(m.displaySec - 45*60)}` : formatClock(m.displaySec);
+    if (live.phase === '1H') {
+      displayClock = live.currentM > 45 ? `45:00 + ${formatClock(live.displaySec - 45*60)}` : formatClock(live.displaySec);
       statusText = 'Live (first half)';
-    } else if (m.phase === 'HT') {
-      displayClock = `HT ${formatClock(m.displaySec)}`;
+    } else if (live.phase === 'HT') {
+      displayClock = `HT ${formatClock(live.displaySec)}`;
       statusText = 'Half time';
-    } else if (m.phase === '2H') {
-      displayClock = m.currentM > 90 ? `90:00 + ${formatClock(m.displaySec - 90*60)}` : formatClock(m.displaySec);
+    } else if (live.phase === '2H') {
+      displayClock = live.currentM > 90 ? `90:00 + ${formatClock(live.displaySec - 90*60)}` : formatClock(live.displaySec);
       statusText = 'Live (second half)';
-    } else if (m.phase === 'FT') {
+    } else if (live.phase === 'FT') {
       displayClock = 'FT';
       statusText = 'Full time';
     } else {
@@ -2272,8 +2331,8 @@ function updateModalData() {
     if (clockEl.textContent !== displayClock) clockEl.textContent = displayClock;
     if (statusEl.textContent !== statusText) statusEl.textContent = statusText;
 
-    if (m.phase !== 'upcoming' && m.stats) {
-        const p = Math.min(1, m.currentM / 90);
+    if (live.phase !== 'upcoming' && m.stats) {
+        const p = Math.min(1, live.currentM / 90);
         setBar('mPoss', Math.round(m.stats.homePoss), Math.round(m.stats.awayPoss), '%');
         setBar('mShots', Math.round(m.stats.homeShots * p), Math.round(m.stats.awayShots * p));
         setBar('mOnTarget', Math.round(m.stats.homeOnTarget * p), Math.round(m.stats.awayOnTarget * p));
@@ -2285,10 +2344,10 @@ function updateModalData() {
 
     const evContainer = document.getElementById('mEvents');
     const visibleEvents = m.events.filter(e => {
-        if (m.phase === 'FT') return true;
-        if (m.phase === '1H' && e.phase === '2H') return false;
-        if (m.phase === 'HT' && e.phase === '2H') return false;
-        return e.minute <= m.currentM;
+        if (live.phase === 'FT') return true;
+        if (live.phase === '1H' && e.phase === '2H') return false;
+        if (live.phase === 'HT' && e.phase === '2H') return false;
+        return e.minute <= live.currentM;
     });
 
     const currentCount = evContainer.children.length;
@@ -2323,9 +2382,15 @@ function renderTeamHeader(teamName, letters) {
 }
 
 function renderTeamOverview(teamName) {
+    const now = Date.now();
     const past = PAST_RESULTS.filter(m => m.home === teamName || m.away === teamName);
-    const pastSim = MATCH_SCHEDULE.filter(m => m.phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName))
-        .map(m => ({ home: m.homeTeam, homeScore: m.homeScore, away: m.awayTeam, awayScore: m.awayScore }));
+    const pastSim = MATCH_SCHEDULE
+        .filter(m => getLiveState(m, now).phase === 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName))
+        .map(m => {
+            const state = getLiveState(m, now);
+            const score = calculateScore(m, state.currentM);
+            return { home: m.homeTeam, homeScore: score.home, away: m.awayTeam, awayScore: score.away };
+        });
 
     const allPast = [...past, ...pastSim];
     const letters = [];
@@ -2348,7 +2413,7 @@ function renderTeamOverview(teamName) {
 
     renderTeamHeader(teamName, letters);
 
-    const upcoming = MATCH_SCHEDULE.filter(m => m.phase !== 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
+    const upcoming = MATCH_SCHEDULE.filter(m => getLiveState(m, now).phase !== 'FT' && (m.homeTeam === teamName || m.awayTeam === teamName));
     const upcomingHtml = upcoming.map(m => {
         const isHome = m.homeTeam === teamName;
         const opp = isHome ? m.awayTeam : m.homeTeam;
@@ -2493,19 +2558,21 @@ function tick() {
         match.awayScore = score.away;
     });
     
-    // Update home if any score or phase changes, or if visible match events occur
     let visibleEventCount = 0;
     MATCH_SCHEDULE.forEach(m => visibleEventCount += m.events.filter(e => m.phase === 'FT' || e.minute <= m.currentM).length);
     const sig = MATCH_SCHEDULE.map(m => `${m.phase}|${m.homeScore}-${m.awayScore}`).join(',') + '|' + visibleEventCount;
 
-    if (document.getElementById('homeView').style.display !== 'none' && sig !== homeSig) {
+    if (sig !== homeSig) {
         homeSig = sig;
-        renderHome();
+        if (document.getElementById('homeView').style.display !== 'none') renderHome();
+        if (document.getElementById('standingsView').style.display !== 'none') updateStats();
     }
+    
     if (document.getElementById('matchesView').style.display !== 'none') renderMatches();
     if (activeMatchId) updateModalData();
 }
 
+tick(); // Initialize match states before initial render
 renderHome();
 updateStats();
 setInterval(tick, 1000);
